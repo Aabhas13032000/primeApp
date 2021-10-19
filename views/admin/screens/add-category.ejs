@@ -1,0 +1,329 @@
+<%- include('../navigation/header') %>
+<div class="row">
+    <div class="col-lg-2 col-md-12 desktop-view">
+        <div id="accordion">
+            <!-- <div class="card">
+                <div class="card-header" id="headingzero">
+                    <h5 class="mb-0">
+                        <a href="/admin/news" class="btn btn-link">
+                            <span><i class="fab fa-dyalog"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="ads-text">Dashboard</span>
+                        </a>
+                    </h5>
+                </div>
+            </div> -->
+            <% if(role_id == 1 || role_id == 2){%>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <span id="admin_icon"><i class="fas fa-user-tie"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="admin-text">Users<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                    <a href="/admin/users" class="list-group-item list-group-item-action">
+                                        All Users
+                                    </a>
+                                    <a href="/admin/add-user" class="list-group-item list-group-item-action">Create User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <span id="news_icon"><i class="far fa-newspaper"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="news-text">News<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="/admin/news" class="list-group-item list-group-item-action">
+                                My News
+                            </a>
+                            <% if(role_id == 1 || role_id == 2){%>
+                                <a href="/admin/admin-news" class="list-group-item list-group-item-action">
+                                    Admin News
+                                </a>
+                                <a href="/admin/reporter-news" class="list-group-item list-group-item-action">
+                                    Reporter News
+                                </a>
+                                <a href="/admin/user-news" class="list-group-item list-group-item-action">
+                                    User News
+                                </a>
+                                <a href="/admin/tags" class="list-group-item list-group-item-action">
+                                    Tags
+                                </a>
+                                <a href="/admin/categories" class="list-group-item list-group-item-action">
+                                    All State,City,District
+                                </a>
+                                <a href="/admin/add-category" class="list-group-item list-group-item-action">Create State,City,District</a>
+                            <%}%>
+                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if(role_id == 1 || role_id == 2){%>
+                <div class="card">
+                    <div class="card-header" id="headingSix">
+                        <h5 class="mb-0">
+                            <a href="/admin/slider" class="btn btn-link">
+                                <span id="banner_icon"><i class="fas fa-image"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="banner-text">Slider</span>
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <!-- <div class="card">
+                    <div class="card-header" id="headingSeven">
+                        <h5 class="mb-0">
+                            <a href="/admin/ads" class="btn btn-link">
+                                <span id="ads_icon"><i class="fas fa-ad"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="ads-text">Ads</span>
+                            </a>
+                        </h5>
+                    </div>
+                </div> -->
+                <div class="card">
+                    <div class="card-header" id="headingNine">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                <span id="dr_icon"><i class="fas fa-folder"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">Directory<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/admin/posts" class="list-group-item list-group-item-action">
+                                    My Posts
+                                </a>
+                                <a href="/admin/forms" class="list-group-item list-group-item-action">
+                                    Forms
+                                </a>
+                                    <a href="/admin/add-dcategory" class="list-group-item list-group-item-action">
+                                        All State,City,District
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTen">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                <span id="dr_icon"><i class="fas fa-copy"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">E-paper<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/admin/e-paper" class="list-group-item list-group-item-action">
+                                    My E-papers
+                                </a>
+                                    <a href="/admin/add-epaper-category" class="list-group-item list-group-item-action">
+                                        All State,City,District
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-12" style="overflow-y: scroll;height: 90vh;">
+        <div class="container-fluid" style="background-color: white;width: 100%;padding: 0px;border-radius: 10px;box-shadow: 0px 0px 12px rgba(0,0,0,0.1);overflow: hidden">
+            <div class="row">
+                <div class="col-lg-6 col-md-12" style="padding: 25px 20px 30px 35px">
+                    <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">Create New State</h5>
+                    <br>
+                    <form action="/admin/add-new-category" method="post">
+                        <div class="form-group">
+                            <label for="">Category</label>
+                            <input type="text" class="form-control" id="category" name="category" onkeyup="checkCategory()" placeholder="Enter Category Name" required>
+                            <small id="checkCategory" class="form-text" style="text-align: center;"></small>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="">Select Color For Heading</label>
+                            <input type="color" class="form-control" id="" name="headingColor" placeholder="Enter Category Name" required>
+                        </div> -->
+                        <!-- <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="is_state" value="1" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault" style="color: red">
+                                ** If it is a State then select this **
+                            </label>
+                        </div> -->
+                        <br>
+                        <button type="submit" id="verify" class="btn btn-primary" style="width: 100%;background-color: #556ee6" disabled>Add</button>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-md-12" style="padding: 25px 20px 30px 35px">
+                    <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">Create New City</h5>
+                    <br>
+                    <form action="/admin/add-sub-category" method="post">
+        
+                        <div class="form-group">
+                            <label for="">Selct Category</label>
+                            <select class="form-control" name="c" id="c">
+                                <option value="name">Select Category</option>
+                                <% for(var i=0;i<categories.length;i++){ %>
+                                <%if(categories[i].name != null){%>
+                                    <option value="<%= categories[i].id %>"><%= categories[i].name %></option>
+                                <% } %>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Sub-Category Name</label>
+                            <input type="text" class="form-control" id="sub-category" name="subcategory" onkeyup="checkSubCategory()" placeholder="Enter Sub-Category Name" required>
+                            <small id="checkSubCategory" class="form-text" style="text-align: center;"></small>
+                        </div>
+                        <button type="submit" id="verifySub" class="btn btn-primary" style="width: 100%;background-color: #556ee6" disabled>Add</button>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-md-12" style="padding: 25px 20px 30px 35px">
+                    <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">Create New Tehsil</h5>
+                    <br>
+                    <form action="/admin/add-tehsil" method="post">
+        
+                        <div class="form-group">
+                            <label for="">Selct State</label>
+                            <select class="form-control" name="state" id="state" required>
+                                <option value="">Select State</option>
+                                <% for(var i=0;i<state.length;i++){ %>
+                                <%if(state[i].name != null){%>
+                                    <option value="<%= state[i].id %>"><%= state[i].name %></option>
+                                <% } %>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Selct District</label>
+                            <select class="form-control" name="district" id="district" required>
+                                <option value="">Select District</option>
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Tehsil Name</label>
+                            <input type="text" class="form-control" id="tehsil" name="tehsil" onkeyup="checkTehsil()" placeholder="Enter Tehsil Name" required>
+                            <small id="checkTehsil" class="form-text" style="text-align: center;"></small>
+                        </div>
+                        <button type="submit" id="verifyTehsil" class="btn btn-primary" style="width: 100%;background-color: #556ee6" disabled>Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+<br>
+
+<script>
+    function checkCategory(){
+        var b = document.getElementById('category').value;
+        $.ajax({
+            url:"/admin/searchCategory/" + b,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(data){
+                if(data[0] != undefined){
+                    document.getElementById('checkCategory').innerHTML = "Category already exists";
+                    document.getElementById('checkCategory').style.color = "rgb(255, 31, 31)";
+                    $('#verify').attr("disabled","disabled");
+                } else {
+                    document.getElementById('checkCategory').innerHTML = "";
+                    $('#verify').removeAttr("disabled");
+                }
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
+    function checkSubCategory(){
+        var c = document.getElementById('sub-category').value;
+        $.ajax({
+            url:"/admin/searchSubCategory/" + c,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(data){
+                if(data[0] != undefined){
+                    document.getElementById('checkSubCategory').innerHTML = " Sub-Category already exists";
+                    document.getElementById('checkSubCategory').style.color = "rgb(255, 31, 31)";
+                    $('#verifySub').attr("disabled","disabled");
+                } else {
+                    document.getElementById('checkSubCategory').innerHTML = "";
+                    $('#verifySub').removeAttr("disabled");
+                }
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
+    function checkTehsil(){
+        var c = document.getElementById('tehsil').value;
+        var district = document.getElementById('district').value;
+        var state = document.getElementById('state').value;
+        if(district == '' || state == ''){
+            alert('First select both state and district')
+        } else {
+            $.ajax({
+                url:"/admin/searchTehsil/" + c,
+                dataType: "jsonp",
+                type:"GET",
+                success: function(data){
+                    if(data[0] != undefined){
+                        document.getElementById('checkTehsil').innerHTML = "Tehsil already exists";
+                        document.getElementById('checkTehsil').style.color = "rgb(255, 31, 31)";
+                        $('#verifyTehsil').attr("disabled","disabled");
+                    } else {
+                        document.getElementById('checkTehsil').innerHTML = "";
+                        $('#verifyTehsil').removeAttr("disabled");
+                    }
+                },
+                error: function(err){
+                    console.log(err.status);
+                }
+            });
+        }
+    }
+    $('#state').change(function(){
+        var a = parseInt(this.value);
+        var select = document.getElementById("district");
+        var length = select.options.length;
+        for (var i = length-1; i >= 0; i--) {
+            select.options[i] = null;
+        }
+        $.ajax({
+            url:"/admin/getDistrict/" + a,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(data){
+                if(data.length==0){
+                    var option = document.createElement("option");
+                    option.text = "No subcategory present";
+                    option.value= '0';
+                    select.add(option);
+                } else {
+                    for(var i = 0;i<data.length;i++){
+                        var option = document.createElement("option");
+                        option.text = data[i].name;
+                        option.value= data[i].name;
+                        select.add(option);
+                    }
+                }
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    });
+</script>
+
+<%- include('../navigation/footer') %>

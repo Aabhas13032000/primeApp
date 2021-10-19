@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+
+    <title>Login Page</title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/admin-login.css">
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12 first-section">
+                    <img src="/images/logo/01.png" alt="">
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 second-section">
+                    <div>
+                        <h3 style="text-align: center;"><b>Login to Dashboard</b></h3>
+                        <br>
+                        <%if(message){%>
+                            <div class="alert <%=messageClass%>" role="alert">
+                                <%=message%>
+                            </div>
+                        <%}%>
+                        <br>
+                        <form action="/admin/login" method="post" autocomplete="on">
+                            <div class="form-group">
+                                <label for="">Phone Number</label>
+                                <input type="text" style="background-color: #f6f6f6" class="form-control" id="username" name="username" placeholder="Enter your Phone number" maxlength="13" required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="">Password</label>
+                                <input type="password" style="background-color: #f6f6f6" class="form-control" name="password" placeholder="Enter password" required autocomplete="on">
+                            </div>
+                            <br>
+                            <button type="submit" id="verify" class="btn btn-primary" style="width: 100%;background-color: #ff6600;border: 0;height: 48px;border-radius: 7px;">Login&nbsp;&nbsp;<i class="fas fa-arrow-right"></i></button>
+                        </form>
+                        <br>
+                        <a href="/admin/forgot-password" style="text-decoration: none">Forgot Password</a>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+    <meta property="og:title" content="<%=title%>" />
+    <meta property="og:url" content="https://www.<%= website %>/" />
+    <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
+
+    <title><%=title%></title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+
+<body>
+
+    <div class="top_header_epaper">
+        <div class="logo row">
+            <div class="col-10">
+                <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
+            </div>
+            <div class="col-2">
+                <% if(user_face == 'self') { %> 
+                    <h1>
+                        <span class="iconify" data-icon="carbon:settings"></span>
+                    </h1>
+                <% } else if(user_face == 'other') { %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="middle_section_epaper">
+        <%if(logged_in == 0){%>
+
+        <div class="container c1">
+
+            <div class="card">
+                <p>USER LOGIN</p>
+            </div>
+
+            <div class="form-group"  style="text-align: left">
+                <label for="">Full Name</label>
+                <input type="text" class="form-control" id="full_name" placeholder="Enter Your Full Name"/>
+            </div>
+
+            <div class="form-group"  style="text-align: left">
+                <label for="" >Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter Phone Number" maxlength="13" minlength="10"/>
+                <br>
+                <button id="sign-in-button" class="btn btn-primary" style="border: 0;" onclick="submitPhoneNumberAuth()">
+                    Get OTP
+                </button>
+            </div>
+            <div class="form-group"  style="text-align: left">
+                <input type="text" class="form-control" id="code" style="display: none" placeholder="Enter OTP"/>
+                <br>
+                <button id="confirm-code" class="btn btn-primary" style="border: 0;display: none" onclick="submitPhoneNumberAuthCode()">
+                    Submit
+                </button>
+            </div>
+            <!-- Add a container for reCaptcha -->
+            <div id="recaptcha-container" style="display: none"></div>
+        </div>
+
+        <% } else { %>
+            <div class="profile_section">
+                <div class="details">
+                    <div class="row">
+                        <div class="col-3 profile">
+                            <div class="card">
+                                <%if(user_profile.length != 0){%>
+                                    <img src="/images/user_profile/photo/<%= user_profile[0].image%>" alt="" style="border-radius: 5px">
+                                <%} else {%>
+                                    <h1><%= user[0].full_name.slice(0,1).toUpperCase()%></h1>
+                                <%}%>
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div>
+                                <h5><b><%= user[0].full_name %></b></h5>
+                                <h6><%= user[0].phone %></h6>
+                                <% if(user_face == 'self') { %> 
+                                    <a href="#">प्रोफाइल एडिट करें</a>
+                                <% } else if(user_face == 'other') { %>
+                                    <a href="#">फॉलो करें</a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="col-12 follow">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div style="text-align: center;">
+                                        <h4>0</h4>
+                                        <p>फॉलोवर</p>
+                                    </div>
+                                </div>
+                                <div class="col-4" style="text-align: center;border-left: 1px solid #b4b4b4;border-right: 1px solid #b4b4b4;">
+                                    <div>
+                                        <h4>0</h4>
+                                        <p>फोल्लोविंग</p>
+                                    </div>
+                                </div>
+                                <div class="col-4" style="text-align: center;">
+                                    <div>
+                                        <h4><%= total_posts[0].total > 3000 ? (parseInt(total_posts[0].total/1000) + 'K+') : total_posts[0].total %></h4>
+                                        <p>पोस्ट</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post" id="bottom-section" onscroll="getMoreProfileNews('<%= user_id %>')">
+                    <% if(news2.length == 0){ %> 
+                        <h5 style="text-align: center;margin-top: 10px;">नो पोस्ट</h5>
+                    <%} else {%>
+                        <h5 style="text-align: center;margin-top: 10px;">पोस्ट</h5>
+                        <% for(var i=0;i<news2.length;i++){ %>
+                            <div class="card">
+                                <div class="row top-row" onclick="window.open('/mobile/each-news/<%= news2[i].news_id %>', '_top')">
+                                    <div class="col-4">
+                                        <div class="card">
+                                            <a href="#">
+                                                <%if(news2[i].front_image_path != null){%>
+                                                    <%if(news2[i].front_image_path.slice(0,5) == "https"){%>
+                                                        <img src="<%= news2[i].front_image_path%>" alt="" style="border-radius: 5px">
+                                                    <%} else {%>
+                                                        <img src="/images/image_files/<%= news2[i].front_image_path%>" alt="" style="border-radius: 5px">
+                                                    <%}%>
+                                                    <%} else {%>
+                                                        <img src="/images/logo/01.png" alt="" style="border-radius: 5px">
+                                                <%}%>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <h6><%= news2[i].title != null ? (news2[i].title + ':') : '' %><%= news2[i].short_description.length >= 30 ? (news2[i].short_description.slice(0,30) + '..') : news2[i].short_description %></h6>
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                        <% } %>
+                    <%}%>
+                </div>
+            </div>
+        <% } %> 
+    </div>
+
+    <div class="bottom-bar">
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <% if(card == 'false'){ %> 
+                    <h1><a href="/mobile/main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/main" class="de-active">होम</a></b></h6>
+                <% } else { %>
+                    <h1><a href="/mobile/expanded_main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/expanded_main" class="de-active">होम</a></b></h6>
+                <%}%> 
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/videos" class="de-active"><span class="iconify" data-icon="clarity:play-solid"></span></a></h1>
+                <h6><b><a href="/mobile/videos" class="de-active">वीडियो</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/search" class="de-active"><span class="iconify" data-icon="lucide:search"></span></a></h1>
+                <h6><b><a href="/mobile/search" class="de-active">खोजें</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/epaper" class="de-active"><span class="iconify" data-icon="ion:newspaper"></span></a></h1>
+                <h6><b><a href="/mobile/epaper" class="de-active">ई-पेपर</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <% if(user_face == 'self') { %> 
+                    <h1><a href="/mobile/profile" class="active"><span class="iconify" data-icon="fa-solid:user"></span></a></h1>
+                    <h6><b><a href="/mobile/profile" class="active">प्रोफ़ाइल</a></b></h6>
+                <% } else if(user_face == 'other') { %>
+                    <h1><a href="/mobile/profile" class="de-active"><span class="iconify" data-icon="fa-solid:user"></span></a></h1>
+                    <h6><b><a href="/mobile/profile" class="de-active">प्रोफ़ाइल</a></b></h6>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+
+    <% if(logged_in == 0){ %>
+        <div class="add-news" onclick="window.open('/mobile/profile/', '_top')">
+            <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+        </div>
+    <% } else { %>
+        <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
+            <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+        </div>
+    <% } %>
+
+
+<input type="hidden" id="logged_in" value="">
+<input type="hidden" id="user_id" value="">
+<input type="hidden" id="full_name" value="">
+<input type="hidden" id="category_name" value="">
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+
+<%if(logged_in == 0){%>
+    <script src="/javascripts/otp.js"></script>
+<% } %>
+<script src="/javascripts/news.js"></script>
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+</body>
+</html>

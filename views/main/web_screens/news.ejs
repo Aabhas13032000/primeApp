@@ -1,0 +1,67 @@
+<%- include('../navigation/header') %>
+
+<header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="row" style="width:100%;margin: 0;height: 48px">
+            <div class="col-lg-3 col-6" >
+                <a class="navbar-brand" href="/news"><img src="/images/logo/Mono.png" alt="" style="height: 32px;margin-top: 10px">&nbsp;&nbsp;<img src="/images/logo/Prime.png" alt="" style="height: 20px;margin-top: 10px"></a>
+            </div>
+            <div class="col-lg-5 col-2"></div>
+            <div class="col-lg-4 col-4">
+                <div class="row icons" style="text-align: center;overflow: hidden">
+                    <div class="col-4">
+                        <h5>
+                            <a href="#career" data-bs-toggle="modal" style="text-decoration: none">
+                                <i class="fas fa-user-tie"></i>&nbsp;&nbsp;<b id="carrer">संवादाता</b>
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-4">
+                        <h5>
+                            <a href="/epaper" style="text-decoration: none">
+                                <i class="far fa-newspaper"></i>&nbsp;&nbsp;<b id="epaper">ई-पेपर</b>
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-4">
+                        <%if(logged_in == 0){%>
+                            <h5>
+                                <a href="/login" style="text-decoration: none">
+                                    <i class="fas fa-user-circle"></i>&nbsp;&nbsp;<b id="log-in">लॉग इन</b>
+                                </a>
+                            </h5>
+                        <%} else {%>
+                            <h5>
+                                <a href="#user-menu" data-bs-toggle="modal" style="text-decoration: none;">
+                                    <i class="fas fa-user-circle"></i>&nbsp;&nbsp;<b id="log-in">अकाउंट</b>
+                                </a>
+                            </h5>
+
+                            <div class="modal fade" id="user-menu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="list-group">
+                                                <li class="list-group-item" onclick="window.location.href ='/user-profile'">
+                                                    <a href="/user-profile" style="color: #1c1c1c">User Profile</a>
+                                                </li>
+                                                <li class="list-group-item" onclick="window.location.href ='/logout'">
+                                                    <a href="/logout" style="color: #1c1c1c">Logout</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<%- include('../navigation/footer') %>

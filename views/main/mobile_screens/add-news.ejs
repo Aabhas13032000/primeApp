@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+    <meta property="og:title" content="<%=title%>" />
+    <meta property="og:url" content="https://www.<%= website %>/" />
+    <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
+
+    <title><%=title%></title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+
+<body>
+
+    <div id="approvalbg" onclick="closePopup()"></div>
+
+    <div id="approvalPopup" onclick="closePopup()">
+        <div>
+            <h1><span class="iconify" data-icon="teenyicons:tick-circle-solid"></span></h1>
+            <h5>Your news is submitted successfully, for approval Please wait for admin to approve your news</h5>
+        </div>
+    </div>
+
+    <div id="addNewsPopup" style="transform: translateX(100%);">
+        <div class="tag row">
+            <div class="col-10">
+                <h3 id="tagname"></h3>
+            </div>
+            <div class="col-2">
+                <h1></span>&nbsp;&nbsp;<span class="iconify" onclick="closePopup()" data-icon="eva:close-fill"></span></h1>
+            </div>
+        </div>
+        <div class="form" id="form">
+        
+        </div>
+    </div>
+
+    <div class="top_header_epaper">
+        <div class="logo row">
+            <div class="col-10">
+                <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
+            </div>
+            <div class="col-2">
+                <h1 onclick="window.location.href = '/mobile'" style="color: black;">
+                    <span class="iconify" data-icon="eva:close-fill"></span>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="middle_section_add_news">
+        <div class="row">
+            <div class="col-12">
+                <br>
+                <h5><b>Select a Tag</b></h5>
+            </div>
+            <% for(var i=0;i<tags.length;i++){ %>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                    <div class="card" onclick="openPopup('<%= user_filter[0].city[0] %>','<%= tags[i].name %>')">
+                        <div class="image">
+                            <img src="/images/tag/<%= tags[i].image %>" alt="">
+                        </div>
+                        <div class="title">
+                            <h5><%= user_filter[0].city[0] %>&nbsp;<%= tags[i].name %></h5>
+                        </div>
+                    </div>
+                </div>
+            <% } %>  
+        </div>
+    </div>
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="/javascripts/add-news.js"></script>
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+
+</body>
+</html>

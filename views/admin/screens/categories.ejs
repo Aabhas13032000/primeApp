@@ -1,0 +1,298 @@
+<%- include('../navigation/header') %>
+<div class="row">
+    <div class="col-lg-2 col-md-12 desktop-view">
+        <div id="accordion">
+            <!-- <div class="card">
+                <div class="card-header" id="headingzero">
+                    <h5 class="mb-0">
+                        <a href="/admin/news" class="btn btn-link">
+                            <span><i class="fab fa-dyalog"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="ads-text">Dashboard</span>
+                        </a>
+                    </h5>
+                </div>
+            </div> -->
+            <% if(role_id == 1 || role_id == 2){%>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <span id="admin_icon"><i class="fas fa-user-tie"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="admin-text">Users<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                    <a href="/admin/users" class="list-group-item list-group-item-action">
+                                        All Users
+                                    </a>
+                                    <a href="/admin/add-user" class="list-group-item list-group-item-action">Create User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <span id="news_icon"><i class="far fa-newspaper"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="news-text">News<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="/admin/news" class="list-group-item list-group-item-action">
+                                My News
+                            </a>
+                            <% if(role_id == 1 || role_id == 2){%>
+                                <a href="/admin/admin-news" class="list-group-item list-group-item-action">
+                                    Admin News
+                                </a>
+                                <a href="/admin/reporter-news" class="list-group-item list-group-item-action">
+                                    Reporter News
+                                </a>
+                                <a href="/admin/user-news" class="list-group-item list-group-item-action">
+                                    User News
+                                </a>
+                                <a href="/admin/tags" class="list-group-item list-group-item-action">
+                                    Tags
+                                </a>
+                                <a href="/admin/categories" class="list-group-item list-group-item-action">
+                                    All State,City,District
+                                </a>
+                                <a href="/admin/add-category" class="list-group-item list-group-item-action">Create State,City,District</a>
+                            <%}%>
+                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if(role_id == 1 || role_id == 2){%>
+                <div class="card">
+                    <div class="card-header" id="headingSix">
+                        <h5 class="mb-0">
+                            <a href="/admin/slider" class="btn btn-link">
+                                <span id="banner_icon"><i class="fas fa-image"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="banner-text">Slider</span>
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <!-- <div class="card">
+                    <div class="card-header" id="headingSeven">
+                        <h5 class="mb-0">
+                            <a href="/admin/ads" class="btn btn-link">
+                                <span id="ads_icon"><i class="fas fa-ad"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="ads-text">Ads</span>
+                            </a>
+                        </h5>
+                    </div>
+                </div> -->
+                <div class="card">
+                    <div class="card-header" id="headingNine">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                <span id="dr_icon"><i class="fas fa-folder"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">Directory<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/admin/posts" class="list-group-item list-group-item-action">
+                                    My Posts
+                                </a>
+                                <a href="/admin/forms" class="list-group-item list-group-item-action">
+                                    Forms
+                                </a>
+                                    <a href="/admin/add-dcategory" class="list-group-item list-group-item-action">
+                                        All State,City,District
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTen">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                <span id="dr_icon"><i class="fas fa-copy"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">E-paper<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/admin/e-paper" class="list-group-item list-group-item-action">
+                                    My E-papers
+                                </a>
+                                    <a href="/admin/add-epaper-category" class="list-group-item list-group-item-action">
+                                        All State,City,District
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-12" style="overflow-y: scroll;height: 90vh;">
+        <div class="container-fluid" style="background-color: white;height: 85vh;width: 100%;padding: 20px;border-radius: 10px;box-shadow: 0px 0px 12px rgba(0,0,0,0.1);overflow-y: scroll;">
+            <div class="row">
+                <div class="col-lg-6 col-md-12" style="border-right: 1px solid #DFDFDF;height: 80vh;overflow-y: scroll;overflow-x: hidden">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <p style="font-weight: bold;letter-spacing: 1px">State</p>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+        
+                        </div>
+                    </div>
+                    <% for(var i=0;i<categories.length;i++){ %>
+                    <%if(categories[i].name != null){%>
+                        <div class="card" style="margin: 10px;padding: 10px;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <%if(categories[i].is_state == 1){%>
+                                        <h6><%= i+1%>. <%= categories[i].name %> (state)</h6>
+                                    <%} else if(categories[i].is_state == 0){%>
+                                            <h6><%= i+1%>. <%= categories[i].name %></h6>
+                                    <%}%>
+                                    <%if(categories[i].headingColor == ''){%>
+                                        <h6>No Color</h6>
+                                    <%} else {%>
+                                        <h6 style="color: '<%= categories[i].headingColor %>'">Heading Color</h6>
+                                    <%}%>
+                                </div>
+                                <div class="col-2">
+                                    <a data-toggle="collapse" href="#collapse<%= i %>" role="button" aria-expanded="false" aria-controls="collapse<%= i %>" style="color: #34C38F;text-decoration: none;padding: 4px 8px;border-radius: 50%"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                                <div class="col-2">
+                                    <a href="#category<%=i%>" style="color: #007BFF;text-decoration: none;padding: 4px 7px;border-radius: 50%" data-toggle="modal"><i class="fas fa-edit"></i></a>
+                                    <div class="modal fade" id="category<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form action="/admin/edit-category/<%= categories[i].id%>" method="post">
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="">Name</label>
+                                                            <input type="text" class="form-control" name="c_name" id="" value="<%= categories[i].name %>">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="">Heading Color</label>
+                                                            <input type="color" class="form-control" name="headingColor" id="" value="<%= categories[i].headingColor %>">
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <%if(categories[i].is_state == 1){%>
+                                                                <input class="form-check-input" type="checkbox" name="is_state" value="1" id="flexCheckDefault" checked>
+                                                            <%} else if(categories[i].is_state == 0){%>
+                                                                    <input class="form-check-input" type="checkbox" name="is_state" value="1" id="flexCheckDefault">
+                                                            <%}%>
+                                                            <label class="form-check-label" for="flexCheckDefault" style="color: red">
+                                                                ** If it is a State then select this **
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <a href="/admin/delete-category/<%= categories[i].id%>" class="confirm" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    <%}%>
+                    <% } %>
+                </div>
+                <div class="col-lg-6 col-md-12" style="height: 80vh;overflow-y: scroll;overflow-x: hidden">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <p style="font-weight: bold;letter-spacing: 1px">City & Districts</p>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+        
+                        </div>
+                    </div>
+                    <% for(var i=0;i<categories.length;i++){ %>
+                    <%if(categories[i].name != null){%>
+                        <div class="collapse" id="collapse<%= i %>">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h6 style="font-weight: bold"><%= categories[i].name %> City & Districts</h6>
+                                </div>
+                                <div class="col-2" style="text-align: right">
+                                    <a data-toggle="collapse" href="#collapse<%= i %>" role="button" aria-expanded="false" aria-controls="collapse<%= i %>" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%"><i class="fas fa-times-circle"></i></a>
+                                </div>
+                            </div>
+                            <%var k =1;%>
+                            <% for(var j=0;j<sub_categories.length;j++){ %>
+                                <% if(sub_categories[j].category_id == categories[i].id){ %>
+                                    <div class="card" style="margin: 10px;padding: 10px;">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6><%= k%>. <%= sub_categories[j].name %></h6>
+                                                <%k++;%>
+                                            </div>
+                                            <div class="col-2">
+                                            </div>
+                                            <div class="col-2">
+                                                <a href="#scategory<%=j%>" style="color: #007BFF;text-decoration: none;padding: 4px 7px;border-radius: 50%" data-toggle="modal"><i class="fas fa-edit"></i></a>
+                                                <div class="modal fade" id="scategory<%=j%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form action="/admin/edit-sub-category/<%= sub_categories[j].id%>" method="post">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" name="sc_name" id="" value="<%= sub_categories[j].name %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <a href="/admin/delete-sub-category/<%= sub_categories[j].id%>" class="confirm" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%"><i class="fas fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    <%}%>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+<script src="/javascripts/dashboard.js"></script>
+<script>
+    $('a.confirm').on('click', function(){
+        if(!confirm('Confirm Deletion')){
+            return false;
+        }
+    });
+</script>
+<%- include('../navigation/footer') %>

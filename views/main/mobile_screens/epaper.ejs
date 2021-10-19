@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+    <meta property="og:title" content="<%=title%>" />
+    <meta property="og:url" content="https://www.<%= website %>/" />
+    <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
+
+    <title><%=title%></title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+
+<body onload="getData()">
+
+    <div class="top_header_epaper">
+        <div class="logo row">
+            <div class="col-10">
+                <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="middle_section_epaper">
+        <div class="container" style="margin-top: 20px;">
+            <%for(var i=0;i<epaperCategory.length;i++){%>
+            <div class="row">
+                <div class="col-lg-10 col-6">
+                    <h4><%=epaperCategory[i].name%></h4>
+                </div>
+                <div class="col-lg-1 col-3" style="text-align: right">
+                    <h5><a onclick="moveleft('<%=epaperCategory[i].id%>')" class="left-arrow"><i class="fas fa-chevron-left"></i></a></h5>
+                </div>
+                <div class="col-lg-1 col-3">
+                    <h5><a onclick="moveright('<%=epaperCategory[i].id%>')" class="right-arrow"><i class="fas fa-chevron-right"></i></a></h5>
+                </div>
+            </div>
+            <div class="scrollmenu3" id="insert-epaper<%=epaperCategory[i].id%>" style="height: 250px;margin-top: 10px;">
+            </div>
+            <br>
+            <%}%>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <% if(card == 'false'){ %> 
+                    <h1><a href="/mobile/main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/main" class="de-active">होम</a></b></h6>
+                <% } else { %>
+                    <h1><a href="/mobile/expanded_main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/expanded_main" class="de-active">होम</a></b></h6>
+                <%}%> 
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/videos" class="de-active"><span class="iconify" data-icon="clarity:play-solid"></span></a></h1>
+                <h6><b><a href="/mobile/videos" class="de-active">वीडियो</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/search" class="de-active"><span class="iconify" data-icon="lucide:search"></span></a></h1>
+                <h6><b><a href="/mobile/search" class="de-active">खोजें</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/epaper" class="active"><span class="iconify" data-icon="ion:newspaper"></span></a></h1>
+                <h6><b><a href="/mobile/epaper" class="active">ई-पेपर</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/profile" class="de-active"><span class="iconify" data-icon="fa-solid:user"></span></a></h1>
+                <h6><b><a href="/mobile/profile" class="de-active">प्रोफ़ाइल</a></b></h6>
+            </div>
+        </div>
+    </div>
+
+    <% if(logged_in == 0){ %>
+        <div class="add-news" onclick="window.open('/mobile/profile/', '_top')">
+            <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+        </div>
+    <% } else { %>
+        <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
+            <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+        </div>
+    <% } %>
+
+
+<%for(var i=0;i<epaper.length;i++){%>
+    <input type="hidden" name="" id="k<%=i%>" value="<%= epaper[i].id %>">
+<%}%>
+<input type="hidden" name="" id="length" value=<%=epaper.length%>>
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="/javascripts/epaper.js"></script>
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+
+</body>
+</html>

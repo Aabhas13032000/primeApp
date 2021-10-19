@@ -1,0 +1,176 @@
+<%- include('../navigation/header') %>
+
+<div class="popup" id="popup" style="display: none;" onclick="closePopup()"></div>
+
+<div class="cross" id="cross" style="display: none;" onclick="closePopup()">
+    <button><i class="fas fa-times"></i></button>
+</div>
+
+<div class="login-box" id="login-box" style="display: none;">
+    <div style="text-align: center;">
+        <img src="/images/extra/login.png" alt=""><br><br>
+        <a href="/mobile/profile"  target="_top" >लॉग इन</a>
+    </div>
+</div>
+
+<div class="row main-container" style="overflow: hidden !important;background-color: #ececec;">
+    <div class="col-lg-3 col-sm-12 desktop-categories"></div>
+    <div class="col-lg-5 col-sm-12 news-section" onscroll="getMoreNews()">
+        <div class="top-section">
+            <% if (slider.length != 0 ){ %>
+            <div id="slider-1" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <% for(var k=0;k<slider.length;k++){ %>
+                        <button type="button" data-bs-target="#slider-1" data-bs-slide-to="<%= k %>" class="active" aria-current="true" aria-label="Slide <%= k %>"></button>
+                    <%}%>
+                </div>
+                <div class="carousel-inner">
+                    <% for(var k=0;k<slider.length;k++){ %>
+                        <%if(k==0){%>
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="/slider_images/<%= slider[k].image_path%>" onclick="window.location.href = '/images/slider_images/<%= slider[k].image_path%>'" alt="First slide">
+                            </div>
+                        <%} else {%>
+                            <div class="carousel-item">
+                                <img class="d-block w-100" src="/slider_images/<%= slider[k].image_path%>" onclick="window.location.href = '/images/slider_images/<%= slider[k].image_path%>'" alt="Second slide">
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#slider-1" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#slider-1" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            <% } else { %>
+                <div class="place-ad">
+                    <div class="inner-ad">
+                        <img src="/images/logo/Mono.png" class="one" alt=""><br/><br>
+                        <img src="/images/logo/Prime 01.png" class="two" alt="">
+                        <br><br>
+                        <p>Place Your Advertisement Here</p>
+                    </div>
+                </div>
+            <% } %> 
+        </div>
+        <div class="bottom-section" id="bottom-section">
+            <% for(var i=0;i<news2.length;i++){ %>
+            <div class="card">
+                    <div class="row top-row" onclick="window.open('/mobile/each-news/<%= news2[i].news_id %>', '_top')">
+                    <div class="col-4">
+                        <div class="card">
+                            <a href="#">
+                                <%if(news2[i].front_image_path != null){%>
+                                    <%if(news2[i].front_image_path.slice(0,5) == "https"){%>
+                                        <img src="<%= news2[i].front_image_path%>" alt="" style="border-radius: 5px">
+                                    <%} else {%>
+                                        <img src="/images/image_files/<%= news2[i].front_image_path%>" alt="" style="border-radius: 5px">
+                                    <%}%>
+                                    <%} else {%>
+                                        <img src="/images/logo/01.png" alt="" style="border-radius: 5px">
+                                <%}%>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <h6><%= news2[i].title != null ? (news2[i].title + ':') : '' %><%= news2[i].short_description.length >= 30 ? (news2[i].short_description.slice(0,30) + '..') : news2[i].short_description %></h6>
+                    </div>
+                </div>
+                <div class="row bottom-row">
+                    <div class="col-4" onclick="like('<%= news2[i].news_id %>')">
+                        <% if(logged_in == 0) {%>
+                            <a id="like<%= news2[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                        <% } else { %>
+                            <% if(news2[i].news_like == null){ %>
+                                <a id="like<%= news2[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                            <% } else { %>
+                                <a id="like<%= news2[i].news_id %>" style="color: #112244;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                            <% } %>  
+                        <% } %>   
+                    </div>
+                    <div class="col-4" onclick="comment('<%= news2[i].news_id %>')">
+                        <a href="#"><i class="fas fa-comment"></i>&nbsp;&nbsp;टिप्पणी</a>
+                    </div>
+                    <div class="col-4" onclick="share('<%= news2[i].news_id %>','<%= news2[i].title %>')">
+                        <a href="#"><i class="fas fa-share"></i>&nbsp;&nbsp;शेयर</a>
+                    </div>
+                </div>
+            </div> 
+            <div class="popup" id="popup<%= news2[i].news_id %>" style="display: none;" onclick="closeNewsPopup('<%= news2[i].news_id %>')"></div>
+            <div class="popup" id="sharepopup<%= news2[i].news_id %>" style="display: none;" onclick="closeSharePopup('<%= news2[i].news_id %>')"></div>          
+            <div class="comment_box" id="comment_box<%= news2[i].news_id %>" style="display: none;">
+                <div class="heading">
+                    <div class="row">
+                        <div class="col-10">
+                            <h4>Comment Box</h4>
+                        </div>
+                        <div class="col-2">
+                            <button onclick="closeNewsPopup('<%= news2[i].news_id %>')"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="message_box" id="message_box<%= news2[i].news_id %>">
+                    
+                </div>
+                <div class="input_box">
+                    <form onsubmit="addComment('<%= news2[i].news_id %>')">
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="comment_message<%= news2[i].news_id %>" name="comment_message" placeholder="Type a Comment..">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="share_box" id="share_options<%= news2[i].news_id %>" style="display: none;">
+                <div class="heading">
+                    <div class="row">
+                        <div class="col-10">
+                            <h4>Share Box</h4>
+                        </div>
+                        <div class="col-2">
+                            <button onclick="closeSharePopup('<%= news2[i].news_id %>')"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="options">
+                    <div class="row">
+                        <div class="col-4" style="text-align: center">
+                            <a href="https://www.facebook.com/sharer.php?u=<%= website %>/each-news/<%= news2[i].news_id %>" target="_blank" style="background-color: #3b5998;font-size: 24px;color: white;padding: 5px 14px;border-radius: 50%;text-decoration: none">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                        <div class="col-4" style="text-align: center">
+                            <a href="https://wa.me/?text=http://<%= website %>/each-news/<%= news2[i].news_id %>%0D%0Dन्यूज़ के लिए आज ही ऐप इंस्टॉल करें।%0Dhttps://play.google.com/store/apps/details?id=<%=appId%>%0D%0Dसंपर्क करें 902-412-3007%0DGmail: <%= website %>@gmail.com%0D%0Dवीडियो खबरों के लिए नीचे दिए लिंक को पर क्लिक करें और तुरंत सब्सक्राइब करें ।%0Dhttps://www.youtube.com/channel/UCMSgxxG0wN5lSjHP1mXKjBA"  target="_blank" style="background-color: #25d366;font-size: 24px;color: white;padding: 5px 12px;border-radius: 50%;text-decoration: none"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                        <div class="col-4" style="text-align: center">
+                            <a href="https://twitter.com/share?url=http://<%= website %>/each-news/<%=news2[i].news_id%>&text=<%= news2[i].title %>" data-show-count="false" target="_blank" style="background-color: #00acee;text-decoration: none;font-size: 24px;color: white;border-radius: 50%;padding: 5px 10px"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <div class="col-lg-4 col-sm-12 slider-section"></div>
+</div>
+
+<input type="hidden" id="logged_in" value="<%= logged_in %>">
+<input type="hidden" id="user_id" value="<%= user_id %>">
+<input type="hidden" id="full_name" value="<%= full_name %>">
+<input type="hidden" id="category_name" value="">
+
+<script src="/javascripts/news.js"></script>
+
+<%- include('../navigation/footer') %>

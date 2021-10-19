@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .tabcontainer {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .tabcontainer .tabs {
+            height: 8%;
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            display: flex;
+            flex-wrap: nowrap;
+            scroll-behavior: smooth;
+            white-space: nowrap;
+            border-bottom: 1px solid violet;
+        }
+        .tabcontainer .tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .tabcontainer .tabs .inner-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 100%;
+            padding: 0px 10px;
+            background-color: white;
+        }
+        .tabcontainer .tabs .inner-tab a {
+            display: block;
+            text-decoration: none;
+        }
+        .tabcontainer .tab-boxes {
+            height: 92%;
+            background-color: blue;
+            width: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            scroll-snap-type: mandatory;
+            scroll-snap-type: x proximity;
+            scroll-behavior: smooth;
+        }
+        .tabcontainer .tab-boxes .inner-box {
+            background-color: white;
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+        }
+        .tabcontainer .tab-boxes .inner-box iframe {
+            width: 100%;
+            height: 100%;
+        }
+        .tabcontainer .tab-boxes::-webkit-scrollbar {
+            display: none;
+        }
+        .line {
+            width: 100%;
+            height: 3px;
+            border-radius: 50px;
+            margin-top: 5px;
+        }
+        .selected {
+            color: #ff2200;
+        }
+        .selected-line {
+            background-color: #ff2200;
+        }
+    </style>
+</head>
+<body>
+    <div class="tabcontainer">
+        <div class="tabs" id="tabs">
+            <div class="inner-tab" id="inner-tab0">
+                <div>
+                    <a href="#tab0" id="selected0" class="selected">Top News0</a>
+                    <div class="line selected-line" id="line0"></div>
+                </div>
+            </div>
+            <div class="inner-tab" id="inner-tab1">
+                <div>
+                    <a href="#tab1" id="selected1">Top News1</a>
+                    <div class="line" id="line1"></div>
+                </div>
+            </div><div class="inner-tab" id="inner-tab2">
+                <div>
+                    <a href="#tab2" id="selected2">Top News1232</a>
+                    <div class="line" id="line2"></div>
+                </div>
+            </div><div class="inner-tab" id="inner-tab3">
+                <div>
+                    <a href="#tab3" id="selected3">Top News3</a>
+                    <div class="line" id="line3"></div>
+                </div>
+            </div><div class="inner-tab" id="inner-tab4">
+                <div>
+                    <a href="#tab4" id="selected4">Top News4</a>
+                    <div class="line" id="line4"></div>
+                </div>
+            </div><div class="inner-tab" id="inner-tab5">
+                <div>
+                    <a href="#tab5" id="selected5">Top News5</a>
+                    <div class="line" id="line5"></div>
+                </div>
+            </div><div class="inner-tab" id="inner-tab6">
+                <div>
+                    <a href="#tab6" id="selected6">Top News6</a>
+                    <div class="line" id="line6"></div>
+                </div>
+            </div><div class="inner-tab" id="inner-tab7">
+                <div>
+                    <a href="#tab7" id="selected7">Top News7</a>
+                    <div class="line" id="line7"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-boxes" onscroll="checkTab()" id="tab-boxes">
+            <div class="inner-box" id="tab0">
+                <iframe src="/mobile/" frameborder="0"></iframe>
+            </div>
+            <div class="inner-box" id="tab1">
+                <h1>2</h1>
+            </div>
+            <div class="inner-box" id="tab2">
+                <h1>3</h1>
+            </div>
+            <div class="inner-box" id="tab3">
+                <h1>4</h1>
+            </div>
+            <div class="inner-box" id="tab4">
+                <h1>5</h1>
+            </div>
+            <div class="inner-box" id="tab5">
+                <h1>6</h1>
+            </div>
+            <div class="inner-box" id="tab6">
+                <h1>7</h1>
+            </div>
+            <div class="inner-box" id="tab7">
+                <h1>8</h1>
+            </div>
+        </div>
+    </div>
+    <script>
+        function checkTab() {
+            var scrollLeftValue = document.getElementById('tab-boxes').scrollLeft;
+            var offsetWidthValue = document.getElementById('tab-boxes').offsetWidth;
+            var scrollLeftTab = document.getElementById('tabs').scrollLeft;
+            var offsetWidthTab = document.getElementById('tabs').offsetWidth;
+            var m = scrollLeftValue/offsetWidthValue;
+            for(var i=0;i<8;i++){
+                if(document.getElementById('selected' + parseInt(i)).classList.contains('selected')) {
+                    document.getElementById('selected' + parseInt(i)).classList.remove('selected');
+                }
+                if(document.getElementById('line' + parseInt(i)).classList.contains('selected-line')) {
+                    document.getElementById('line' + parseInt(i)).classList.remove('selected-line');
+                }
+            }
+            document.getElementById('selected' + parseInt(m)).classList.add('selected');
+            document.getElementById('line' + parseInt(m)).classList.add('selected-line');
+            var elementPos = document.getElementById('inner-tab' + parseInt(m)).getBoundingClientRect().left;
+            if(m == parseInt(m)){
+            document.getElementById('tabs').scrollTo(elementPos,0);
+            }
+        }
+    </script>
+</body>
+</html>

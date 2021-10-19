@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+
+    <title>Prime App</title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+
+<body>
+
+    <div id="subCategoryPopup" style="transform: translateX(100%);">
+        <div class="state">
+            <h2><b>आपका शहर चुनिये</b></h2>
+            <h5><span id="state">राजस्थान</span>&nbsp;&nbsp;<span class="iconify" onclick="closePopup()" data-icon="eva:close-fill"></span></h5>
+        </div>
+        <div class="search">
+            <div class="form-group" style="padding: 0px 5px">
+                <input type="text" name="" id="myInput" class="form-control" placeholder="अपना शहर खोजें" onkeyup="myFunction()" style="border: 1px solid #d7d7d7;background-color: #eeeeee">
+            </div>
+        </div>
+        <div class="cities">
+            <table class="table" id="myTable">
+                <tbody id="cities">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>  
+
+    <div class="container-fluid main-title">
+        <br>
+        <div class="image">
+            <img src="/images/logo/01.png" alt="">
+        </div>
+        <br>
+        <h2><b>आपका राज्य चुनिये</b></h2>
+        <br>
+        <br>
+        <div class="row">
+            <% if(StatesCategories.length != 0) {%> 
+                <% for(var i=0;i<StatesCategories.length;i++){ %> 
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                        <div class="card" onclick="openPopup('<%= StatesCategories[i].name %>')">
+                            <div class="row">
+                                <div class="col-10">
+                                    <a><%= StatesCategories[i].name %></a>
+                                </div>
+                                <div class="col-2">
+                                    <a><span class="iconify" data-icon="eva:arrow-ios-forward-outline"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div> 
+    </div>
+    
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="/javascripts/index.js"></script>
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+
+</body>
+</html>

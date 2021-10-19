@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+
+    <title><%= error.status %> Error Page</title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/errorStyle.css">
+</head>
+
+<body>
+
+<div id="main">
+    <div class="fof">
+            <h1>Error <%= error.status %></h1>
+            <h2>Oops! We are not able to find the page you are looking for.</h2>
+            <br><br>
+            <p>
+                <%= message %> 
+            </p>
+            <a href="/" style="text-decoration: none;">Go Back to Home page -></a>
+    </div>
+</div>
+
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1.0, minimum-scale=1">
+    <meta property="og:title" content="<%=title%>" />
+    <meta property="og:url" content="https://www.<%= website %>/" />
+    <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
+
+    <title><%=title%></title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+
+<body>
+
+    <div class="top_header">
+        <div class="logo row">
+            <div class="col-10">
+                <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
+            </div>
+            <div class="col-2">
+                <% if(cardStyle == 'plain'){ %>
+                    <h1 onclick="window.location.href = '/mobile/expanded_main'">
+                        <span class="iconify" data-icon="gg:layout-list"></span>
+                    </h1>
+                <% } else if(cardStyle == 'expanded'){ %>
+                    <h1 onclick="window.location.href = '/mobile/main'"  style="color: #ff6600;">
+                        <span class="iconify" data-icon="gg:layout-list"></span>
+                    </h1>
+                <% } %>
+            </div>
+        </div>
+        <div class="tabs" id="tabs">
+            <div class="inner-tab" id="inner-tab0">
+                <div>
+                    <a href="#tab0" id="selected0" class="selected">आपके लिए</a>
+                    <div class="line selected-line" id="line0"></div>
+                </div>
+            </div>
+            <div class="inner-tab" id="inner-tab1">
+                <div>
+                    <a href="#tab1" id="selected1">मेरा क्षेत्र</a>
+                    <div class="line" id="line1"></div>
+                </div>
+            </div>
+            <% var category_count = 2 %> 
+            <% for(var i=0;i<categories.length;i++){ %>
+                <div class="inner-tab" id="inner-tab<%= category_count %>">
+                    <div>
+                        <a href="#tab<%= category_count %>" id="selected<%= category_count %>"><%= categories[i].name%></a>
+                        <div class="line" id="line<%= category_count %>"></div>
+                    </div>
+                </div>
+                <%category_count++;%>
+            <% } %>
+        </div>
+        <div class="imp-news row">
+            <div class="col-2">
+                <h5>खास</h5>
+            </div>
+            <div class="col-10">
+                <marquee behavior="scroll" direction="left" scrollamount="5" onmouseover="this.stop();" onmouseout="this.start();">
+                    <div class="scrollmenu1">
+                        <% for(var i=0;i<news.length;i++){ %>
+                            <a href="/each-news/<%= news[i].news_id%>">&nbsp;&nbsp;<img src="/images/logo/Mono.png" width="15px" alt="">&nbsp;&nbsp;<%= news[i].short_description %>&nbsp;<img src="/images/logo/Mono.png" width="15px" alt="">&nbsp;&nbsp;</a>
+                        <% } %>
+                    </div>
+                </marquee>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-boxes" onscroll="checkTab()" id="tab-boxes">
+        <div class="inner-box" id="tab0">
+            <% if(cardStyle == 'plain'){ %>
+                <iframe src="/mobile/news" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+            <% } else if(cardStyle == 'expanded'){ %>
+                <iframe src="/mobile/news/expanded-card" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+            <% } %>
+        </div>
+        <div class="inner-box" id="tab1">
+            <% if(user_filter[0].state.length != 0 && user_filter[0].city.length != 0){ %>
+                <% if(cardStyle == 'plain'){ %>
+                    <iframe src="/mobile/news/local" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+                <% } else if(cardStyle == 'expanded'){ %>
+                    <iframe src="/mobile/news/expanded-card/local" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+                <% } %>
+            <% } else { %> 
+                <iframe src="/mobile/" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+            <% } %>  
+        </div>
+        <% var category_count1 = 2 %> 
+        <% for(var i=0;i<categories.length;i++){ %>
+            <div class="inner-box" id="tab<%= category_count1 %>">
+                <% if(cardStyle == 'plain'){ %>
+                    <iframe src="/mobile/news/<%= categories[i].name%>" frameborder="0" id="iframe<%= category_count1 %>" name="news_iframe"></iframe>
+                <% } else if(cardStyle == 'expanded'){ %>
+                    <iframe src="/mobile/news/expanded-card/<%= categories[i].name%>" frameborder="0" id="iframe<%= category_count1 %>" name="news_iframe"></iframe>
+                <% } %>
+            </div>
+            <%category_count1++;%>
+        <% } %>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <% if(card == 'false'){ %> 
+                    <h1><a href="/mobile/main" class="active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/main" class="active">होम</a></b></h6>
+                <% } else { %>
+                    <h1><a href="/mobile/expanded_main" class="active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/expanded_main" class="active">होम</a></b></h6>
+                <%}%> 
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/videos" class="de-active"><span class="iconify" data-icon="clarity:play-solid"></span></a></h1>
+                <h6><b><a href="/mobile/videos" class="de-active">वीडियो</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/search" class="de-active"><span class="iconify" data-icon="lucide:search"></span></a></h1>
+                <h6><b><a href="/mobile/search" class="de-active">खोजें</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/epaper" class="de-active"><span class="iconify" data-icon="ion:newspaper"></span></a></h1>
+                <h6><b><a href="/mobile/epaper" class="de-active">ई-पेपर</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/profile" class="de-active"><span class="iconify" data-icon="fa-solid:user"></span></a></h1>
+                <h6><b><a href="/mobile/profile" class="de-active">प्रोफ़ाइल</a></b></h6>
+            </div>
+        </div>
+    </div>
+
+    <% if(logged_in == 0){ %>
+        <div class="add-news" onclick="window.open('/mobile/profile/', '_top')">
+            <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+        </div>
+    <% } else { %>
+        <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
+            <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+        </div>
+    <% } %>
+
+    <input type="hidden" id="category_length" value="<%= categories.length %> ">
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="/javascripts/main.js"></script>
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+
+</body>
+</html>

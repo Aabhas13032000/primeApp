@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1">
+    <meta property="og:title" content="<%= news[0].title%>" />
+    <meta name="og:description" content="<%= news[0].short_description%>">
+    <meta property="og:url" content="https://www.<%= website %>/each-news/<%= news[0].news_id%>" />
+    <%if(news[0].front_image_path != null){%>
+        <%if(news[0].front_image_path.slice(0,5) == "https"){%>
+        <meta property="og:image" content="<%= news[0].front_image_path%>">
+        <%} else {%>
+        <meta property="og:image" content="/image_files/<%= news[0].news_id%>/<%= news[0].front_image_path%>">
+        <%}%>
+    <%} else {%>
+        <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
+    <%}%>
+
+    <title><%=title%></title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<body>
+<input type="hidden" name="" id="h" value="<%= news[0].description%>">
+
+<div class="top_header_epaper">
+    <div class="logo row">
+        <div class="col-10">
+            <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
+        </div>
+        <div class="col-2">
+
+        </div>
+    </div>
+</div>
+
+<div class="bottom-bar" style="background-color: aquamarine;">
+    
+</div>
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="/javascripts/news.js"></script>
+<script src="/javascripts/eachnews.js"></script>
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+
+</body>
+</html>

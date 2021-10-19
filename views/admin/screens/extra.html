@@ -1,0 +1,386 @@
+<!--            <div class="form-group">-->
+<!--                <select class="form-control" name="" id="url">-->
+<!--                    <option>Select the News</option>-->
+<!--                    <option value="/news">My News</option>-->
+<!--                    <% if(role_id == 1){%>-->
+<!--                        <option value="/admin-news">Admin News</option>-->
+<!--                    <%}%>-->
+<!--                    <% if(role_id == 1 || role_id == 2){%>-->
+<!--                        <option value="/reporter-news">Reporter News</option>-->
+<!--                    <%}%>-->
+<!--                </select>-->
+<!--            </div>-->
+
+
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-6 col-md-12">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="" >State</label>-->
+<!--                            <select class="form-control" name="state" id="state" required>-->
+<!--                                <option value="Rajasthan">Rajasthan</option>-->
+<!--                                <% for(var i=0;i<states.length;i++){ %>-->
+<!--                                    <option value="<%= states[i].name %>"><%= states[i].name %></option>-->
+<!--                                <% } %>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-6 col-md-12">-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="" >City</label>-->
+<!--                            <select class="form-control" name="city" id="city" required>-->
+<!--                                <option value="Bhilwara">Bhilwara</option>-->
+<!--                                <% for(var i=0;i<cities.length;i++){ %>-->
+<!--                                    <option value="<%= cities[i].name %>"><%= cities[i].name %></option>-->
+<!--                                <% } %>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+            <label for="" >State</label>
+            <select class="form-control" name="state" id="state">
+                <option value="<%= news[0].state %>"><%= news[0].state %></option>
+                <% for(var i=0;i<states.length;i++){ %>
+                <option value="<%= states[i].name %>"><%= states[i].name %></option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-12">
+        <div class="form-group">
+            <label for="" >City</label>
+            <select class="form-control" name="city" id="city">
+                <option value="<%= news[0].city %>"><%= news[0].city %></option>
+                <% for(var i=0;i<cities.length;i++){ %>
+                <option value="<%= cities[i].name %>"><%= cities[i].name %></option>
+                <% } %>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container" style="padding: 0px">
+    <div class="row" style="border-radius: 10px;box-shadow: 0px 0px 12px rgba(0,0,0,0.1);padding: 10px 20px;background-color: white;width: 100%;margin: 0;background-color: #112244;color: white">
+        <!-- <div class="col-lg-1 col-5" style="padding: 0px 5px;height: 40px">
+            <p style="font-weight: bold;letter-spacing: 1px">News</p>
+        </div> -->
+        <div class="col-lg-2 col-7" style="padding: 0px 5px;height: 40px;text-align: center">
+            <a href="/admin/add-news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">Add News</a>
+            <br><br>
+        </div>
+        <div class="col-lg-4 col-md-12" style="padding: 0px 5px;height: 40px;text-align: center">
+            <% if(role_id == 1){%>
+                <a href="/admin/news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">My</a>
+                <a href="/admin/admin-news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">Admin</a>
+                <a href="/admin/reporter-news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">Reporter</a>
+                <a href="/admin/user-news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">User</a>
+            <%}%>
+            <% if(role_id == 2){%>
+                    <a href="/admin/news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">My</a>
+                <a href="/admin/reporter-news" class="btn btn-primary" style="background-color: white;color: #112244;border: 0">Reporter</a>
+            <%}%>
+        </div>
+        <div class="col-lg-2 col-md-12" style="padding: 0px 5px;height: 40px">
+            <div class="form-group">
+                <select class="form-control" name="query" id="query">
+                    <option value="title">Title</option>
+                    <option value="category">Category</option>
+                    <option value="subcategory">Sub Category</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12" style="padding: 0px 5px;height: 40px">
+            <div class="form-group">
+                <input type="text" name="name" id="myInput" onkeyup="myFunction()" class="form-control" placeholder="Search by Title/Categories/Sub-category">
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive" style="height: 80vh;padding: 0;margin: 0;overflow-y: scroll;border-radius: 10px">
+        <table class="table" id="myTable" style="padding: 0;background-color: white;margin: 0;border-radius: 10px">
+            <thead>
+            <tr>
+                <th scope="col">S.no.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Sub-category</th>
+                <th scope="col">Options</th>
+                <% if(role_id == 1 || role_id == 2){%>
+                    <th scope="col">Important</th>
+                    <th scope="col">Approved</th>
+                    <th scope="col">Notification</th>
+                    <th scope="col">Posted By</th>
+                <%}%>
+                <th scope="col">Views</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for(var i=0;i<news.length;i++){ %>
+            <%if(news[i].is_approved == 0){%>
+                <tr>
+                    <th style="padding: 0 5px"><%= i+1 %></th>
+                    <td style="padding: 0">
+                        <p style="height: 40px;overflow: hidden;padding: 0;margin: 0">
+                            <%= news[i].title %>
+                        </p>
+                    </td>
+                    <td style="padding: 0"><%= news[i].c_name %></td>
+                    <%if(news[i].sub_category_id == 0){%>
+                        <td style="padding: 0">Other</td>
+                    <%} else {%>
+                        <td style="padding: 0"><%= news[i].sc_name %></td>
+                    <%}%>
+                    <td style="padding: 0">
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="/admin/edit-news/<%= news[i].news_id%>" style="background-color: #007BFF;color:white;text-decoration: none;padding: 4px 7px;border: 0" class="btn btn-primary">Edit</a>
+                            </div>
+                            <% if(role_id == 1 || role_id == 2){%>
+                            <div class="col-6">
+                                <a href="/admin/delete-news/<%= news[i].news_id%>" style="background-color: #DC3545;text-decoration: none;padding: 4px 8px;border:0;color: white" class="confirm btn btn-primary">Delete</a>
+                            </div>
+                            <%}%>
+                        </div>
+                    </td>
+                    <% if(role_id == 1 || role_id == 2){%>
+                    <%if(news[i].imp == 1){%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_imp" id="" value="<%= news[i].news_id %>" onchange="unchecked(this.value)" checked>
+                            </div>
+                        </td>
+                    <%} else {%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_not_imp" id="" onchange="checkedit(this.value)" value="<%= news[i].news_id %>">
+                            </div>
+                        </td>
+                    <%}%>
+                    <%if(news[i].is_approved == 1){%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_approved" id="" value="<%= news[i].news_id %>" onchange="approved(this.value)" checked>
+                            </div>
+                        </td>
+                    <%} else {%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_not_approved" id="" value="<%= news[i].news_id %>" onchange="notapproved(this.value)">
+                            </div>
+                        </td>
+                    <%}%>
+                    <td style="padding: 0">
+                        News not approved
+                    </td>
+                    <td><%=news[i].u_name%></td>
+                    <%}%>
+                    <td><%=news[i].views%></td>
+                </tr>
+            <%}%>
+            <% } %>
+            <% for(var i=0;i<news.length;i++){ %>
+            <%if(news[i].is_approved == 1){%>
+                <tr>
+                    <th style="padding: 0 5px"><%= i+1 %></th>
+                    <td style="padding: 0">
+                        <p style="height: 40px;overflow: hidden;padding: 0;margin: 0">
+                            <%= news[i].title %>
+                        </p>
+                    </td>
+                    <td style="padding: 0"><%= news[i].c_name %></td>
+                    <%if(news[i].sub_category_id == 0){%>
+                        <td style="padding: 0">Other</td>
+                    <%} else {%>
+                        <td style="padding: 0"><%= news[i].sc_name %></td>
+                    <%}%>
+                    <td style="padding: 0">
+                        <div class="row" style="margin-top: 5px">
+                            <div class="col-6">
+                                <a href="/admin/edit-news/<%= news[i].news_id%>" style="background-color: #007BFF;color:white;text-decoration: none;padding: 4px 7px;border: 0" class="btn btn-primary">Edit</a>
+                            </div>
+                            <% if(role_id == 1 || role_id == 2){%>
+                            <div class="col-6">
+                                <a href="/admin/delete-news/<%= news[i].news_id%>" style="background-color: #DC3545;text-decoration: none;padding: 4px 8px;border:0;color: white" class="confirm btn btn-primary">Delete</a>
+                            </div>
+                            <%}%>
+                        </div>
+                    </td>
+                    <% if(role_id == 1 || role_id == 2){%>
+                    <%if(news[i].imp == 1){%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_imp" id="" value="<%= news[i].news_id %>" onchange="unchecked(this.value)" checked>
+                            </div>
+                        </td>
+                    <%} else {%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_not_imp" id="" onchange="checkedit(this.value)" value="<%= news[i].news_id %>">
+                            </div>
+                        </td>
+                    <%}%>
+                    <%if(news[i].is_approved == 1){%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_approved" id="" value="<%= news[i].news_id %>" onchange="approved(this.value)" checked>
+                            </div>
+                        </td>
+                    <%} else {%>
+                        <td style="text-align: center;padding: 0">
+                            <div class="form-group">
+                                <input type="checkbox" name="is_not_approved" id="" value="<%= news[i].news_id %>" onchange="notapproved(this.value)">
+                            </div>
+                        </td>
+                    <%}%>
+                    <td style="padding: 0">
+                        <div class="row" style="margin-top: 5px">
+                            <div class="col-12" style="text-align: center">
+                                <a href="#" onclick="sendNotification('<%=news[i].title%>','<%=news[i].short_description%>')" style="background-color: #007BFF;color:white;text-decoration: none;padding: 4px 7px;border: 0" class="btn btn-primary">Send</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td><%=news[i].u_name%></td>
+                    <%}%>
+                    <td><%=news[i].views%></td>
+                </tr>
+            <%}%>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <ul>
+        <!-- <li onclick="window.location.href= '/admin/news'">
+            <a href="/admin/news">
+                <i class="fas fa-home"></i>
+            </a>
+        </li> -->
+        <% if(role_id == 1 || role_id == 2){%>
+                <li onclick="window.location.href= '/admin/users'" class="seeUser">
+                    <a href="/admin/users">
+                        <i class="fas fa-user-tie"></i>
+                    </a>
+                    <div class="forUser">
+                        <ul>
+                            <li onclick="window.location.href= '/admin/users'">
+                                <a href="/admin/users" class="list-group-item list-group-item-action">
+                                    All Users
+                                </a>
+                            </li>
+                            <li onclick="window.location.href= '/admin/add-user'">
+                                <a href="/admin/add-user" class="list-group-item list-group-item-action">Create Users</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+        <%}%>
+        <li onclick="window.location.href= '/admin/news'" class="seeNews">
+            <a href="/admin/news">
+                <i class="far fa-newspaper"></i>
+            </a>
+            <div class="forNews">
+                <ul>
+                    <li onclick="window.location.href= '/admin/news'">
+                        <a href="/admin/news">
+                            My News
+                        </a>
+                    </li>
+                    <li onclick="window.location.href= '/admin/add-news'">
+                        <a href="/admin/add-news">Create News</a>
+                    </li>
+                    <% if(role_id == 1 || role_id == 2){%>
+                        <li onclick="window.location.href= '/admin/tags'">
+                            <a href="/admin/tags">
+                                Tags
+                            </a>
+                        </li>
+                        <li onclick="window.location.href= '/admin/categories'">
+                            <a href="/admin/categories">
+                                All State,City,District
+                            </a>
+                        </li>
+                        <li onclick="window.location.href= '/admin/add-category'">
+                            <a href="/admin/add-category">Create State,City,District</a>
+                        </li>
+                    <%}%>
+                </ul>
+            </div>
+        </li>
+        <% if(role_id == 1 || role_id == 2){%>
+            <li onclick="window.location.href= '/admin/slider'">
+                <a href="/admin/slider">
+                    <i class="fas fa-image"></i>
+                </a>
+            </li>
+            <li onclick="window.location.href= '/admin/ads'">
+                <a href="/admin/ads">
+                    <i class="fas fa-ad"></i>
+                </a>
+            </li>
+            <li onclick="window.location.href= '/admin/posts'" class="seeDirectory">
+                <a href="/admin/posts">
+                    <i class="fas fa-folder"></i>
+                </a>
+                <div class="forDirectory">
+                    <ul>
+                        <li>
+                            <a href="/admin/posts">
+                                My Posts
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/forms">
+                                Forms
+                            </a>
+                        </li>
+                            <li>
+                                <a href="/admin/add-dcategory">
+                                    All State,City,District
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </li>
+            <li onclick="window.location.href= '/admin/e-paper'" class="seeEpaper">
+                <a href="/admin/e-paper">
+                    <i class="fas fa-copy"></i>
+                </a>
+                <div class="forEpaper">
+                    <ul>
+                        <li onclick="window.location.href= '/admin/e-paper'">
+                            <a href="/admin/e-paper">
+                                My E-papers
+                            </a>
+                        </li>
+                            <li onclick="window.location.href= '/admin/add-epaper-category'">
+                                <a href="/admin/add-epaper-category">
+                                    All State,City,District
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </li>
+        <%}%>
+    </ul>
+</div>
+
+<div class="col-lg-4 col-md-12">
+    <div class="form-group">
+        <label for="" >Tags</label>
+            <select class="form-control" name="tags" id="tags" required>
+                <option value="">Select a tag</option>
+                <% for(var i=0;i<tags.length;i++){ %>
+                <%if(tags[i].name != null){%>
+                    <option value="<%= tags[i].name %>"><%= tags[i].name %></option>
+                <% } %>
+                <% } %>
+            </select>
+    </div>
+</div>
