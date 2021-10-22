@@ -97,9 +97,9 @@ let getSlider = (req,res,next) => {
 
 let getNews = (req,res,next) => {
     if(req.user){
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
     } else {
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0";
     }
     mysqlconnection.query(news,function(err,news){
         if(!err){
@@ -110,11 +110,21 @@ let getNews = (req,res,next) => {
 }
 
 let getCategoryNews = (req,res,next) => {
-    if(req.user){
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 AND `categories`.`name` = '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
+    if(req.params.category_name.includes('क्षेत्र')){
+        if(req.user){
+            var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `news`.`district` LIKE '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
+        } else {
+            var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `news`.`district` L '"+ req.params.category_name +"' ORDER By `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+        }
+    console.log(req.params.category_name);
     } else {
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 AND `categories`.`name` = '"+ req.params.category_name +"' ORDER By `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+        if(req.user){
+            var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `news`.`district` = '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
+        } else {
+            var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `news`.`district` = '"+ req.params.category_name +"' ORDER By `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+        }
     }
+    console.log(news);
     mysqlconnection.query(news,function(err,news){
         if(!err){
             req.news = news;
@@ -124,17 +134,35 @@ let getCategoryNews = (req,res,next) => {
 }
 
 let getCityNews = (req,res,next) => {
-    if(req.user){
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 AND `categories`.`name` = '"+ req.user_filter[0].state[0] +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
-    } else {
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 AND `categories`.`name` = '"+ req.params.category_name +"' ORDER By `news`.`news_id` DESC LIMIT 10 OFFSET 0";
-    }
-    mysqlconnection.query(news,function(err,news){
-        if(!err){
-            req.news = news;
-        }
-        next();
-    });
+    console.log(req.params.category_name);
+    // if(req.user){
+    //     var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `categories`.`name` = '"+ req.user_filter[0].state[0] +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
+    // } else {
+    //     var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `categories`.`name` = '"+ req.params.category_name +"' ORDER By `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+    // }
+    // mysqlconnection.query(news,function(err,news){
+    //     if(!err){
+    //         req.news = news;
+    //     }
+    //     next();
+    // });
+    next();
+}
+
+let getStateNews = (req,res,next) => {
+    console.log(req.params.category_name);
+    // if(req.user){
+    //     var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `categories`.`name` = '"+ req.user_filter[0].state[0] +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0;";
+    // } else {
+    //     var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name FROM `news`   INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  AND `categories`.`name` = '"+ req.params.category_name +"' ORDER By `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+    // }
+    // mysqlconnection.query(news,function(err,news){
+    //     if(!err){
+    //         req.news = news;
+    //     }
+    //     next();
+    // });
+    next();
 }
 
 
@@ -172,7 +200,7 @@ let getEachNews = (req,res,next) => {
     req.user_profile = [];
     req.similiarNews = [];
     const news_id = req.params.news_id;
-    const eachNews = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`is_state` AS is_state,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name,`users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image ,`users`.`city` AS news_city FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` = `news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` = `news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`news_id` = '" + news_id + "'";
+    const eachNews = "SELECT `news`.*,`categories`.`is_state` AS is_state,`users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`users`.`city` AS news_city FROM `news`  INNER JOIN `sub-categories` ON `sub-categories`.`id` = `news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` = `news`.`user_id`  WHERE `news`.`news_id` = '" + news_id + "'";
     mysqlconnection.query(eachNews,function(err,news){
         if(!err){
             req.eachNews = news;
@@ -183,9 +211,9 @@ let getEachNews = (req,res,next) => {
                 } else {
                     var search_name = (news[0].sc_name.split('(')[1]).split(')')[0];
                 }
-                var similiarNews = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` = `news`.`sub_category_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`sub_category_id` = '"+ news[0].sub_category_id +"' AND `news`.`news_id` <> '"+ news[0].news_id +"' AND `sub-categories`.`name` LIKE '"+ ('%' + search_name + '%') +"' ORDER By `news`.`news_id` DESC LIMIT 20 OFFSET 0";
+                var similiarNews = "SELECT `news`.* FROM `news`  INNER JOIN `sub-categories` ON `sub-categories`.`id` = `news`.`sub_category_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`sub_category_id` = '"+ news[0].sub_category_id +"' AND `news`.`news_id` <> '"+ news[0].news_id +"' AND `sub-categories`.`name` LIKE '"+ ('%' + search_name + '%') +"' ORDER By `news`.`news_id` DESC LIMIT 20 OFFSET 0";
             } else {
-                var similiarNews = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` = `news`.`sub_category_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`sub_category_id` = '"+ news[0].sub_category_id +"' AND `news`.`news_id` <> '"+ news[0].news_id +"' AND `sub-categories`.`name` LIKE '"+ ('%' + news[0].c_name + '%') +"' ORDER By `news`.`news_id` DESC LIMIT 20 OFFSET 0";
+                var similiarNews = "SELECT `news`.* FROM `news`  INNER JOIN `sub-categories` ON `sub-categories`.`id` = `news`.`sub_category_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`sub_category_id` = '"+ news[0].sub_category_id +"' AND `news`.`news_id` <> '"+ news[0].news_id +"' AND `sub-categories`.`name` LIKE '"+ ('%' + news[0].c_name + '%') +"' ORDER By `news`.`news_id` DESC LIMIT 20 OFFSET 0";
             }
             var user_profile = "SELECT * FROM `user_profile` WHERE `user_id` = '"+news[0].user_id+"'";
             mysqlconnection.query(similiarNews,function(err,similiarNews){
@@ -237,5 +265,6 @@ module.exports = {
     getImages:getImages,
     getVideos:getVideos,
     getCategoryNews:getCategoryNews,
-    getCityNews:getCityNews
+    getCityNews:getCityNews,
+    getStateNews:getStateNews
 }

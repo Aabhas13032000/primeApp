@@ -203,7 +203,7 @@
                                 <%if(subcategories.length != 0){%>
                                     <%if(subcategories[0].name.includes('(')){%>
                                         <select class="form-control" name="district" id="district" required>
-                                            <option value="<%= (subcategories[0].name.split('(')[0]).split(' ')[0] %>"><%= (subcategories[0].name.split('(')[0]) %></option>
+                                            <option value="<%= subcategories[0].name %>"><%= (subcategories[0].name.split('(')[0]) %></option>
                                         </select>
                                     <%} else {%>
                                         <select class="form-control" name="district" id="district" required>

@@ -136,6 +136,7 @@ body {
     max-height: 100%;
     padding: 0px 10px;
     background-color: white;
+    flex: 1;
 }
 
 .top_header .tabs .inner-tab a {
@@ -362,9 +363,9 @@ iframe::-webkit-scrollbar {
   border-radius: 5px;
 }
 
-#myTable td:hover a{
+/* #myTable td:hover a{
   color: white;
-}
+} */
   
 .top_header_epaper {
     height: 6%;
@@ -1219,7 +1220,7 @@ div.scrollmenu3 a img{
   margin: 7px 0px;
 }
 
-#subCategoryPopup {
+.subCategoryPopup {
   width: 100%;
   height: 100%;
   background-color: #ececec;
@@ -1345,19 +1346,19 @@ div.scrollmenu3 a img{
   height: 50px;
 }
 
-#subCategoryPopup .state {
+.subCategoryPopup .state {
   height: 13%;
   width: 100%;
   padding: 10px;
   overflow: hidden;
 }
 
-#subCategoryPopup .state h2 {
+.subCategoryPopup .state h2 {
   text-align: center;
   height: 50%;
 }
 
-#subCategoryPopup .state h5 {
+.subCategoryPopup .state h5 {
   height: 50%;
   display: inline;
   padding: 5px 10px;
@@ -1366,7 +1367,7 @@ div.scrollmenu3 a img{
   color: white;
 }
 
-#subCategoryPopup .search {
+.subCategoryPopup .search {
   height: 7%;
   width: 100%;
   padding: 0px 10px;
@@ -1374,11 +1375,11 @@ div.scrollmenu3 a img{
   align-items: center;
 }
 
-#subCategoryPopup .search .form-group {
+.subCategoryPopup .search .form-group {
   width: 100%;
 }
 
-#subCategoryPopup .cities {
+.subCategoryPopup .cities {
   height: 80%;
   width: 100%;
   padding: 10px 15px;
@@ -1386,52 +1387,52 @@ div.scrollmenu3 a img{
   overflow-y: scroll;
 }
 
-#subCategoryPopup .cities table {
+.subCategoryPopup .cities table {
   width: 100%;
   padding: 0;
 }
 
-#subCategoryPopup .cities table td {
+.subCategoryPopup .cities table td {
   padding: 5px 0 !important;
   border-bottom: 0px;
 }
 
-#subCategoryPopup .cities table td:hover {
+.subCategoryPopup .cities table td:hover {
   background-color: transparent;
 }
 
-#subCategoryPopup .cities table .card {
+.subCategoryPopup .cities table .card {
   padding: 10px;
   border: 0;
   box-shadow: 0px 0px 20px rgba(0,0,0,0.05);
   border-radius: 7px;
 }
 
-#subCategoryPopup .cities table .card a {
+.subCategoryPopup .cities table .card a {
   text-decoration: none;
   color: black;
   font-size: 20px;
 }
 
-#subCategoryPopup .cities table .card .row {
+.subCategoryPopup .cities table .card .row {
   margin: 0;
   width: 100%;
 }
 
-#subCategoryPopup .cities table .card .row .col-10 {
+.subCategoryPopup .cities table .card .row .col-10 {
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-#subCategoryPopup .cities table .card .row .col-2 {
+.subCategoryPopup .cities table .card .row .col-2 {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-#subCategoryPopup .cities table h2 {
+.subCategoryPopup .cities table h2 {
   margin: 0;
   text-align: center;
   color: var(--primary-color);

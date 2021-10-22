@@ -52,20 +52,32 @@
             </div>
             <div class="inner-tab" id="inner-tab1">
                 <div>
-                    <a href="#tab1" id="selected1">मेरा क्षेत्र</a>
+                    <% if(user_filter[0].district[0].includes('क्षेत्र')){ %>
+                        <a href="#tab1" id="selected1">मेरा क्षेत्र</a>
+                    <% } else { %>
+                        <a href="#tab1" id="selected1"><%= (user_filter[0].district[0].split('(')[0]).split(' ')[0] %></a>
+                    <% } %> 
                     <div class="line" id="line1"></div>
                 </div>
             </div>
-            <% var category_count = 2 %> 
-            <% for(var i=0;i<categories.length;i++){ %>
-                <div class="inner-tab" id="inner-tab<%= category_count %>">
-                    <div>
-                        <a href="#tab<%= category_count %>" id="selected<%= category_count %>"><%= categories[i].name%></a>
-                        <div class="line" id="line<%= category_count %>"></div>
-                    </div>
+            <div class="inner-tab" id="inner-tab2">
+                <div>
+                    <a href="#tab2" id="selected2"><%= user_filter[0].city[0] %></a>
+                    <div class="line" id="line2"></div>
                 </div>
-                <%category_count++;%>
-            <% } %>
+            </div>
+            <div class="inner-tab" id="inner-tab3">
+                <div>
+                    <a href="#tab3" id="selected3"><%= user_filter[0].state[0] %></a>
+                    <div class="line" id="line3"></div>
+                </div>
+            </div>
+            <div class="inner-tab" id="inner-tab4">
+                <div>
+                    <a href="#tab4" id="selected4">अन्य शहर</a>
+                    <div class="line" id="line4"></div>
+                </div>
+            </div>
         </div>
         <div class="imp-news row">
             <div class="col-2">
@@ -92,27 +104,29 @@
             <% } %>
         </div>
         <div class="inner-box" id="tab1">
-            <% if(user_filter[0].state.length != 0 && user_filter[0].city.length != 0){ %>
-                <% if(cardStyle == 'plain'){ %>
-                    <iframe src="/mobile/news/local" frameborder="0" id="iframe0" name="news_iframe"></iframe>
-                <% } else if(cardStyle == 'expanded'){ %>
-                    <iframe src="/mobile/news/expanded-card/local" frameborder="0" id="iframe0" name="news_iframe"></iframe>
-                <% } %>
-            <% } else { %> 
-                <iframe src="/mobile/" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+            <% if(cardStyle == 'plain'){ %>
+                <iframe src="/mobile/news/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+            <% } else if(cardStyle == 'expanded'){ %>
+                <iframe src="/mobile/news/expanded-card/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+            <% } %>
+        </div>
+        <div class="inner-box" id="tab2">
+            <% if(cardStyle == 'plain'){ %>
+                <iframe src="/mobile/news/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+            <% } else if(cardStyle == 'expanded'){ %>
+                <iframe src="/mobile/news/expanded-card/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
             <% } %>  
         </div>
-        <% var category_count1 = 2 %> 
-        <% for(var i=0;i<categories.length;i++){ %>
-            <div class="inner-box" id="tab<%= category_count1 %>">
-                <% if(cardStyle == 'plain'){ %>
-                    <iframe src="/mobile/news/<%= categories[i].name%>" frameborder="0" id="iframe<%= category_count1 %>" name="news_iframe"></iframe>
-                <% } else if(cardStyle == 'expanded'){ %>
-                    <iframe src="/mobile/news/expanded-card/<%= categories[i].name%>" frameborder="0" id="iframe<%= category_count1 %>" name="news_iframe"></iframe>
-                <% } %>
-            </div>
-            <%category_count1++;%>
-        <% } %>
+        <div class="inner-box" id="tab3">
+            <% if(cardStyle == 'plain'){ %>
+                <iframe src="/mobile/news/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+            <% } else if(cardStyle == 'expanded'){ %>
+                <iframe src="/mobile/news/expanded-card/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+            <% } %>  
+        </div>
+        <div class="inner-box" id="tab4">
+            <iframe src="/mobile/main" frameborder="0" id="iframe4" name="news_iframe"></iframe>
+        </div>
     </div>
 
     <div class="bottom-bar">
@@ -163,7 +177,6 @@
         </div>
     <% } %>
 
-    <input type="hidden" id="category_length" value="<%= categories.length %> ">
 
 <!--Bootstrap js-->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

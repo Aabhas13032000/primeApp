@@ -64,4 +64,29 @@
     </nav>
 </header>
 
+<% var category_count = 2 %> 
+            <% for(var i=0;i<categories.length;i++){ %>
+                <div class="inner-tab" id="inner-tab<%= category_count %>">
+                    <div>
+                        <a href="#tab<%= category_count %>" id="selected<%= category_count %>"><%= categories[i].name%></a>
+                        <div class="line" id="line<%= category_count %>"></div>
+                    </div>
+                </div>
+                <%category_count++;%>
+            <% } %>
+
+            <% var category_count1 = 2 %> 
+        <% for(var i=0;i<categories.length;i++){ %>
+            <div class="inner-box" id="tab<%= category_count1 %>">
+                <% if(cardStyle == 'plain'){ %>
+                    <iframe src="/mobile/news/<%= categories[i].name%>" frameborder="0" id="iframe<%= category_count1 %>" name="news_iframe"></iframe>
+                <% } else if(cardStyle == 'expanded'){ %>
+                    <iframe src="/mobile/news/expanded-card/<%= categories[i].name%>" frameborder="0" id="iframe<%= category_count1 %>" name="news_iframe"></iframe>
+                <% } %>
+            </div>
+            <%category_count1++;%>
+        <% } %>
+
+        <input type="hidden" id="category_length" value="<%= categories.length %> ">
+
 <%- include('../navigation/footer') %>

@@ -71,7 +71,7 @@
                     <%if(news[i].sub_category_id == 0){%>
                         <td style="padding: 0">Other</td>
                     <%} else {%>
-                        <td style="padding: 0"><%= news[i].sc_name %></td>
+                        <td style="padding: 0"><%= news[i].city %></td>
                     <%}%>
                     <td style="padding: 0">
                         <div class="row">
@@ -115,7 +115,7 @@
                     <td style="padding: 0">
                         News not approved
                     </td>
-                    <td><%=news[i].u_name%></td>
+                    <td><%=news[i].f_name%></td>
                     <%}%>
                     <td><%=news[i].views%></td>
                 </tr>
@@ -134,7 +134,7 @@
                     <%if(news[i].sub_category_id == 0){%>
                         <td style="padding: 0">Other</td>
                     <%} else {%>
-                        <td style="padding: 0"><%= news[i].sc_name %></td>
+                        <td style="padding: 0"><%= news[i].city %></td>
                     <%}%>
                     <td style="padding: 0">
                         <div class="row" style="margin-top: 5px">
@@ -182,7 +182,7 @@
                             </div>
                         </div>
                     </td>
-                    <td><%=news[i].u_name%></td>
+                    <td><%=news[i].f_name%></td>
                     <%}%>
                     <td><%=news[i].views%></td>
                 </tr>

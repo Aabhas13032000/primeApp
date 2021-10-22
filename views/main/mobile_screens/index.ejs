@@ -23,10 +23,30 @@
 
 <body>
 
-    <div id="subCategoryPopup" style="transform: translateX(100%);">
+    <div id="subCategoryCityPopup" class="subCategoryPopup" style="transform: translateX(100%);z-index: 8;">
+        <div class="state">
+            <h2><b>आपका क्षेत्र चुनिये</b></h2>
+            <h5><span id="state1"></span>&nbsp;&nbsp;<span class="iconify" onclick="closePopup()" data-icon="eva:close-fill"></span></h5>
+            <h5><span id="city"></span>&nbsp;&nbsp;<span class="iconify" onclick="closeCityPopup()" data-icon="eva:close-fill"></span></h5>
+        </div>
+        <div class="search">
+            <div class="form-group" style="padding: 0px 5px">
+                <input type="text" name="" id="myCityInput" class="form-control" placeholder="अपना क्षेत्र खोजें" onkeyup="myCityFunction()" style="border: 1px solid #d7d7d7;background-color: #eeeeee">
+            </div>
+        </div>
+        <div class="cities">
+            <table class="table" id="myCityTable">
+                <tbody id="district">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div> 
+
+    <div id="subCategoryPopup" class="subCategoryPopup" style="transform: translateX(100%);">
         <div class="state">
             <h2><b>आपका शहर चुनिये</b></h2>
-            <h5><span id="state">राजस्थान</span>&nbsp;&nbsp;<span class="iconify" onclick="closePopup()" data-icon="eva:close-fill"></span></h5>
+            <h5><span id="state"></span>&nbsp;&nbsp;<span class="iconify" onclick="closePopup()" data-icon="eva:close-fill"></span></h5>
         </div>
         <div class="search">
             <div class="form-group" style="padding: 0px 5px">
@@ -40,7 +60,7 @@
                 </tbody>
             </table>
         </div>
-    </div>  
+    </div> 
 
     <div class="container-fluid main-title">
         <br>

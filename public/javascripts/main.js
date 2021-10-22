@@ -1,10 +1,10 @@
-var category_length = parseInt(document.getElementById('category_length').value);
+var category_length = 5;
 
 function checkTab() {
     var scrollLeftValue = document.getElementById('tab-boxes').scrollLeft;
     var offsetWidthValue = document.getElementById('tab-boxes').offsetWidth;
     var m = scrollLeftValue/offsetWidthValue;
-    for(var i=0;i<(category_length+2);i++){
+    for(var i=0;i<(category_length);i++){
         if(document.getElementById('selected' + parseInt(i)).classList.contains('selected')) {
             document.getElementById('selected' + parseInt(i)).classList.remove('selected');
         }

@@ -1,3 +1,5 @@
+var card_data = document.getElementById('card_data').value;
+
 var firebaseConfig = {
     apiKey: "AIzaSyCKzHbrwhVNcDZQ-fFeac9FraFB_o7MuOc",
     authDomain: "primeapp-d61e1.firebaseapp.com",
@@ -77,7 +79,11 @@ function submitPhoneNumberAuthCode() {
                     data:userdata,
                     success: function(data){
                         console.log('success');
-                        window.location.href = '/mobile/main';
+                        if(card_data == 'false'){
+                            window.location.href = '/mobile/main';
+                        } else {
+                            window.location.href = '/mobile/expanded_main';
+                        }
                     },
                     error: function(err){
                         console.log(err.status);

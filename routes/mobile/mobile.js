@@ -18,9 +18,9 @@ const authTokens = {};
 
 router.use((req, res, next) => {
     // const authToken = req.cookies['User Cookie'];
-    req.user_filter = [{state:[],city:[]}];
-    if(req.cookies['City Filter'] != undefined){
-        req.user_filter = req.cookies['City Filter'];
+    req.user_filter = [{state:[],city:[],district:[]}];
+    if(req.cookies['City-District Filter'] != undefined){
+        req.user_filter = req.cookies['City-District Filter'];
     }
     req.card = [{expanded_card : 'true'}];
     if(req.cookies['Card'] != undefined){
@@ -34,22 +34,6 @@ router.use((req, res, next) => {
     // }
     next();
 });
-
-/* GET home page. */
-// router.get('/',query_function.getStatesCategories,query_function.getSubCategory,query_function.getLogo,function(req,res){
-//     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
-//         if(req.card[0].expanded_card == 'false'){
-//             res.redirect('/mobile/main');
-//         } else if(req.card[0].expanded_card == 'true') {
-//             res.redirect('/mobile/expanded_main');
-//         }
-//     } else {
-//         res.render('main/mobile_screens/index',{
-//             StatesCategories:req.statesCategories,
-//             subCategories:req.sub_category,
-//         });
-//     }
-// });
 
 /* GET home page. */
 router.get('/',function(req,res){
@@ -76,45 +60,62 @@ router.get('/',function(req,res){
 });
 
 /* GET save city. */
-router.get('/save_city/:cityname/:statename',function(req,res){
+router.get('/save_city/:cityname/:statename/:districtname',function(req,res){
     var userFilterState = [];
     var userFilterCity = [];
+    var userFilterDistrict = [];
     userFilterCity.push(req.params.cityname);
     userFilterState.push(req.params.statename);
+    if(req.params.districtname != 'no_district'){
+        userFilterDistrict.push(req.params.districtname);
+    }
     var filter = [{
         state:userFilterState,
-        city:userFilterCity
+        city:userFilterCity,
+        district:userFilterDistrict
     }];
-    res.cookie('City Filter', filter,{maxAge:  365*24*60*60*1000});
+    res.cookie('City-District Filter', filter,{maxAge:  365*24*60*60*1000});
     res.redirect('/mobile/expanded_main');
 });
 
 /* GET main page. */
-router.get('/main',query_function.getAds,query_function.getNoStatesCategories,query_function.getLogo,query_function.getImpNews,pages.mainpage);
+router.get('/main',query_function.getImpNews,pages.mainpage);
 
 /* GET main page. */
 router.get('/search',query_function.getCategories,query_function.getSubCategories,query_function.getLogo,pages.searchpage);
 
 /* GET expanded main page. */
-router.get('/expanded_main',query_function.getAds,query_function.getNoStatesCategories,query_function.getLogo,query_function.getImpNews,pages.expandedmainpage);
+router.get('/expanded_main',query_function.getImpNews,pages.expandedmainpage);
 
 /* GET news page. */
-router.get('/news', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getNews,query_function.getImpNews,pages.homepage);
+router.get('/news',query_function.getSlider,query_function.getNews,pages.homepage);
 
-router.get('/news/expanded-card', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getNews,query_function.getImpNews,pages.expandedcardpage);
+router.get('/news/expanded-card',query_function.getSlider,query_function.getNews,pages.expandedcardpage);
 
-/* GET Mera seher page. */
-router.get('/news/local', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getCategoryNews,query_function.getImpNews,pages.citypage);
+// /* GET Mera seher page. */
+// router.get('/news/local', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getNews,query_function.getImpNews,pages.citypage);
 
-/* GET Mera seher page. */
-router.get('/news/expanded-card/local', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getCategoryNews,query_function.getImpNews,pages.expandedcitypage);
+// /* GET Mera seher page. */
+// router.get('/news/expanded-card/local', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getNews,query_function.getImpNews,pages.expandedcitypage);
 
-
-/* GET each categories page. */
-router.get('/news/:category_name', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getCategoryNews,query_function.getImpNews,pages.categorypage);
 
 /* GET each categories page. */
-router.get('/news/expanded-card/:category_name', query_function.getAds,query_function.getNoStatesCategories,query_function.getStatesCategories,query_function.getSubCategoryDistrict,query_function.getSlider,query_function.getLogo,query_function.getCategoryNews,query_function.getImpNews,pages.expandedcategorypage);
+router.get('/news/:category_name',query_function.getCategoryNews,pages.categorypage);
+
+/* GET each categories page. */
+router.get('/news/city/:category_name',query_function.getCityNews,pages.categorypage);
+
+/* GET each categories page. */
+router.get('/news/state/:category_name',query_function.getStateNews,pages.categorypage);
+
+/* GET each categories page. */
+router.get('/news/expanded-card/:category_name',query_function.getCategoryNews,pages.expandedcategorypage);
+
+/* GET each categories page. */
+router.get('/news/expanded-card/city/:category_name',query_function.getCityNews,pages.expandedcategorypage);
+
+/* GET each categories page. */
+router.get('/news/expanded-card/state/:category_name',query_function.getStateNews,pages.expandedcategorypage);
 
 /* GET each news page page. */
 router.get('/each-news/:news_id', query_function.getEachNews,query_function.getImages,query_function.getVideos,query_function.getNoStatesCategories,query_function.getSlider,query_function.getLogo,function(req,res){
@@ -421,7 +422,7 @@ router.post('/add-news',function(req,res){
     var image = [];
     image = req.body.images.split(',');
     if(req.body.images.split(',')[0] != ''){
-        var sql6 = "INSERT INTO `news` (`user_id`,`short_description`,`description`,`front_image_path`,`created_at`,`tags`) VALUES ('" + req.user.user_id + "','" + req.body.title + "','" + req.body.desc + "','" + image[0] + "',CURRENT_TIMESTAMP,'"+ req.body.tag +"')";
+        var sql6 = "INSERT INTO `news` (`user_id`,`short_description`,`state`,`city`,`district`,`description`,`front_image_path`,`created_at`,`tags`) VALUES ('" + req.user.user_id + "','" + req.body.title + "','" + req.user_filter[0].state[0] + "','" + req.user_filter[0].city[0] + "','" + req.user_filter[0].district[0] + "','" + req.body.desc + "','" + image[0] + "',CURRENT_TIMESTAMP,'"+ req.body.tag +"')";
         mysqlconnection.query(sql6,function(err,data){
             console.log(err);
             if(!err){
@@ -434,10 +435,9 @@ router.post('/add-news',function(req,res){
             }
         });
     } else if(image[0] == []){
-        var sql6 = "INSERT INTO `news` (`user_id`,`short_description`,`description`,`created_at`,`tags`) VALUES ('" + req.user.user_id + "','" + req.body.title + "','" + req.body.desc + "',CURRENT_TIMESTAMP,'"+ req.body.tag +"')";
+        var sql6 = "INSERT INTO `news` (`user_id`,`short_description`,`state`,`city`,`district`,`description`,`created_at`,`tags`) VALUES ('" + req.user.user_id + "','" + req.body.title + "','" + req.user_filter[0].state[0] + "','" + req.user_filter[0].city[0] + "','" + req.user_filter[0].district[0] + "','" + req.body.desc + "',CURRENT_TIMESTAMP,'"+ req.body.tag +"')";
         mysqlconnection.query(sql6,function(err,data){
-            if(!err){
-            }
+            console.log(err);
         });
     }
     res.jsonp('success');
@@ -510,9 +510,9 @@ router.post('/addComment/',function(req,res){
 router.get('/getMoreNews/:offset',function(req,res){
     var offset = req.params.offset;
     if(req.user){
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ offset +"";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ req.user.user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ offset +";";
     } else {
-        var news = "SELECT `news`.*,`categories`.`name` AS c_name,`categories`.`headingColor` AS hcolor,`sub-categories`.`name` AS sc_name, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `categories` ON `categories`.`id` = `news`.`category_id` INNER JOIN `sub-categories` ON `sub-categories`.`id` =`news`.`sub_category_id` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`id` = `users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `categories`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ offset +"";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1  ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ offset +"";
     }
     mysqlconnection.query(news,function(err,news){
         res.jsonp(news);
@@ -532,6 +532,14 @@ router.get('/getMoreUserNews/:user_id/:offset',function(req,res){
 router.get('/getDistrict/:state',function(req,res){
     var state = req.params.state;
     const sub_category = "SELECT `sub-categories`.* FROM `sub-categories` INNER JOIN `categories` ON `categories`.`id` = `sub-categories`.`category_id` WHERE `sub-categories`.`status` = 1 AND `sub-categories`.`name` <> 'NULL' AND `sub-categories`.`name` NOT LIKE '%(%' AND `categories`.`is_state` = 1 AND `categories`.`name` = '"+ state +"' ORDER BY `sub-categories`.`name`";
+    mysqlconnection.query(sub_category,function(err,sub_category){
+        res.jsonp(sub_category);
+    });
+});
+
+router.get('/getSubDistrict/:city',function(req,res){
+    var city = req.params.city;
+    const sub_category = "SELECT * FROM `sub-categories` WHERE `status` = 1 AND `name` <> 'NULL' AND `name` LIKE '%"+ ('(' + city + ')') +"%' ORDER BY `name`";
     mysqlconnection.query(sub_category,function(err,sub_category){
         res.jsonp(sub_category);
     });
@@ -585,9 +593,19 @@ router.post('/user-login', function(req, res, next) {
     var sql = "SELECT * FROM `users` WHERE phone = '" + phone + "' AND status = 1 AND role_id = 4 AND password = '" + tokken + "'";
     mysqlconnection.query(sql,function(err,data){
         if(data.length != 0){
-            var sql7 = "UPDATE `users` SET `full_name` = '" + full_name + "',`city` = '"+city+"',`state` = '"+state+"' WHERE phone = '" + phone + "' AND status = 1 AND role_id = 4 AND password = '" + tokken + "'";
+            var sql7 = "UPDATE `users` SET `name` = '" + full_name + "',`full_name` = '" + full_name + "',`city` = '"+city+"',`state` = '"+state+"' WHERE phone = '" + phone + "' AND status = 1 AND role_id = 4 AND password = '" + tokken + "'";
             mysqlconnection.query(sql7,function(err,users1){
                 // console.log(users1);
+            });
+            var user_profile = "SELECT * FROM `user_profile` WHERE `user_id` = '"+ data[0].user_id +"'";
+            mysqlconnection.query(user_profile,function(err,user_profile){
+                // console.log(users1);
+                if(user_profile.length == 0){
+                    var sql9 = "INSERT INTO `user_profile` (`user_id`) VALUES ('" + data[0].user_id + "')";
+                    mysqlconnection.query(sql9,function(err,sql9){
+                        // console.log(users1);
+                    });
+                }
             });
             user_data = {
                 password:tokken,
@@ -598,15 +616,10 @@ router.post('/user-login', function(req, res, next) {
                 state:state,
                 role_id:'4'
             }
-            // const authToken = generateAuthToken();
-            // Store authentication token
-            // authTokens[authToken] = user_data;
-
-            // Setting the auth token in cookies
             res.cookie('User Cookie', user_data,{maxAge:  365*24*60*60*1000});
             res.jsonp({message:'success'});
         }else {
-            var sql6 = "INSERT INTO `users` (`full_name`,`password`,`is_approved`,`phone`,`role_id`,`city`,`state`) VALUES ('" + full_name + "','" + tokken + "','" + is_approved + "','" + phone + "',4,'"+city+"','"+state+"')";
+            var sql6 = "INSERT INTO `users` (`name`,`full_name`,`password`,`is_approved`,`phone`,`role_id`,`city`,`state`) VALUES ('" + full_name + "','" + full_name + "','" + tokken + "','" + is_approved + "','" + phone + "',4,'"+city+"','"+state+"')";
             mysqlconnection.query(sql6,function(err,users){
                 if(!err){
                     user_data = {
@@ -618,6 +631,10 @@ router.post('/user-login', function(req, res, next) {
                         state:state,
                         role_id:'4'
                     }
+                    var sql9 = "INSERT INTO `user_profile` (`user_id`) VALUES ('" + users.insertId + "')";
+                    mysqlconnection.query(sql9,function(err,sql9){
+                        // console.log(users1);
+                    });
                     const authToken = generateAuthToken();
                     // Store authentication token
                     authTokens[authToken] = user_data;

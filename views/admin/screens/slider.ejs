@@ -169,7 +169,11 @@
                                 <option value="">Select City</option>
                             </select>
                         </div>
-                        <input type="hidden" name="order" value=<%= order[0].order %>>
+                        <% if(order.length != 0){ %>
+                            <input type="hidden" name="order" value=<%= order[0].order %>>
+                        <% } else { %>
+                            <input type="hidden" name="order" value=0>
+                        <% } %> 
                         <button type="submit" class="btn btn-primary" style="width: 100%;background-color: #556ee6">Add</button>
                     </form>
                 </div>

@@ -1690,7 +1690,7 @@ router.get('/slider', function(req, res, next) {
             mysqlconnection.query(sql3,function(err,slider){
                 mysqlconnection.query(sql1,function(err,states){
                     mysqlconnection.query(order,function(err,order){
-                        // console.log(order);
+                        console.log(order);
                         if(!err){
                             res.render('admin/screens/slider',{
                                 role_id:req.user.role_id,
@@ -2241,6 +2241,11 @@ router.post('/add-user', function(req, res, next) {
                             var sql1 = "INSERT INTO `user_profile` (`user_id`,`document`) VALUES ('" + data.insertId + "','" + documentFile + "')";
                             mysqlconnection.query(sql1,function(err,document){});
                         }
+                    } else {
+                        var sql9 = "INSERT INTO `user_profile` (`user_id`) VALUES ('" + data.insertId + "')";
+                        mysqlconnection.query(sql9,function(err,sql9){
+                            // console.log(users1);
+                        });
                     }
                     res.redirect('/admin/add-user');
                 }
@@ -2979,10 +2984,7 @@ router.post('/login', function(req, res, next) {
     mysqlconnection.query(sql,function(err,user){
         if(user.length != 0){
             const authToken = generateAuthToken();
-            // Store authentication token
             authTokens[authToken] = user[0];
-            // console.log(user[0]);
-            // Setting the auth token in cookies
             var hours = 1*24*60*60*1000;
             res.cookie('AuthToken', authToken,{maxAge: hours});
 

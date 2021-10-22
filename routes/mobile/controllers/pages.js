@@ -16,12 +16,10 @@ let mainpage = (req,res) => {
         var full_name = undefined;
         var role_id = undefined;
     }
-
+    
     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
             res.render('main/mobile_screens/main',{
-                categories:req.noStatesCategories,
                 news:req.impNews,
-                logo:req.logo,
                 user_filter:req.user_filter,
                 logged_in:logged_in,
                 user_id:user_id,
@@ -97,11 +95,12 @@ let expandedmainpage = (req,res) => {
         var role_id = undefined;
     }
 
+    console.log(req.user_filter);
+
+
     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
         res.render('main/mobile_screens/main',{
-            categories:req.noStatesCategories,
             news:req.impNews,
-            logo:req.logo,
             user_filter:req.user_filter,
             logged_in:logged_in,
             user_id:user_id,
@@ -137,12 +136,12 @@ let homepage = (req,res) => {
 
     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
         res.render('main/mobile_screens/news',{
-            categories:req.noStatesCategories,
-            StatesCategories:req.statesCategories,
+            // categories:req.noStatesCategories,
+            // StatesCategories:req.statesCategories,
             slider:req.slider,
             news2:req.news,
-            logo:req.logo,
-            subCategories:req.sub_category,
+            // logo:req.logo,
+            // subCategories:req.sub_category,
             user_filter:req.user_filter,
             logged_in:logged_in,
             user_id:user_id,
@@ -154,7 +153,7 @@ let homepage = (req,res) => {
             class1:common.class1,
             class2:common.class2,
             favicon:common.favicon,
-            subCategoriesDistrict:req.sub_category_district,
+            // subCategoriesDistrict:req.sub_category_district,
             role_id:role_id
         });
     } else {
@@ -177,13 +176,13 @@ let expandedcardpage = (req,res) => {
 
     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
         res.render('main/mobile_screens/expanded',{
-            categories:req.noStatesCategories,
-            StatesCategories:req.statesCategories,
+            // categories:req.noStatesCategories,
+            // StatesCategories:req.statesCategories,
             slider:req.slider,
-            news:req.impNews,
+            // news:req.impNews,
             news2:req.news,
-            logo:req.logo,
-            subCategories:req.sub_category,
+            // logo:req.logo,
+            // subCategories:req.sub_category,
             user_filter:req.user_filter,
             logged_in:logged_in,
             user_id:user_id,
@@ -195,7 +194,7 @@ let expandedcardpage = (req,res) => {
             class1:common.class1,
             class2:common.class2,
             favicon:common.favicon,
-            subCategoriesDistrict:req.sub_category_district,
+            // subCategoriesDistrict:req.sub_category_district,
             role_id:role_id
         });
     } else {
@@ -219,13 +218,13 @@ let categorypage = (req,res) => {
 
     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
         res.render('main/mobile_screens/category',{
-            categories:req.noStatesCategories,
-            StatesCategories:req.statesCategories,
-            slider:req.slider,
-            news:req.impNews,
+            // categories:req.noStatesCategories,
+            // StatesCategories:req.statesCategories,
+            // slider:req.slider,
+            // news:req.impNews,
             news2:req.news,
-            logo:req.logo,
-            subCategories:req.sub_category,
+            // logo:req.logo,
+            // subCategories:req.sub_category,
             user_filter:req.user_filter,
             logged_in:logged_in,
             user_id:user_id,
@@ -237,7 +236,7 @@ let categorypage = (req,res) => {
             class1:common.class1,
             class2:common.class2,
             favicon:common.favicon,
-            subCategoriesDistrict:req.sub_category_district,
+            // subCategoriesDistrict:req.sub_category_district,
             category_name:req.params.category_name,
             role_id:role_id
         });
@@ -261,13 +260,13 @@ let expandedcategorypage = (req,res) => {
 
     if(req.user_filter[0].state.length != 0 && req.user_filter[0].city.length != 0){
         res.render('main/mobile_screens/expandedcategory',{
-            categories:req.noStatesCategories,
-            StatesCategories:req.statesCategories,
-            slider:req.slider,
-            news:req.impNews,
+            // categories:req.noStatesCategories,
+            // StatesCategories:req.statesCategories,
+            // slider:req.slider,
+            // news:req.impNews,
             news2:req.news,
-            logo:req.logo,
-            subCategories:req.sub_category,
+            // logo:req.logo,
+            // subCategories:req.sub_category,
             user_filter:req.user_filter,
             logged_in:logged_in,
             user_id:user_id,
@@ -279,7 +278,7 @@ let expandedcategorypage = (req,res) => {
             class1:common.class1,
             class2:common.class2,
             favicon:common.favicon,
-            subCategoriesDistrict:req.sub_category_district,
+            // subCategoriesDistrict:req.sub_category_district,
             category_name:req.params.category_name,
             role_id:role_id
         });

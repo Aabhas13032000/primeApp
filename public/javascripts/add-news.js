@@ -26,21 +26,23 @@ function submitData() {
             form_final.append('desc', myForm.elements['desc'].value);
             form_final.append('tag', tagname);
             form_final.append('images', response);
-            $.ajax({
-                url : "/mobile/add-news",
-                type: "POST",
-                cache: false,
-                contentType: false,
-                processData: false,
-                data : form_final,
-                success: function(data){
-                    console.log(data);
-                    window.location.href = '/mobile/profile';
-                },
-                error: function(err){
-                    console.log(err.status);
-                }
-            });
+            setTimeout(()=>{
+                $.ajax({
+                    url : "/mobile/add-news",
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data : form_final,
+                    success: function(data){
+                        console.log(data);
+                        window.location.href = '/mobile/profile';
+                    },
+                    error: function(err){
+                        console.log(err.status);
+                    }
+                });
+            },1000);
         },
         error: function(err){
             console.log(err.status);
