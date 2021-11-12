@@ -26,7 +26,7 @@
 
 <body onload="getData()">
 
-    <div class="top_header_epaper">
+    <!-- <div class="top_header_epaper">
         <div class="logo row">
             <div class="col-10">
                 <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
@@ -35,9 +35,9 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="middle_section_epaper">
+    <div class="middle_section_epaper" style="height: 100%;align-items: flex-start;">
         <div class="container" style="margin-top: 20px;">
             <%for(var i=0;i<epaperCategory.length;i++){%>
             <div class="row">
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="bottom-bar">
+    <!-- <div class="bottom-bar">
         <div class="inner_element">
             <div style="text-align: center;">
                 <% if(card == 'false'){ %> 
@@ -104,7 +104,7 @@
         <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
             <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
         </div>
-    <% } %>
+    <% } %> -->
 
 
 <%for(var i=0;i<epaper.length;i++){%>

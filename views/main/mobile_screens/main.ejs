@@ -46,36 +46,36 @@
         <div class="tabs" id="tabs">
             <div class="inner-tab" id="inner-tab0">
                 <div>
-                    <a href="#tab0" id="selected0" class="selected">आपके लिए</a>
-                    <div class="line selected-line" id="line0"></div>
+                    <a href="#tab0" id="selected0" class="tab-buttons selected">आपके लिए</a>
+                    <div class="line selected-line" data-selected-line="0" id="line0"></div>
                 </div>
             </div>
             <div class="inner-tab" id="inner-tab1">
                 <div>
                     <% if(user_filter[0].district[0].includes('क्षेत्र')){ %>
-                        <a href="#tab1" id="selected1">मेरा क्षेत्र 1</a>
+                        <a href="#tab1" id="selected1" class="tab-buttons">मेरा क्षेत्र</a>
                     <% } else { %>
-                        <a href="#tab1" id="selected1"><%= (user_filter[0].district[0].split('(')[0]).split(' ')[0] %></a>
+                        <a href="#tab1" id="selected1" class="tab-buttons"><%= (user_filter[0].district[0].split('(')[0]).split(' ')[0] %></a>
                     <% } %> 
-                    <div class="line" id="line1"></div>
+                    <div class="line" data-selected-line="1" id="line1"></div>
                 </div>
             </div>
             <div class="inner-tab" id="inner-tab2">
                 <div>
-                    <a href="#tab2" id="selected2"><%= user_filter[0].city[0] %></a>
-                    <div class="line" id="line2"></div>
+                    <a href="#tab2" id="selected2" class="tab-buttons"><%= user_filter[0].city[0] %></a>
+                    <div class="line" data-selected-line="2" id="line2"></div>
                 </div>
             </div>
             <div class="inner-tab" id="inner-tab3">
                 <div>
-                    <a href="#tab3" id="selected3"><%= user_filter[0].state[0] %></a>
-                    <div class="line" id="line3"></div>
+                    <a href="#tab3" id="selected3" class="tab-buttons"><%= user_filter[0].state[0] %></a>
+                    <div class="line" data-selected-line="3" id="line3"></div>
                 </div>
             </div>
             <div class="inner-tab" id="inner-tab4">
                 <div>
-                    <a href="#tab4" id="selected4">अन्य शहर</a>
-                    <div class="line" id="line4"></div>
+                    <a href="#tab4" id="selected4" class="tab-buttons">अन्य शहर</a>
+                    <div class="line" data-selected-line="4" id="line4"></div>
                 </div>
             </div>
         </div>
@@ -95,7 +95,48 @@
         </div>
     </div>
 
-    <div class="tab-boxes" onscroll="checkTab()" id="tab-boxes">
+    <div class="tab-boxes" id="tab-boxes" onscroll="checkTab()">
+        <!-- <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-interval="false" data-bs-ride="carousel">
+            <div class="carousel-indicators" style="display: none;">
+                <button type="button" data-bs-target="#carouselExampleSlidesOnly" id="btn_0" data-bs-slide-to="0" class="selected-button active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleSlidesOnly" id="btn_1" data-bs-slide-to="1" class="selected-button" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleSlidesOnly" id="btn_2" data-bs-slide-to="2" class="selected-button" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleSlidesOnly" id="btn_3" data-bs-slide-to="3" class="selected-button" aria-label="Slide 4"></button>
+                <button type="button" data-bs-target="#carouselExampleSlidesOnly" id="btn_4" data-bs-slide-to="4" class="selected-button" aria-label="Slide 5"></button>
+            </div>
+          
+            <div class="carousel-inner">
+              <div class="carousel-item active" id="tab_0">
+                  <div class="inner-carousel">
+                    <% if(cardStyle == 'plain'){ %>
+                        <iframe src="/mobile/news" frameborder="0" allowTransparency="true" id="iframe0" name="news_iframe" scrolling="no"></iframe>
+                    <% } else if(cardStyle == 'expanded'){ %>
+                        <iframe src="/mobile/news/expanded-card" allowTransparency="false" frameborder="0" id="iframe0" name="news_iframe" scrolling="no"></iframe>
+                    <% } %>
+                  </div>
+              </div>
+              <div class="carousel-item" id="tab_1">
+                <div class="inner-carousel">
+                    <h1>hello1</h1>
+                </div>
+              </div>
+              <div class="carousel-item" id="tab_2">
+                <div class="inner-carousel">
+                    <h1>hello2</h1>
+                </div>
+              </div>
+              <div class="carousel-item" id="tab_3">
+                <div class="inner-carousel">
+                    <h1>hello3</h1>
+                </div>
+              </div>
+              <div class="carousel-item" id="tab_4">
+                <div class="inner-carousel">
+                    <h1>hello4</h1>
+                </div>
+              </div>
+            </div>
+        </div> -->
         <div class="inner-box" id="tab0">
             <% if(cardStyle == 'plain'){ %>
                 <iframe src="/mobile/news" frameborder="0" id="iframe0" name="news_iframe"></iframe>
@@ -105,27 +146,27 @@
         </div>
         <div class="inner-box" id="tab1">
             <% if(cardStyle == 'plain'){ %>
-                <iframe src="/mobile/news/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+                <iframe src="/mobile/news/<%= user_filter[0].district[0]%>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
             <% } else if(cardStyle == 'expanded'){ %>
-                <iframe src="/mobile/news/expanded-card/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+                <iframe src="/mobile/news/expanded-card/<%= user_filter[0].district[0]%>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
             <% } %>
         </div>
         <div class="inner-box" id="tab2">
             <% if(cardStyle == 'plain'){ %>
-                <iframe src="/mobile/news/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+                <iframe src="/mobile/news/city/<%= user_filter[0].city[0]%>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
             <% } else if(cardStyle == 'expanded'){ %>
-                <iframe src="/mobile/news/expanded-card/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
-            <% } %>  
+                <iframe src="/mobile/news/expanded-card/city/<%= user_filter[0].city[0]%>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+            <% } %>
         </div>
         <div class="inner-box" id="tab3">
             <% if(cardStyle == 'plain'){ %>
-                <iframe src="/mobile/news/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+                <iframe src="/mobile/news/state/<%= user_filter[0].state[0]%>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
             <% } else if(cardStyle == 'expanded'){ %>
-                <iframe src="/mobile/news/expanded-card/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
-            <% } %>  
+                <iframe src="/mobile/news/expanded-card/state/<%= user_filter[0].state[0]%>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+            <% } %>
         </div>
         <div class="inner-box" id="tab4">
-            <iframe src="/mobile/main" frameborder="0" id="iframe4" name="news_iframe"></iframe>
+                <iframe src="/mobile/leftcities" frameborder="0" id="iframe4" name="news_iframe"></iframe>
         </div>
     </div>
 

@@ -1,0 +1,228 @@
+<!-- <div class="bottom-section" id="bottom-section">
+    <% for(var i=0;i<videos.length;i++){ %> 
+        <% var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;%>
+        <% var match = (videos[i].url).match(regExp); %>
+        <% var str = (match&&match[7].length==11)? match[7] : false;%>
+        <% var today = new Date(); %>
+        <% var date = new Date(videos[i].created_at); %> 
+        <% var time = Math.round(Math.abs((today - date) / (24 * 60 * 60 * 1000))); %>
+        <% if(time == 0){ %>
+            <% var hours = date.getHours(); %>
+            <% var minutes = date.getMinutes(); %>
+            <% var ampm = hours >= 12 ? 'pm' : 'am'; %>
+            <% hours = hours % 12; %>  
+            <% hours = hours ? hours : 12; %>
+            <% minutes = minutes < 10 ? '0'+minutes : minutes; %>
+            <% var message_time = hours + ':' + minutes + ' ' + ampm; %>   
+        <% } else { %> 
+            <% if(time < 7){ %>
+                <% var message_time = time + ' day ago'; %> 
+            <% } else if(time < 28) { %>
+                <% var message_time = parseInt(time/7) + ' week ago'; %> 
+            <% } else if(time >= 28){ %>
+                <% var message_time = parseInt(time/28) + ' month ago'; %> 
+            <% } %>    
+        <% } %>       
+        <div class="card">
+            <div class="row top-row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-2 profile">
+                            <div class="card">
+                                <%if(videos[i].profile_image != null){%>
+                                    <img src="<%= videos[i].profile_image%>" alt="" style="border-radius: 5px">
+                                <%} else {%>
+                                    <h1><%= videos[i].f_name.slice(0,1).toUpperCase()%></h1>
+                                <%}%>
+                            </div>
+                        </div>  
+                        <div class="col-10 content">
+                            <div>
+                                <p class="main-name"><b><%= videos[i].u_name %></b>&nbsp;&nbsp;<span style="color: #9c9c9c;"> ने </span>&nbsp;&nbsp;<span style="color: #ff6600;cursor: pointer;" onclick="window.open('/mobile/search/<%= videos[i].district %>/<%= videos[i].tags %>', '_top')"><%= videos[i].tags != null ? (videos[i].district.includes('क्षेत्र') ? videos[i].city : (videos[i].district.split('(')[0]).split(' ')[0] ) + ' ' + videos[i].tags : '' %></span></p>
+                                <p class="sub-text">के बारे मै पोस्ट किया | <%= message_time %> </p>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div class="col-12 title" onclick="window.open('/mobile/each-news/<%= videos[i].news_id %>', '_top')">
+                    <h6><%= videos[i].title %>:<%= videos[i].short_description.length >= 30 ? (videos[i].short_description.slice(0,30) + '..') : videos[i].short_description %></h6>
+                </div>
+                <div class="col-12 image" onclick="window.open('/mobile/each-news/<%= videos[i].news_id %>', '_top')">
+                    <div class="card">
+                        <iframe width="100%" height="100%" id="youtube-video0"  src="https://www.youtube.com/embed/<%= str %>?controls=1" frameborder="0"  allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="row bottom-row">
+                <div class="col-4" onclick="like('<%= videos[i].news_id %>')">
+                    <% if(logged_in == 0) {%>
+                        <a id="like<%= videos[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                    <% } else { %>
+                        <% if(videos[i].news_like == null){ %>
+                            <a id="like<%= videos[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                        <% } else { %>
+                            <a id="like<%= videos[i].news_id %>" style="color: #112244;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                        <% } %>  
+                    <% } %>   
+                </div>
+                <div class="col-4" onclick="comment('<%= videos[i].news_id %>')">
+                    <a href="#"><i class="fas fa-comment"></i>&nbsp;&nbsp;टिप्पणी</a>
+                </div>
+                <div class="col-4" onclick="share('<%= videos[i].news_id %>')">
+                    <a href="#"><i class="fas fa-share"></i>&nbsp;&nbsp;शेयर</a>
+                </div>
+            </div>
+        </div>
+        <div class="popup" id="popup<%= videos[i].news_id %>" style="display: none;" onclick="closeNewsPopup('<%= videos[i].news_id %>')"></div>
+        <div class="popup" id="sharepopup<%= videos[i].news_id %>" style="display: none;" onclick="closeSharePopup('<%= videos[i].news_id %>')"></div>          
+        <div class="comment_box" id="comment_box<%= videos[i].news_id %>" style="display: none;">
+            <div class="heading">
+                <div class="row">
+                    <div class="col-10">
+                        <h4>Comment Box</h4>
+                    </div>
+                    <div class="col-2">
+                        <button onclick="closeNewsPopup('<%= videos[i].news_id %>')"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="message_box" id="message_box<%= videos[i].news_id %>">
+                
+            </div>
+            <div class="input_box">
+                <form onsubmit="addComment('<%= videos[i].news_id %>')">
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="comment_message<%= videos[i].news_id %>" name="comment_message" placeholder="Type a Comment..">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="share_box" id="share_options<%= videos[i].news_id %>" style="display: none;">
+            <div class="heading">
+                <div class="row">
+                    <div class="col-10">
+                        <h4>Share Box</h4>
+                    </div>
+                    <div class="col-2">
+                        <button onclick="closeSharePopup('<%= videos[i].news_id %>')"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="options">
+                <div class="row">
+                    <div class="col-4" style="text-align: center">
+                        <a href="https://www.facebook.com/sharer.php?u=<%= website %>/each-news/<%= videos[i].news_id %>" target="_blank" style="background-color: #3b5998;font-size: 24px;color: white;padding: 5px 14px;border-radius: 50%;text-decoration: none">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <a href="https://wa.me/?text=http://<%= website %>/each-news/<%= videos[i].news_id %>%0D%0Dन्यूज़ के लिए आज ही ऐप इंस्टॉल करें।%0Dhttps://play.google.com/store/apps/details?id=<%=appId%>%0D%0Dसंपर्क करें 902-412-3007%0DGmail: <%= website %>@gmail.com%0D%0Dवीडियो खबरों के लिए नीचे दिए लिंक को पर क्लिक करें और तुरंत सब्सक्राइब करें ।%0Dhttps://www.youtube.com/channel/UCMSgxxG0wN5lSjHP1mXKjBA"  target="_blank" style="background-color: #25d366;font-size: 24px;color: white;padding: 5px 12px;border-radius: 50%;text-decoration: none"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <a href="https://twitter.com/share?url=http://<%= website %>/each-news/<%=videos[i].news_id%>&text=<%= videos[i].title %>" data-show-count="false" target="_blank" style="background-color: #00acee;text-decoration: none;font-size: 24px;color: white;border-radius: 50%;padding: 5px 10px"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+        
+    <% } %>
+</div> -->
+
+
+
+
+
+     
+<!-- 
+    <div class="bottom-bar">
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <% if(card == 'false'){ %> 
+                    <h1><a href="/mobile/main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/main" class="de-active">होम</a></b></h6>
+                <% } else { %>
+                    <h1><a href="/mobile/expanded_main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
+                    <h6><b><a href="/mobile/expanded_main" class="de-active">होम</a></b></h6>
+                <%}%> 
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/videos" class="active"><span class="iconify" data-icon="clarity:play-solid"></span></a></h1>
+                <h6><b><a href="/mobile/videos" class="active">वीडियो</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/search" class="de-active"><span class="iconify" data-icon="lucide:search"></span></a></h1>
+                <h6><b><a href="/mobile/search" class="de-active">खोजें</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/epaper" class="de-active"><span class="iconify" data-icon="ion:newspaper"></span></a></h1>
+                <h6><b><a href="/mobile/epaper" class="de-active">ई-पेपर</a></b></h6>
+            </div>
+        </div>
+        <div class="inner_element">
+            <div style="text-align: center;">
+                <h1><a href="/mobile/profile" class="de-active"><span class="iconify" data-icon="fa-solid:user"></span></a></h1>
+                <h6><b><a href="/mobile/profile" class="de-active">प्रोफ़ाइल</a></b></h6>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- 
+<% if(logged_in == 0){ %>
+    <div class="add-news" onclick="window.open('/mobile/profile/', '_top')">
+        <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+    </div>
+<% } else { %>
+    <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
+        <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
+    </div>
+<% } %> -->
+
+
+
+<!-- 
+    <div class="top_header_epaper">
+        <div class="logo row">
+            <div class="col-10">
+                <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+<div class="popup" id="popup" style="display: none;" onclick="closePopup()"></div>
+
+<div class="cross" id="cross" style="display: none;" onclick="closePopup()">
+    <button><i class="fas fa-times"></i></button>
+</div>
+
+<div class="login-box" id="login-box" style="display: none;">
+    <div style="text-align: center;">
+        <img src="/images/extra/login.png" alt=""><br><br>
+        <a href="/mobile/profile/notloggedIn"  target="_top" >लॉग इन</a>
+    </div>
+</div>
+
+
+
+return '<div class="section"><div class="top-row"><div class="row "><div class="col-12"><div class="row"><div class="col-2 profile"><div class="card">'+ profile_image +'</div></div> <div class="col-10 content"><div><p class="main-name"><b onclick="window.open(\''+ url1 +'\', \'_top\')">'+ news.u_name +'</b>&nbsp;&nbsp;<span style="color: #9c9c9c;"> ने </span>&nbsp;&nbsp;<span style="color: #ff6600;cursor: pointer;" onclick="window.open(\''+ url2 +'\', \'_top\')">'+ (news.tags != null ? (news.district.includes('क्षेत्र') ? news.city : (news.district.split('(')[0]).split(' ')[0] ) + ' ' + news.tags : '') +'</span></p><p class="sub-text">के बारे मै पोस्ट किया | '+ message_time +'</p></div></div></div></div><div class="col-12 title" onclick="window.open(\''+ url +'\', \'_top\')"><h6>'+ title +''+ (short_description.length >= 30 ? (short_description.slice(0,30) + '..') : short_description) +'</h6></div></div></div><div class="image" onclick="window.open(\''+ url +'\', \'_top\')"><div class="card"><iframe width="100%" height="100%" id="youtube-video0"  src="https://www.youtube.com/embed/'+ str +'?controls=1" frameborder="0"  allowfullscreen></iframe></div></div><div class="row bottom-row"><div class="col-4" onclick="like('+ (`${news_id}`) +')">'+ string +'</div><div class="col-4" onclick="comment('+ (`${news_id}`) +')"><a href="#"><i class="fas fa-comment"></i>&nbsp;&nbsp;टिप्पणी</a></div><div class="col-4" onclick="share('+ (`${news_id}`) +')"><a href="#"><i class="fas fa-share"></i>&nbsp;&nbsp;शेयर</a></div></div><div><div class="popup" id="popup<%= videos[i].news_id %>" style="display: none;" onclick="closeNewsPopup('+ (`${news_id}`) +')"></div><div class="popup" id="sharepopup<%= videos[i].news_id %>" style="display: none;" onclick="closeSharePopup('+ (`${news_id}`) +')"></div><div class="comment_box" id="comment_box<%= videos[i].news_id %>" style="display: none;"><div class="heading"><div class="row"><div class="col-10"><h4>Comment Box</h4></div><div class="col-2"><button onclick="closeNewsPopup('+ (`${news_id}`) +')"><i class="fas fa-times"></i></button></div></div></div><div class="message_box" id="message_box<%= videos[i].news_id %>"></div><div class="input_box"><form onsubmit="addComment('+ (`${news_id}`) +')"><div class="row"><div class="col-10"><div class="form-group"><input type="text" class="form-control" id="comment_message<%= videos[i].news_id %>" name="comment_message" placeholder="Type a Comment.."></div></div><div class="col-2"><button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button></div></div></form></div></div><div class="share_box" id="share_options'+ (`${news_id}`) +'" style="display: none;"><div class="heading"><div class="row"><div class="col-10"><h4>Share Box</h4></div><div class="col-2"><button onclick="closeSharePopup('+ (`${news_id}`) +')"><i class="fas fa-times"></i></button></div></div></div><br><div class="options"><div class="row"><div class="col-4" style="text-align: center"><a href="https://www.facebook.com/sharer.php?u=<%= website %>/each-news/<%= videos[i].news_id %>" target="_blank" style="background-color: #3b5998;font-size: 24px;color: white;padding: 5px 14px;border-radius: 50%;text-decoration: none"><i class="fab fa-facebook-f"></i></a></div><div class="col-4" style="text-align: center"><a href="https://wa.me/?text=http://<%= website %>/each-news/<%= videos[i].news_id %>%0D%0Dन्यूज़ के लिए आज ही ऐप इंस्टॉल करें।%0Dhttps://play.google.com/store/apps/details?id=<%=appId%>%0D%0Dसंपर्क करें 902-412-3007%0DGmail: <%= website %>@gmail.com%0D%0Dवीडियो खबरों के लिए नीचे दिए लिंक को पर क्लिक करें और तुरंत सब्सक्राइब करें ।%0Dhttps://www.youtube.com/channel/UCMSgxxG0wN5lSjHP1mXKjBA"  target="_blank" style="background-color: #25d366;font-size: 24px;color: white;padding: 5px 12px;border-radius: 50%;text-decoration: none"><i class="fab fa-whatsapp"></i></a></div><div class="col-4" style="text-align: center"><a href="https://twitter.com/share?url=http://<%= website %>/each-news/<%=videos[i].news_id%>&text=<%= videos[i].title %>" data-show-count="false" target="_blank" style="background-color: #00acee;text-decoration: none;font-size: 24px;color: white;border-radius: 50%;padding: 5px 10px"><i class="fab fa-twitter"></i></a></div></div></div><br></div></div></div>';

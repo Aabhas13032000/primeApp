@@ -19,6 +19,16 @@ const mysqlconnection = mysql.createPool({
     debug    :  false
 });
 
+mysqlconnection.getConnection((err,connection)=> {
+    if(err){
+      console.log('Database not connected');
+    }
+    else {
+      console.log('Database connected successfully');
+    }
+    connection.release();
+  });
+
 // mysqlconnection.connect((err)=>{
 //     if(!err) {
 //         console.log("connected");

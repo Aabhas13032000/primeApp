@@ -44,9 +44,11 @@
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                     <div class="card-body">
                         <div class="list-group">
-                            <a href="/admin/news" class="list-group-item list-group-item-action">
+                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+<a href="/admin/news" class="list-group-item list-group-item-action">
                                 My News
                             </a>
+
                             <% if(role_id == 1 || role_id == 2){%>
                                 <a href="/admin/admin-news" class="list-group-item list-group-item-action">
                                     Admin News
@@ -60,12 +62,15 @@
                                 <a href="/admin/tags" class="list-group-item list-group-item-action">
                                     Tags
                                 </a>
+                                <a href="/admin/pool" class="list-group-item list-group-item-action">
+                                    Pool
+                                </a>
                                 <a href="/admin/categories" class="list-group-item list-group-item-action">
                                     All State,City,District
                                 </a>
                                 <a href="/admin/add-category" class="list-group-item list-group-item-action">Create State,City,District</a>
                             <%}%>
-                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+                            
                         </div>
                     </div>
                 </div>
@@ -80,7 +85,7 @@
                         </h5>
                     </div>
                 </div>
-                <!-- <div class="card">
+                <div class="card">
                     <div class="card-header" id="headingSeven">
                         <h5 class="mb-0">
                             <a href="/admin/ads" class="btn btn-link">
@@ -88,15 +93,15 @@
                             </a>
                         </h5>
                     </div>
-                </div> -->
+                </div> 
                 <div class="card">
-                    <div class="card-header" id="headingNine">
+                    <!-- <div class="card-header" id="headingNine">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                                 <span id="dr_icon"><i class="fas fa-folder"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">Directory<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
                             </button>
                         </h5>
-                    </div>
+                    </div> -->
                     <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
                         <div class="card-body">
                             <div class="list-group">
@@ -128,7 +133,7 @@
                                     My E-papers
                                 </a>
                                     <a href="/admin/add-epaper-category" class="list-group-item list-group-item-action">
-                                        All State,City,District
+                                        Create epaper-category
                                     </a>
                             </div>
                         </div>
@@ -204,9 +209,9 @@
                 <% for(var i=0;i<news.length;i++){ %>
                     <tr>
                         <th style="padding: 0 5px"><%= i+1 %></th>
-                        <td style="padding: 0">
+                        <td style="padding: 0 5px">
                             <p style="height: 40px;overflow: hidden;padding: 0;margin: 0">
-                                <%= news[i].title %>
+                                <%= news[i].short_description %>
                             </p>
                         </td>
                         <td style="padding: 0"><%= news[i].state %></td>

@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="top_header_epaper">
+    <!-- <div class="top_header_epaper">
         <div class="logo row">
             <div class="col-10">
                 <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
@@ -60,13 +60,13 @@
                 </h1>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="middle_section_add_news">
+    <div class="middle_section_add_news" style="height: 100%;">
         <div class="row">
             <div class="col-12">
                 <br>
-                <h5><b>Select a Tag</b></h5>
+                <h5><b>एक टैग चुनें</b></h5>
             </div>
             <% for(var i=0;i<tags.length;i++){ %>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-6">
@@ -82,6 +82,11 @@
             <% } %>  
         </div>
     </div>
+
+
+<input type="hidden" id="statename" value="<%= statename %>">
+<input type="hidden" id="cityname" value="<%= cityname %>">
+<input type="hidden" id="districtname" value="<%= districtname %>">
 
 <!--Bootstrap js-->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

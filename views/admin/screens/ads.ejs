@@ -1,115 +1,280 @@
 <%- include('../navigation/header') %>
-<br><br><br>
-<div class="container" style="background-color: white;width: 100%;padding: 0px;border-radius: 10px;box-shadow: 0px 0px 12px rgba(0,0,0,0.1);overflow: hidden">
-    <div class="row">
-        <div class="col-lg-4 col-md-12" style="padding: 25px 20px 30px 35px">
-            <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">ads</h5>
-            <br>
-            <form action="/admin/add-ads-images" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="">Add Images(Select Multiple Images)</label>
-                    <input type="file" class="form-control-file" name="images" id="img" accept="image/x-png,image/gif,image/jpeg" multiple required>
+<div class="row">
+    <div class="col-lg-2 col-md-12 desktop-view">
+        <div id="accordion">
+            <!-- <div class="card">
+                <div class="card-header" id="headingzero">
+                    <h5 class="mb-0">
+                        <a href="/admin/news" class="btn btn-link">
+                            <span><i class="fab fa-dyalog"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="ads-text">Dashboard</span>
+                        </a>
+                    </h5>
                 </div>
-                <input type="hidden" name="admin_id" value=<%=admin_id%>>
-                <input type="hidden" name="order" value=<%= order[0].order %>>
-                <button type="submit" class="btn btn-primary" style="width: 100%;background-color: #556ee6">Add</button>
-            </form>
-        </div>
-        <div class="col-lg-8 col-md-12" style="background-color: white;text-align: center;height: 72vh;overflow-y: scroll">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Order</th>
-                    <th style="width:50%">Image</th>
-                    <th>User</th>
-                    <th>Option</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <% for(var i =0;i<ads.length;i++){ %>
-                        <tr>
-                            <th><%= i+1 %></th>
-                            <td><img src="/images/ads_images/<%= ads[i].image_path %>" alt="" width="50%"></td>
-                            <td><%= ads[i].u_name%></td>
-                            <%if(role_id == 1){%>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <a href="/admin/delete-ads/<%= ads[i].ads_id%>" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%" class="confirm"><i class="fas fa-trash"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            <%} else if(role_id == 2) {%>
-                            <%if(admin_id == ads[i].user_id){%>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <a href="/admin/delete-ads/<%= ads[i].ads_id%>" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%" class="confirm"><i class="fas fa-trash"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                            <%} else {%>
-                                <td>Not allowed to delete</td>
+            </div> -->
+            <% if(role_id == 1 || role_id == 2){%>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <span id="admin_icon"><i class="fas fa-user-tie"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="admin-text">Users<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                    <a href="/admin/users" class="list-group-item list-group-item-action">
+                                        All Users
+                                    </a>
+                                    <a href="/admin/add-user" class="list-group-item list-group-item-action">Create User</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <span id="news_icon"><i class="far fa-newspaper"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="news-text">News<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+<a href="/admin/news" class="list-group-item list-group-item-action">
+                                My News
+                            </a>
+
+                            <% if(role_id == 1 || role_id == 2){%>
+                                <a href="/admin/admin-news" class="list-group-item list-group-item-action">
+                                    Admin News
+                                </a>
+                                <a href="/admin/reporter-news" class="list-group-item list-group-item-action">
+                                    Reporter News
+                                </a>
+                                <a href="/admin/user-news" class="list-group-item list-group-item-action">
+                                    User News
+                                </a>
+                                <a href="/admin/tags" class="list-group-item list-group-item-action">
+                                    Tags
+                                </a>
+                                <a href="/admin/pool" class="list-group-item list-group-item-action">
+                                    Pool
+                                </a>
+                                <a href="/admin/categories" class="list-group-item list-group-item-action">
+                                    All State,City,District
+                                </a>
+                                <a href="/admin/add-category" class="list-group-item list-group-item-action">Create State,City,District</a>
                             <%}%>
-                            <%}%>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if(role_id == 1 || role_id == 2){%>
+                <div class="card">
+                    <div class="card-header" id="headingSix">
+                        <h5 class="mb-0">
+                            <a href="/admin/slider" class="btn btn-link">
+                                <span id="banner_icon"><i class="fas fa-image"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="banner-text">Slider</span>
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingSeven">
+                        <h5 class="mb-0">
+                            <a href="/admin/ads" class="btn btn-link">
+                                <span id="ads_icon"><i class="fas fa-ad"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="ads-text">Ads</span>
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <div class="card">
+                    <!--<div class="card-header" id="headingNine">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                <span id="dr_icon"><i class="fas fa-folder"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">Directory<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div> -->
+                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/admin/posts" class="list-group-item list-group-item-action">
+                                    My Posts
+                                </a>
+                                <a href="/admin/forms" class="list-group-item list-group-item-action">
+                                    Forms
+                                </a>
+                                    <a href="/admin/add-dcategory" class="list-group-item list-group-item-action">
+                                        All State,City,District
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTen">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                <span id="dr_icon"><i class="fas fa-copy"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">E-paper<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="/admin/e-paper" class="list-group-item list-group-item-action">
+                                    My E-papers
+                                </a>
+                                    <a href="/admin/add-epaper-category" class="list-group-item list-group-item-action">
+                                        Create epaper-category
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <%}%>
         </div>
     </div>
-    <br>
-    <a href="#order" data-toggle="modal" class="btn btn-primary" style="width: 100%;border-radius: 0">Change Order</a>
-    <!-- Modal -->
-    <div class="modal fade" id="order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Change Order</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="col-lg-10 col-md-12" style="overflow-y: scroll;height: 90vh;">
+        <div class="container-fluid" style="background-color: white;width: 100%;padding: 0px;border-radius: 10px;box-shadow: 0px 0px 12px rgba(0,0,0,0.1);overflow: hidden">
+            <div class="row">
+                <div class="col-lg-4 col-md-12" style="padding: 25px 20px 30px 35px">
+                    <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">ads</h5>
+                    <br>
+                    <form action="/admin/add-ads-images" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="">Add Images(Select Multiple Images)</label>
+                            <input type="file" class="form-control-file" name="images" id="img" accept="image/x-png,image/gif,image/jpeg" multiple required>
+                        </div>
+                        <input type="hidden" name="admin_id" value=<%=admin_id%>>
+                        <% if(order.length == 0){ %>
+                            <input type="hidden" name="order" value=0>
+                        <% } else { %>
+                            <input type="hidden" name="order" value=<%= order[0].order %>>
+                        <% } %> 
+                        <div class="form-group">
+                            <select class="form-control" name="category">
+                                <option value="popup">Popup</option>
+                                <option value="full_size">Full Size</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;background-color: #556ee6">Add</button>
+                    </form>
                 </div>
-                <form action="/admin/change-ads-order" method="post">
-                    <div class="modal-body">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Current Order</th>
-                                <th style="width:50%">Image</th>
-                                <th>New Order</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                <div class="col-lg-8 col-md-12" style="background-color: white;text-align: center;height: 72vh;overflow-y: scroll">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th style="width:50%">Image</th>
+                            <th>User</th>
+                            <th>Option</th>
+                            <th>Category</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                             <% for(var i =0;i<ads.length;i++){ %>
                                 <tr>
-                                    <th><%= ads[i].order %></th>
+                                    <th><%= i+1 %></th>
                                     <td><img src="/images/ads_images/<%= ads[i].image_path %>" alt="" width="50%"></td>
+                                    <td><%= ads[i].u_name%></td>
+                                    <%if(role_id == 1){%>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <a href="/admin/delete-ads/<%= ads[i].ads_id%>" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%" class="confirm"><i class="fas fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    <%} else if(role_id == 2) {%>
+                                    <%if(admin_id == ads[i].user_id){%>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <a href="/admin/delete-ads/<%= ads[i].ads_id%>" style="color: #DC3545;text-decoration: none;padding: 4px 8px;border-radius: 50%" class="confirm"><i class="fas fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    <%} else {%>
+                                        <td>Not allowed to delete</td>
+                                    <%}%>
+                                    <%}%>
                                     <td>
                                         <div class="form-group">
-                                            <select class="form-control" name="n_order">
-                                                <option value="<%= ads[i].order %>" style="color: #B1110E"><%= ads[i].order %></option>
-                                                <% for(var j=0;j<ads.length;j++){ %>
-                                                    <option value="<%= ads[j].order %>"><%= ads[j].order %></option>
-                                                <% } %>
+                                            <select class="form-control" name="category" onchange="changeAdsCategory('<%= ads[i].ads_id%>',this.value)">
+                                                <option value="<%= ads[i].category %>"><%= ads[i].category %></option>
+                                                <option value="popup">Popup</option>
+                                                <option value="full_size">Full Size</option>
                                             </select>
                                         </div>
-                                        <input type="hidden" name="ads_id" value=<%= ads[i].ads_id%>>
                                     </td>
                                 </tr>
                             <% } %>
-                            </tbody>
-                        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <a href="#order" data-toggle="modal" class="btn btn-primary" style="width: 100%;border-radius: 0">Change Order</a>
+            <!-- Modal -->
+            <div class="modal fade" id="order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change Order</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/admin/change-ads-order" method="post">
+                            <div class="modal-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Current Order</th>
+                                        <th style="width:50%">Image</th>
+                                        <th>New Order</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% for(var i =0;i<ads.length;i++){ %>
+                                        <tr>
+                                            <th><%= ads[i].order %></th>
+                                            <td><img src="/images/ads_images/<%= ads[i].image_path %>" alt="" width="50%"></td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <select class="form-control" name="n_order">
+                                                        <option value="<%= ads[i].order %>" style="color: #B1110E"><%= ads[i].order %></option>
+                                                        <% for(var j=0;j<ads.length;j++){ %>
+                                                            <option value="<%= ads[j].order %>"><%= ads[j].order %></option>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                                <input type="hidden" name="ads_id" value=<%= ads[i].ads_id%>>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<br>
+
+
 
 <script>
     $('a.confirm').on('click', function(){
@@ -117,6 +282,21 @@
             return false;
         }
     });
+
+    function changeAdsCategory(ad_id,value) {
+        $.ajax({
+            url:"/admin/changeAdsCategory/" + value + '/' + ad_id,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(data){
+                console.log('success');
+                location.reload();
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
 </script>
 
 <%- include('../navigation/footer') %>

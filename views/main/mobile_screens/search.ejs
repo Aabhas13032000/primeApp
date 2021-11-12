@@ -26,29 +26,45 @@
 
 <body>
 
-    <div class="top_header_new">
-        <div class="logo row">
+    <div class="top_header_new" style="height: 10%;background-color: transparent;box-shadow: unset;">
+        <!-- <div class="logo row">
             <div class="col-10">
                 <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
             </div>
             <div class="col-2">
 
             </div>
-        </div>
-        <div class="search_box container">
+        </div> -->
+        <div class="search_box container" style="height: 100%;background-color: #e7e7e7;">
             <div class="form-group" style="padding: 0px 5px">
                 <input type="text" name="" id="myInput" class="form-control" placeholder="अपनी रूचि या शहर खोजें" onkeyup="myFunction()" style="border: 1px solid #d7d7d7;background-color: #eeeeee">
             </div>
         </div>
     </div>
 
-    <div class="middle_section container">
+    <div class="middle_section container-fluid" style="height: 90%;">
         <table class="table" id="myTable">
             <tbody>
+                <% for(var i=0;i<tags.length;i++){ %>
+                    <tr>
+                        <td>
+                            <div class="card" onclick="window.location.href = '/mobile/search/tags/<%= tags[i].name%>'">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <a><%= tags[i].name%></a>
+                                    </div>
+                                    <div class="col-2">
+                                        <a><span class="iconify" data-icon="eva:arrow-ios-forward-outline"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
             <% for(var i=0;i<categories.length;i++){ %>
                 <tr>
                     <td>
-                        <div class="card" onclick="window.location.href = '/mobile/main#tab<%= i+2 %>'">
+                        <div class="card" onclick="window.location.href = '/mobile/search/state/<%= categories[i].name%>'">
                             <div class="row">
                                 <div class="col-10">
                                     <a><%= categories[i].name%></a>
@@ -60,16 +76,30 @@
                         </div>
                     </td>
                 </tr>
-            <tr>
-            </tr>
             <% } %>
             <% for(var i=0;i<states.length;i++){ %>
                 <tr>
                     <td>
-                        <div class="card" onclick="window.location.href = '/mobile/city/<%= states[i].name%>'">
+                        <div class="card" onclick="window.location.href = '/mobile/search/city/<%= states[i].name%>'">
                             <div class="row">
                                 <div class="col-10">
                                     <a><%= states[i].name%></a>
+                                </div>
+                                <div class="col-2">
+                                    <a><span class="iconify" data-icon="eva:arrow-ios-forward-outline"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            <% } %>
+            <% for(var i=0;i<sub_category_district.length;i++){ %>
+                <tr>
+                    <td>
+                        <div class="card" onclick="window.location.href = '/mobile/search/district/<%= sub_category_district[i].name%>'">
+                            <div class="row">
+                                <div class="col-10">
+                                    <a><%= (sub_category_district[i].name.split('(')[0]).split(' ')[0] %></a>
                                 </div>
                                 <div class="col-2">
                                     <a><span class="iconify" data-icon="eva:arrow-ios-forward-outline"></span></a>
@@ -83,7 +113,7 @@
         </table>
     </div>
 
-    <div class="bottom-bar">
+    <!-- <div class="bottom-bar">
         <div class="inner_element">
             <div style="text-align: center;">
                 <% if(card == 'false'){ %> 
@@ -119,8 +149,8 @@
                 <h6><b><a href="/mobile/profile" class="de-active">प्रोफ़ाइल</a></b></h6>
             </div>
         </div>
-    </div>
-
+    </div> -->
+<!-- 
     <% if(logged_in == 0){ %>
         <div class="add-news" onclick="window.open('/mobile/profile/', '_top')">
             <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
@@ -130,7 +160,7 @@
             <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
         </div>
     <% } %>
-
+ -->
 
 <!--Bootstrap js-->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

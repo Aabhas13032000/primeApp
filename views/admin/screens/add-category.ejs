@@ -43,9 +43,11 @@
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                     <div class="card-body">
                         <div class="list-group">
-                            <a href="/admin/news" class="list-group-item list-group-item-action">
+                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+<a href="/admin/news" class="list-group-item list-group-item-action">
                                 My News
                             </a>
+
                             <% if(role_id == 1 || role_id == 2){%>
                                 <a href="/admin/admin-news" class="list-group-item list-group-item-action">
                                     Admin News
@@ -59,12 +61,15 @@
                                 <a href="/admin/tags" class="list-group-item list-group-item-action">
                                     Tags
                                 </a>
+                                <a href="/admin/pool" class="list-group-item list-group-item-action">
+                                    Pool
+                                </a>
                                 <a href="/admin/categories" class="list-group-item list-group-item-action">
                                     All State,City,District
                                 </a>
                                 <a href="/admin/add-category" class="list-group-item list-group-item-action">Create State,City,District</a>
                             <%}%>
-                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+                            
                         </div>
                     </div>
                 </div>
@@ -79,7 +84,7 @@
                         </h5>
                     </div>
                 </div>
-                <!-- <div class="card">
+                <div class="card">
                     <div class="card-header" id="headingSeven">
                         <h5 class="mb-0">
                             <a href="/admin/ads" class="btn btn-link">
@@ -87,15 +92,15 @@
                             </a>
                         </h5>
                     </div>
-                </div> -->
+                </div> 
                 <div class="card">
-                    <div class="card-header" id="headingNine">
+                    <!-- <div class="card-header" id="headingNine">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                                 <span id="dr_icon"><i class="fas fa-folder"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">Directory<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
                             </button>
                         </h5>
-                    </div>
+                    </div> -->
                     <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
                         <div class="card-body">
                             <div class="list-group">
@@ -127,7 +132,7 @@
                                     My E-papers
                                 </a>
                                     <a href="/admin/add-epaper-category" class="list-group-item list-group-item-action">
-                                        All State,City,District
+                                        Create epaper-category
                                     </a>
                             </div>
                         </div>
@@ -139,10 +144,10 @@
     <div class="col-lg-10 col-md-12" style="overflow-y: scroll;height: 90vh;">
         <div class="container-fluid" style="background-color: white;width: 100%;padding: 0px;border-radius: 10px;box-shadow: 0px 0px 12px rgba(0,0,0,0.1);overflow: hidden">
             <div class="row">
-                <div class="col-lg-6 col-md-12" style="padding: 25px 20px 30px 35px">
+                <div class="col-12" style="padding: 25px 20px 30px 35px">
                     <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">Create New State</h5>
                     <br>
-                    <form action="/admin/add-new-category" method="post">
+                    <form action="/admin/add-new-category" method="post" style="width: 50%;text-align: center;margin: auto;">
                         <div class="form-group">
                             <label for="">Category</label>
                             <input type="text" class="form-control" id="category" name="category" onkeyup="checkCategory()" placeholder="Enter Category Name" required>
@@ -161,19 +166,20 @@
                         <br>
                         <button type="submit" id="verify" class="btn btn-primary" style="width: 100%;background-color: #556ee6" disabled>Add</button>
                     </form>
+                    <hr>
                 </div>
-                <div class="col-lg-6 col-md-12" style="padding: 25px 20px 30px 35px">
+                <div class="col-12" style="padding: 25px 20px 30px 35px">
                     <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">Create New City</h5>
                     <br>
-                    <form action="/admin/add-sub-category" method="post">
+                    <form action="/admin/add-sub-category" method="post" style="width: 50%;text-align: center;margin: auto;">
         
                         <div class="form-group">
                             <label for="">Selct Category</label>
                             <select class="form-control" name="c" id="c">
                                 <option value="name">Select Category</option>
-                                <% for(var i=0;i<categories.length;i++){ %>
-                                <%if(categories[i].name != null){%>
-                                    <option value="<%= categories[i].id %>"><%= categories[i].name %></option>
+                                <% for(var i=0;i<state.length;i++){ %>
+                                <%if(state[i].name != null){%>
+                                    <option value="<%= state[i].id %>"><%= state[i].name %></option>
                                 <% } %>
                                 <% } %>
                             </select>
@@ -185,11 +191,12 @@
                         </div>
                         <button type="submit" id="verifySub" class="btn btn-primary" style="width: 100%;background-color: #556ee6" disabled>Add</button>
                     </form>
+                    <hr>
                 </div>
-                <div class="col-lg-6 col-md-12" style="padding: 25px 20px 30px 35px">
+                <div class="col-12" style="padding: 25px 20px 30px 35px">
                     <h5 style="font-weight: bold;letter-spacing: 1px;text-align: center">Create New Tehsil</h5>
                     <br>
-                    <form action="/admin/add-tehsil" method="post">
+                    <form action="/admin/add-tehsil" method="post" style="width: 50%;text-align: center;margin: auto;">
         
                         <div class="form-group">
                             <label for="">Selct State</label>

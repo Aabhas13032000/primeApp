@@ -15,19 +15,19 @@ const generateAuthToken = () => {
 
 const authTokens = {};
 
-router.use((req, res, next) => {
-    const authToken = req.cookies['AuthToken'];
-    req.user_filter = [{state:[],city:[],district:[]}];
-    if(req.cookies['Updated User Filter With District1'] != undefined){
-        req.user_filter = req.cookies['Updated User Filter With District1'];
-    }
-    // req.user = authTokens[authToken];
-    req.user = {
-        name: 'Aabhas',
-        user_id: 1
-    }
-    next();
-});
+// router.use((req, res, next) => {
+//     const authToken = req.cookies['AuthToken'];
+//     req.user_filter = [{state:[],city:[],district:[]}];
+//     if(req.cookies['Updated User Filter With District1'] != undefined){
+//         req.user_filter = req.cookies['Updated User Filter With District1'];
+//     }
+//     // req.user = authTokens[authToken];
+//     req.user = {
+//         name: 'Aabhas',
+//         user_id: 1
+//     }
+//     next();
+// });
 
 /* GET home page. */
 router.get('/', function(req,res){

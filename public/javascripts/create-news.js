@@ -152,7 +152,7 @@ $('#sc').change(function(){
         if(subcategoriesName.includes('(' + a + ')')){
             var option = document.createElement("option");
             option.text = subcategoriesName.split('(')[0];
-            option.value= (subcategoriesName.split('(')[0]).split(' ')[0];
+            option.value= subcategoriesName;
             select.add(option);
             b++;
         }

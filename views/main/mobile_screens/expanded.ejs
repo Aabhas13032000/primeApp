@@ -9,14 +9,14 @@
 <div class="login-box" id="login-box" style="display: none;">
     <div style="text-align: center;">
         <img src="/images/extra/login.png" alt=""><br><br>
-        <a href="/mobile/profile"  target="_top" >लॉग इन</a>
+        <a href="/mobile/profile/notloggedIn"  target="_top" >लॉग इन</a>
     </div>
 </div>
 
 <div class="row main-container">
     <div class="col-lg-3 col-sm-12 desktop-categories"></div>
     <div class="col-lg-5 col-sm-12 news-section" onscroll="getMoreExpandedNews()">
-        <div class="top-section">
+        <!-- <div class="top-section">
             <% if (slider.length != 0 ){ %>
             <div id="slider-1" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
@@ -28,11 +28,11 @@
                     <% for(var k=0;k<slider.length;k++){ %>
                         <%if(k==0){%>
                             <div class="carousel-item active">
-                                <img class="d-block w-100" src="/slider_images/<%= slider[k].image_path%>" onclick="window.location.href = '/images/slider_images/<%= slider[k].image_path%>'" alt="First slide">
+                                <img class="d-block w-100" src="/images/slider_images/<%= slider[k].image_path%>" onclick="window.location.href = '/images/slider_images/<%= slider[k].image_path%>'" alt="First slide">
                             </div>
                         <%} else {%>
                             <div class="carousel-item">
-                                <img class="d-block w-100" src="/slider_images/<%= slider[k].image_path%>" onclick="window.location.href = '/images/slider_images/<%= slider[k].image_path%>'" alt="Second slide">
+                                <img class="d-block w-100" src="/images/slider_images/<%= slider[k].image_path%>" onclick="window.location.href = '/images/slider_images/<%= slider[k].image_path%>'" alt="Second slide">
                             </div>
                         <% } %>
                     <% } %>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             <% } %> 
-        </div>
+        </div> -->
         <div class="bottom-section" id="bottom-section">
             <% for(var i=0;i<news2.length;i++){ %>
                 <% var today = new Date(); %>
@@ -84,7 +84,7 @@
                     <div class="col-12">
                         <div class="row">
                             <div class="col-3 profile">
-                                <div class="card" onclick="window.open('/mobile/profile/<%= news2[i].user_id %>', '_top')">
+                                <div class="card" onclick="window.open('/mobile/user-profile/<%= news2[i].user_id %>', '_top')">
                                     <%if(news2[i].profile_image != null){%>
                                         <img src="/images/user_profile/photo/<%= news2[i].profile_image%>" alt="" style="border-radius: 5px">
                                     <%} else {%>
@@ -94,8 +94,8 @@
                             </div>  
                             <div class="col-9 content">
                                 <div>
-                                    <p class="main-name"><b onclick="window.open('/mobile/profile/<%= news2[i].user_id %>', '_top')"><%= news2[i].f_name %></b>&nbsp;&nbsp;<span style="color: #9c9c9c;"> ने </span>&nbsp;&nbsp;<span style="color: #ff6600;cursor: pointer;"  onclick="window.open('/mobile/', '_top')"><%= news2[i].tags != null ? ( news2[i].city != null ? ( news2[i].city+ ' ' + news2[i].tags) : (news2[i].c_name + ' ' + news2[i].tags) ) : news2[i].c_name %></span></p>
-                                    <p class="sub-text">के बारे मै पोस्ट किया | <%= message_time %> </p>
+                                    <p class="main-name"><b onclick="window.open('/mobile/user-profile/<%= news2[i].user_id %>', '_top')"><%= news2[i].f_name %></b>&nbsp;&nbsp;<span style="color: #9c9c9c;"> ने </span>&nbsp;&nbsp;<span style="color: #ff6600;cursor: pointer;"  onclick="window.open('/mobile/search/<%= news2[i].district %>/<%= news2[i].tags %>', '_top')"><%= news2[i].tags != null ? (news2[i].district.includes('क्षेत्र') ? news2[i].city : (news2[i].district.split('(')[0]).split(' ')[0] ) + ' ' + news2[i].tags : '' %></span></p>
+                                    <p class="sub-text">के बारे मै पोस्ट किया | <%= message_time %></p>
                                 </div>
                             </div>   
                         </div>
@@ -203,11 +203,46 @@
     <div class="col-lg-4 col-sm-12 slider-section"></div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">App Update <%= version %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <p>New Version Available!!</p>
+            <a href="https://play.google.com/store/apps/details?id=com.technotwist.primeapp.prime_app" class="btn btn-primary" target="_top">Update The App</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <input type="hidden" id="logged_in" value="<%= logged_in %>">
 <input type="hidden" id="user_id" value="<%= user_id %>">
 <input type="hidden" id="full_name" value="<%= full_name %>">
 <input type="hidden" id="category_name" value="">
+<input type="hidden" id="getData" value="">
+<input type="hidden" id="user_face" value="">
+<input type="hidden" id="version" value="<%= version %>">
 
 <script src="/javascripts/news.js"></script>
 
-<%- include('../navigation/footer') %>
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script>
+    var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+        keyboard: false
+    })
+    var version = document.getElementById('version').value;
+    if(version != '1.0.0'){
+    myModal.toggle();
+    }
+</script>
+
+<script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+</body>
+</html>

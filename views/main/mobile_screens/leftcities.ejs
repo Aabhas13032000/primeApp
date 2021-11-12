@@ -1,0 +1,20 @@
+<%- include('../navigation/header') %>
+    <div class="middle_section container-fluid">
+        <div class="row" id="myTable">
+                <% for(var i=0;i<sub_category.length;i++){ %>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="card" onclick="window.open('/mobile/search/city/<%= sub_category[i].name%>','_top')">
+                            <div class="row">
+                                <div class="col-10">
+                                    <a><%= sub_category[i].name%></a>
+                                </div>
+                                <div class="col-2">
+                                    <a><span class="iconify" data-icon="eva:arrow-ios-forward-outline"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+        </div>
+    </div>
+<%- include('../navigation/footer') %>

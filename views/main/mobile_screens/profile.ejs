@@ -26,23 +26,34 @@
 
 <body>
 
-    <div class="top_header_epaper">
+    <div class="popup" id="popup" style="display: none;" onclick="closePopup()"></div>
+
+    <div class="cross" id="cross" style="display: none;" onclick="closePopup()">
+        <button><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="login-box" id="login-box" style="display: none;">
+        <div style="text-align: center;">
+            <img src="/images/extra/login.png" alt=""><br><br>
+            <a href="/mobile/profile/notloggedIn"  target="_top" >लॉग इन</a>
+        </div>
+    </div>
+
+    <!-- <div class="top_header_epaper">
         <div class="logo row">
             <div class="col-10">
                 <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
             </div>
             <div class="col-2">
-                <% if(user_face == 'self') { %> 
-                    <h1>
-                        <span class="iconify" data-icon="carbon:settings"></span>
+                <%if(logged_in == 1){%>
+                    <h1 onclick="window.location.href = '/mobile/logout'">
+                        <span class="iconify" data-icon="ri:logout-circle-r-line"></span>
                     </h1>
-                <% } else if(user_face == 'other') { %>
                 <% } %>
             </div>
         </div>
-    </div>
-
-    <div class="middle_section_epaper">
+    </div> -->
+        <div class="middle_section_epaper" style="height: 100%;">
         <%if(logged_in == 0){%>
 
         <div class="container c1">
@@ -50,25 +61,27 @@
             <div class="card">
                 <p>USER LOGIN</p>
             </div>
+            <br>
+
+            <img src="/images/extra/login.png" alt="" style="width: 80%;"><br><br>
 
             <div class="form-group"  style="text-align: left">
-                <label for="">Full Name</label>
-                <input type="text" class="form-control" id="full_name" placeholder="Enter Your Full Name"/>
+                <input type="text" class="form-control" id="full_name" placeholder="अपना नाम डालें"/>
             </div>
 
             <div class="form-group"  style="text-align: left">
-                <label for="" >Phone Number</label>
-                <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter Phone Number" maxlength="13" minlength="10"/>
-                <br>
+                <input type="tel" class="form-control" id="phoneNumber" placeholder="अपना फोन नंबर डालें" maxlength="13" minlength="10"/>
+            </div>
+            <div class="form-group"  style="text-align: left">
                 <button id="sign-in-button" class="btn btn-primary" style="border: 0;" onclick="submitPhoneNumberAuth()">
-                    Get OTP
+                    ओटीपी प्राप्त करें
                 </button>
             </div>
             <div class="form-group"  style="text-align: left">
-                <input type="text" class="form-control" id="code" style="display: none" placeholder="Enter OTP"/>
+                <input type="text" class="form-control" id="code" style="display: none" placeholder="ओटीपी दर्ज करें"/>
                 <br>
                 <button id="confirm-code" class="btn btn-primary" style="border: 0;display: none" onclick="submitPhoneNumberAuthCode()">
-                    Submit
+                    सबमिट करें
                 </button>
             </div>
             <!-- Add a container for reCaptcha -->
@@ -82,7 +95,11 @@
                         <div class="col-3 profile">
                             <div class="card">
                                 <%if(user_profile.length != 0){%>
-                                    <img src="/images/user_profile/photo/<%= user_profile[0].image%>" alt="" style="border-radius: 5px">
+                                    <%if(user_profile[0].profile_image != null){%>
+                                        <img src="/images/user_profile/photo/<%= user_profile[0].image%>" alt="" style="border-radius: 5px">
+                                    <%} else {%>
+                                        <h1><%= user[0].full_name.slice(0,1).toUpperCase()%></h1>
+                                    <%}%>
                                 <%} else {%>
                                     <h1><%= user[0].full_name.slice(0,1).toUpperCase()%></h1>
                                 <%}%>
@@ -103,13 +120,13 @@
                             <div class="row">
                                 <div class="col-4">
                                     <div style="text-align: center;">
-                                        <h4>0</h4>
+                                        <h4><%= total_followers %></h4>
                                         <p>फॉलोवर</p>
                                     </div>
                                 </div>
                                 <div class="col-4" style="text-align: center;border-left: 1px solid #b4b4b4;border-right: 1px solid #b4b4b4;">
                                     <div>
-                                        <h4>0</h4>
+                                        <h4><%= total_following %></h4>
                                         <p>फोल्लोविंग</p>
                                     </div>
                                 </div>
@@ -123,14 +140,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="post" id="bottom-section" onscroll="getMoreProfileNews('<%= user_id %>')">
+                <div class="post" id="bottom-section" onscroll="getMoreUserProfileNews('<%= user_id %>')">
                     <% if(news2.length == 0){ %> 
                         <h5 style="text-align: center;margin-top: 10px;">नो पोस्ट</h5>
                     <%} else {%>
                         <h5 style="text-align: center;margin-top: 10px;">पोस्ट</h5>
                         <% for(var i=0;i<news2.length;i++){ %>
                             <div class="card">
-                                <div class="row top-row" onclick="window.open('/mobile/each-news/<%= news2[i].news_id %>', '_top')">
+                                <div class="row top-row" onclick="window.open('/mobile/user-each-news/<%= news2[i].news_id %>', '_top')">
                                     <div class="col-4">
                                         <div class="card">
                                             <a href="#">
@@ -150,6 +167,16 @@
                                         <h6><%= news2[i].title != null ? (news2[i].title + ':') : '' %><%= news2[i].short_description.length >= 30 ? (news2[i].short_description.slice(0,30) + '..') : news2[i].short_description %></h6>
                                     </div>
                                 </div>
+                                <div class="row approval">
+                                    <div class="col-6"></div>
+                                    <div class="col-6">
+                                        <% if(news2[i].is_approved == 1){ %> 
+                                            <a class="approved">Approved</a>
+                                        <% } else { %>
+                                            <a class="not_approved">Not Approved</a>
+                                        <% } %>
+                                    </div>
+                                </div>
                             </div> 
                             
                         <% } %>
@@ -158,7 +185,7 @@
             </div>
         <% } %> 
     </div>
-
+<!-- 
     <div class="bottom-bar">
         <div class="inner_element">
             <div style="text-align: center;">
@@ -211,7 +238,7 @@
         <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
             <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
         </div>
-    <% } %>
+    <% } %> -->
 
 
 <input type="hidden" id="logged_in" value="">
@@ -219,6 +246,11 @@
 <input type="hidden" id="full_name" value="">
 <input type="hidden" id="category_name" value="">
 <input type="hidden" id="card_data" value="<%= card %>">
+<input type="hidden" id="getData" value="">
+<input type="hidden" id="user_face" value="<%= user_face %>">
+<input type="hidden" id="statename" value="<%= statename %>">
+<input type="hidden" id="cityname" value="<%= cityname %>">
+<input type="hidden" id="districtname" value="<%= districtname %>">
 
 <!--Bootstrap js-->
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

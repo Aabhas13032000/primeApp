@@ -22,6 +22,26 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/stylesheets/main.css">
+
+    <style>
+        .vert .carousel-item-next.carousel-item-start,
+.vert .carousel-item-prev.carousel-item-end {
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+}
+
+.vert .carousel-item-next,
+.vert .active.carousel-item-end {
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100% 0);
+}
+
+.vert .carousel-item-prev,
+.vert .active.carousel-item-start {
+-webkit-transform: translate3d(0,-100%, 0);
+        transform: translate3d(0,-100%, 0);
+}
+    </style>
 </head>
 
 <body style="background-color: #ececec;">
@@ -36,49 +56,38 @@
 <div class="login-box" id="login-box" style="display: none;">
     <div style="text-align: center;">
         <img src="/images/extra/login.png" alt=""><br><br>
-        <a href="/mobile/profile"  target="_top" >लॉग इन</a>
+        <a href="/mobile/profile/notloggedIn"  target="_top" >लॉग इन</a>
     </div>
 </div>
 
-    <div class="top_header_epaper">
-        <div class="logo row">
-            <div class="col-10">
-                <img src="/images/logo/final.png" alt="" onclick="window.location.href = '/mobile'">
-            </div>
-            <div class="col-2">
-
-            </div>
-        </div>
-    </div>
-
-    <div class="middle_section_videos" onscroll="getVideos()">
-        <div class="bottom-section" id="bottom-section">
-            <% for(var i=0;i<videos.length;i++){ %> 
-                <% var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;%>
-                <% var match = (videos[i].url).match(regExp); %>
-                <% var str = (match&&match[7].length==11)? match[7] : false;%>
-                <% var today = new Date(); %>
-                <% var date = new Date(videos[i].created_at); %> 
-                <% var time = Math.round(Math.abs((today - date) / (24 * 60 * 60 * 1000))); %>
-                <% if(time == 0){ %>
-                    <% var hours = date.getHours(); %>
-                    <% var minutes = date.getMinutes(); %>
-                    <% var ampm = hours >= 12 ? 'pm' : 'am'; %>
-                    <% hours = hours % 12; %>  
-                    <% hours = hours ? hours : 12; %>
-                    <% minutes = minutes < 10 ? '0'+minutes : minutes; %>
-                    <% var message_time = hours + ':' + minutes + ' ' + ampm; %>   
-                <% } else { %> 
-                    <% if(time < 7){ %>
-                        <% var message_time = time + ' day ago'; %> 
-                    <% } else if(time < 28) { %>
-                        <% var message_time = parseInt(time/7) + ' week ago'; %> 
-                    <% } else if(time >= 28){ %>
-                        <% var message_time = parseInt(time/28) + ' month ago'; %> 
-                    <% } %>    
-                <% } %>       
-                <div class="card">
-                    <div class="row top-row">
+    <div class="middle_section_videos1" id="middle_section" onscroll="getVideos()">
+        <% for(var i=0;i<videos.length;i++){ %> 
+            <% var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;%>
+            <% var match = (videos[i].url).match(regExp); %>
+            <% var str = (match&&match[7].length==11)? match[7] : false;%>
+            <% var today = new Date(); %>
+            <% var date = new Date(videos[i].created_at); %> 
+            <% var time = Math.round(Math.abs((today - date) / (24 * 60 * 60 * 1000))); %>
+            <% if(time == 0){ %>
+                <% var hours = date.getHours(); %>
+                <% var minutes = date.getMinutes(); %>
+                <% var ampm = hours >= 12 ? 'pm' : 'am'; %>
+                <% hours = hours % 12; %>  
+                <% hours = hours ? hours : 12; %>
+                <% minutes = minutes < 10 ? '0'+minutes : minutes; %>
+                <% var message_time = hours + ':' + minutes + ' ' + ampm; %>   
+            <% } else { %> 
+                <% if(time < 7){ %>
+                    <% var message_time = time + ' day ago'; %> 
+                <% } else if(time < 28) { %>
+                    <% var message_time = parseInt(time/7) + ' week ago'; %> 
+                <% } else if(time >= 28){ %>
+                    <% var message_time = parseInt(time/28) + ' month ago'; %> 
+                <% } %>    
+            <% } %> 
+            <div class="section">
+                <div class="top-row">
+                    <div class="row ">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-2 profile">
@@ -92,158 +101,114 @@
                                 </div>  
                                 <div class="col-10 content">
                                     <div>
-                                        <p class="main-name"><b><%= videos[i].u_name %></b>&nbsp;&nbsp;<span style="color: #9c9c9c;"> ने </span>&nbsp;&nbsp;<span style="color: #ff6600;cursor: pointer;" onclick="window.location.href ='/mobile'"><%= videos[i].tags != null ? videos[i].tags : videos[i].c_name %></span></p>
+                                        <p class="main-name"><b onclick="window.open('/mobile/user-profile/<%= videos[i].user_id %>', '_top')"><%= videos[i].u_name %></b>&nbsp;&nbsp;<span style="color: #9c9c9c;"> ने </span>&nbsp;&nbsp;<span style="color: #ff6600;cursor: pointer;" onclick="window.open('/mobile/search/<%= videos[i].district %>/<%= videos[i].tags %>', '_top')"><%= videos[i].tags != null ? (videos[i].district.includes('क्षेत्र') ? videos[i].city : (videos[i].district.split('(')[0]).split(' ')[0] ) + ' ' + videos[i].tags : '' %></span></p>
                                         <p class="sub-text">के बारे मै पोस्ट किया | <%= message_time %> </p>
                                     </div>
                                 </div>   
                             </div>
                         </div>
                         <div class="col-12 title" onclick="window.open('/mobile/each-news/<%= videos[i].news_id %>', '_top')">
-                            <h6><%= videos[i].title %>:<%= videos[i].short_description.length >= 30 ? (videos[i].short_description.slice(0,30) + '..') : videos[i].short_description %></h6>
-                        </div>
-                        <div class="col-12 image" onclick="window.open('/mobile/each-news/<%= videos[i].news_id %>', '_top')">
-                            <div class="card">
-                                <iframe width="100%" height="100%" id="youtube-video0"  src="https://www.youtube.com/embed/<%= str %>?controls=1" frameborder="0"  allowfullscreen></iframe>
-                            </div>
+                            <h6><%= videos[i].title != null ? (videos[i].title + ':') : '' %><%= videos[i].short_description.length >= 30 ? (videos[i].short_description.slice(0,30) + '..') : videos[i].short_description %></h6>
                         </div>
                     </div>
-                    <div class="row bottom-row">
-                        <div class="col-4" onclick="like('<%= videos[i].news_id %>')">
-                            <% if(logged_in == 0) {%>
+                </div>
+                <div class="image" onclick="window.open('/mobile/each-news/<%= videos[i].news_id %>', '_top')">
+                    <div class="card">
+                        <iframe width="100%" height="100%" id="youtube-video0"  src="https://www.youtube.com/embed/<%= str %>?controls=1" frameborder="0"  allowfullscreen></iframe>
+                    </div>
+                </div>
+                <!-- <div class="row bottom-row">
+                    <div class="col-4" onclick="like('<%= videos[i].news_id %>')">
+                        <% if(logged_in == 0) {%>
+                            <a id="like<%= videos[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                        <% } else { %>
+                            <% if(videos[i].news_like == null){ %>
                                 <a id="like<%= videos[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
                             <% } else { %>
-                                <% if(videos[i].news_like == null){ %>
-                                    <a id="like<%= videos[i].news_id %>" style="color: #b4b4b4;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
-                                <% } else { %>
-                                    <a id="like<%= videos[i].news_id %>" style="color: #112244;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
-                                <% } %>  
-                            <% } %>   
-                        </div>
-                        <div class="col-4" onclick="comment('<%= videos[i].news_id %>')">
-                            <a href="#"><i class="fas fa-comment"></i>&nbsp;&nbsp;टिप्पणी</a>
-                        </div>
-                        <div class="col-4" onclick="share('<%= videos[i].news_id %>')">
-                            <a href="#"><i class="fas fa-share"></i>&nbsp;&nbsp;शेयर</a>
-                        </div>
+                                <a id="like<%= videos[i].news_id %>" style="color: #112244;"><i class="fas fa-thumbs-up"></i>&nbsp;&nbsp;लाइक</a>
+                            <% } %>  
+                        <% } %>   
+                    </div>
+                    <div class="col-4" onclick="comment('<%= videos[i].news_id %>')">
+                        <a href="#"><i class="fas fa-comment"></i>&nbsp;&nbsp;टिप्पणी</a>
+                    </div>
+                    <div class="col-4" onclick="share('<%= videos[i].news_id %>')">
+                        <a href="#"><i class="fas fa-share"></i>&nbsp;&nbsp;शेयर</a>
                     </div>
                 </div>
-                <div class="popup" id="popup<%= videos[i].news_id %>" style="display: none;" onclick="closeNewsPopup('<%= videos[i].news_id %>')"></div>
-                <div class="popup" id="sharepopup<%= videos[i].news_id %>" style="display: none;" onclick="closeSharePopup('<%= videos[i].news_id %>')"></div>          
-                <div class="comment_box" id="comment_box<%= videos[i].news_id %>" style="display: none;">
-                    <div class="heading">
-                        <div class="row">
-                            <div class="col-10">
-                                <h4>Comment Box</h4>
-                            </div>
-                            <div class="col-2">
-                                <button onclick="closeNewsPopup('<%= videos[i].news_id %>')"><i class="fas fa-times"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message_box" id="message_box<%= videos[i].news_id %>">
-                        
-                    </div>
-                    <div class="input_box">
-                        <form onsubmit="addComment('<%= videos[i].news_id %>')">
+                <div>
+                    <div class="popup" id="popup<%= videos[i].news_id %>" style="display: none;" onclick="closeNewsPopup('<%= videos[i].news_id %>')"></div>
+                    <div class="popup" id="sharepopup<%= videos[i].news_id %>" style="display: none;" onclick="closeSharePopup('<%= videos[i].news_id %>')"></div>          
+                    <div class="comment_box" id="comment_box<%= videos[i].news_id %>" style="display: none;">
+                        <div class="heading">
                             <div class="row">
                                 <div class="col-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="comment_message<%= videos[i].news_id %>" name="comment_message" placeholder="Type a Comment..">
-                                    </div>
+                                    <h4>Comment Box</h4>
                                 </div>
                                 <div class="col-2">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                                    <button onclick="closeNewsPopup('<%= videos[i].news_id %>')"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="share_box" id="share_options<%= videos[i].news_id %>" style="display: none;">
-                    <div class="heading">
-                        <div class="row">
-                            <div class="col-10">
-                                <h4>Share Box</h4>
-                            </div>
-                            <div class="col-2">
-                                <button onclick="closeSharePopup('<%= videos[i].news_id %>')"><i class="fas fa-times"></i></button>
-                            </div>
+                        </div>
+                        <div class="message_box" id="message_box<%= videos[i].news_id %>">
+                            
+                        </div>
+                        <div class="input_box">
+                            <form onsubmit="addComment('<%= videos[i].news_id %>')">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="comment_message<%= videos[i].news_id %>" name="comment_message" placeholder="Type a Comment..">
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <br>
-                    <div class="options">
-                        <div class="row">
-                            <div class="col-4" style="text-align: center">
-                                <a href="https://www.facebook.com/sharer.php?u=<%= website %>/each-news/<%= videos[i].news_id %>" target="_blank" style="background-color: #3b5998;font-size: 24px;color: white;padding: 5px 14px;border-radius: 50%;text-decoration: none">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                            </div>
-                            <div class="col-4" style="text-align: center">
-                                <a href="https://wa.me/?text=http://<%= website %>/each-news/<%= videos[i].news_id %>%0D%0Dन्यूज़ के लिए आज ही ऐप इंस्टॉल करें।%0Dhttps://play.google.com/store/apps/details?id=<%=appId%>%0D%0Dसंपर्क करें 902-412-3007%0DGmail: <%= website %>@gmail.com%0D%0Dवीडियो खबरों के लिए नीचे दिए लिंक को पर क्लिक करें और तुरंत सब्सक्राइब करें ।%0Dhttps://www.youtube.com/channel/UCMSgxxG0wN5lSjHP1mXKjBA"  target="_blank" style="background-color: #25d366;font-size: 24px;color: white;padding: 5px 12px;border-radius: 50%;text-decoration: none"><i class="fab fa-whatsapp"></i></a>
-                            </div>
-                            <div class="col-4" style="text-align: center">
-                                <a href="https://twitter.com/share?url=http://<%= website %>/each-news/<%=videos[i].news_id%>&text=<%= videos[i].title %>" data-show-count="false" target="_blank" style="background-color: #00acee;text-decoration: none;font-size: 24px;color: white;border-radius: 50%;padding: 5px 10px"><i class="fab fa-twitter"></i></a>
+                    <div class="share_box" id="share_options<%= videos[i].news_id %>" style="display: none;">
+                        <div class="heading">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h4>Share Box</h4>
+                                </div>
+                                <div class="col-2">
+                                    <button onclick="closeSharePopup('<%= videos[i].news_id %>')"><i class="fas fa-times"></i></button>
+                                </div>
                             </div>
                         </div>
+                        <br>
+                        <div class="options">
+                            <div class="row">
+                                <div class="col-4" style="text-align: center">
+                                    <a href="https://www.facebook.com/sharer.php?u=<%= website %>/each-news/<%= videos[i].news_id %>" target="_blank" style="background-color: #3b5998;font-size: 24px;color: white;padding: 5px 14px;border-radius: 50%;text-decoration: none">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </div>
+                                <div class="col-4" style="text-align: center">
+                                    <a href="https://wa.me/?text=http://<%= website %>/each-news/<%= videos[i].news_id %>%0D%0Dन्यूज़ के लिए आज ही ऐप इंस्टॉल करें।%0Dhttps://play.google.com/store/apps/details?id=<%=appId%>%0D%0Dसंपर्क करें 902-412-3007%0DGmail: <%= website %>@gmail.com%0D%0Dवीडियो खबरों के लिए नीचे दिए लिंक को पर क्लिक करें और तुरंत सब्सक्राइब करें ।%0Dhttps://www.youtube.com/channel/UCMSgxxG0wN5lSjHP1mXKjBA"  target="_blank" style="background-color: #25d366;font-size: 24px;color: white;padding: 5px 12px;border-radius: 50%;text-decoration: none"><i class="fab fa-whatsapp"></i></a>
+                                </div>
+                                <div class="col-4" style="text-align: center">
+                                    <a href="https://twitter.com/share?url=http://<%= website %>/each-news/<%=videos[i].news_id%>&text=<%= videos[i].title %>" data-show-count="false" target="_blank" style="background-color: #00acee;text-decoration: none;font-size: 24px;color: white;border-radius: 50%;padding: 5px 10px"><i class="fab fa-twitter"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
                     </div>
-                    <br>
-                </div>
-                
-            <% } %>
-        </div>
+                </div> -->
+            </div>
+            
+        <% } %>   
     </div>
-
-    <div class="bottom-bar">
-        <div class="inner_element">
-            <div style="text-align: center;">
-                <% if(card == 'false'){ %> 
-                    <h1><a href="/mobile/main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
-                    <h6><b><a href="/mobile/main" class="de-active">होम</a></b></h6>
-                <% } else { %>
-                    <h1><a href="/mobile/expanded_main" class="de-active"><span class="iconify" data-icon="ant-design:home-filled"></span></a></h1>
-                    <h6><b><a href="/mobile/expanded_main" class="de-active">होम</a></b></h6>
-                <%}%> 
-            </div>
-        </div>
-        <div class="inner_element">
-            <div style="text-align: center;">
-                <h1><a href="/mobile/videos" class="active"><span class="iconify" data-icon="clarity:play-solid"></span></a></h1>
-                <h6><b><a href="/mobile/videos" class="active">वीडियो</a></b></h6>
-            </div>
-        </div>
-        <div class="inner_element">
-            <div style="text-align: center;">
-                <h1><a href="/mobile/search" class="de-active"><span class="iconify" data-icon="lucide:search"></span></a></h1>
-                <h6><b><a href="/mobile/search" class="de-active">खोजें</a></b></h6>
-            </div>
-        </div>
-        <div class="inner_element">
-            <div style="text-align: center;">
-                <h1><a href="/mobile/epaper" class="de-active"><span class="iconify" data-icon="ion:newspaper"></span></a></h1>
-                <h6><b><a href="/mobile/epaper" class="de-active">ई-पेपर</a></b></h6>
-            </div>
-        </div>
-        <div class="inner_element">
-            <div style="text-align: center;">
-                <h1><a href="/mobile/profile" class="de-active"><span class="iconify" data-icon="fa-solid:user"></span></a></h1>
-                <h6><b><a href="/mobile/profile" class="de-active">प्रोफ़ाइल</a></b></h6>
-            </div>
-        </div>
-    </div>
-
+   
 <input type="hidden" id="logged_in" value="<%= logged_in %>">
 <input type="hidden" id="user_id" value="<%= user_id %>">
 <input type="hidden" id="full_name" value="<%= full_name %>">
 <input type="hidden" id="category_name" value="">
-
-<% if(logged_in == 0){ %>
-    <div class="add-news" onclick="window.open('/mobile/profile/', '_top')">
-        <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
-    </div>
-<% } else { %>
-    <div class="add-news" onclick="window.open('/mobile/add-news/', '_top')">
-        <h1><span class="iconify" data-icon="eva:edit-2-fill"></span></h1>
-    </div>
-<% } %>
+<input type="hidden" id="getData" value="">
+<input type="hidden" id="user_face" value="">
 
 
 <!--Bootstrap js-->

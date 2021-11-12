@@ -43,9 +43,11 @@
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                     <div class="card-body">
                         <div class="list-group">
-                            <a href="/admin/news" class="list-group-item list-group-item-action">
+                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+<a href="/admin/news" class="list-group-item list-group-item-action">
                                 My News
                             </a>
+
                             <% if(role_id == 1 || role_id == 2){%>
                                 <a href="/admin/admin-news" class="list-group-item list-group-item-action">
                                     Admin News
@@ -59,12 +61,15 @@
                                 <a href="/admin/tags" class="list-group-item list-group-item-action">
                                     Tags
                                 </a>
+                                <a href="/admin/pool" class="list-group-item list-group-item-action">
+                                    Pool
+                                </a>
                                 <a href="/admin/categories" class="list-group-item list-group-item-action">
                                     All State,City,District
                                 </a>
                                 <a href="/admin/add-category" class="list-group-item list-group-item-action">Create State,City,District</a>
                             <%}%>
-                            <a href="/admin/add-news" class="list-group-item list-group-item-action">Create News</a>
+                            
                         </div>
                     </div>
                 </div>
@@ -79,7 +84,7 @@
                         </h5>
                     </div>
                 </div>
-                <!-- <div class="card">
+                <div class="card">
                     <div class="card-header" id="headingSeven">
                         <h5 class="mb-0">
                             <a href="/admin/ads" class="btn btn-link">
@@ -87,15 +92,15 @@
                             </a>
                         </h5>
                     </div>
-                </div> -->
+                </div> 
                 <div class="card">
-                    <div class="card-header" id="headingNine">
+                    <!-- <div class="card-header" id="headingNine">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                                 <span id="dr_icon"><i class="fas fa-folder"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dr-text">Directory<i class="fas fa-caret-down" style="margin-left: 10px"></i></span>
                             </button>
                         </h5>
-                    </div>
+                    </div> -->
                     <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
                         <div class="card-body">
                             <div class="list-group">
@@ -127,7 +132,7 @@
                                     My E-papers
                                 </a>
                                     <a href="/admin/add-epaper-category" class="list-group-item list-group-item-action">
-                                        All State,City,District
+                                        Create epaper-category
                                     </a>
                             </div>
                         </div>
@@ -328,7 +333,7 @@
             <br>
             <a href="#order" data-toggle="modal" class="btn btn-primary" style="width: 100%;border-radius: 0">Change Order</a>
             <!-- Modal -->
-            <div class="modal fade" id="order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 99999999999;">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -338,20 +343,37 @@
                             </button>
                         </div>
                         <form action="/admin/change-order" method="post">
+                            <div class="form-group" style="padding: 0px 10px;">
+                                <label for="" >State</label>
+                                <select class="form-control" name="state" id="state2" onchange="getcity(this.value)" required>
+                                    <option value="">Select State</option>
+                                    <% for(var i=0;i<states.length;i++){ %>
+                                        <option value="<%= states[i].id %>"><%= states[i].name %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="form-group" style="padding: 0px 10px;">
+                                <label for="" >City</label>
+                                <select class="form-control" name="city" id="cities" onchange="sortTable(this.value)">
+                                    <option value="">Select City</option>
+                                </select>
+                            </div>
                             <div class="modal-body">
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="mytable">
                                     <thead>
                                     <tr>
-                                        <th>Current Order</th>
+                                        <!-- <th>Current Order</th> -->
                                         <th style="width:50%">Image</th>
+                                        <th>City</th>
                                         <th>New Order</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <% for(var i =0;i<slider.length;i++){ %>
                                         <tr>
-                                            <th><%= slider[i].order %></th>
+                                            <!-- <th><%= slider[i].order %></th> -->
                                             <td><img src="/images/slider_images/<%= slider[i].image_path %>" alt="" width="50%"></td>
+                                            <td><%= JSON.parse(slider[i].city).city %></td>
                                             <td>
                                                 <div class="form-group">
                                                     <select class="form-control" name="n_order">
@@ -440,6 +462,69 @@
             }
         });
     });
+
+
+    function sortTable(query) {
+        // console.log(query);
+        var input, filter, table, tr, td, i, txtValue;
+            // input = document.getElementById("myInput");
+            filter = query;
+            table = document.getElementById("mytable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                // console.log(td);
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+    }
+
+    function getcity(a){
+        // var a = document.getElementById('state2').value;
+        // console.log(a);
+        var select = document.getElementById("cities");
+        // console.log(select);
+        var length = select.options.length;
+        for (var i = length-1; i >= 0; i--) {
+            select.options[i] = null;
+        }
+        $.ajax({
+            // url:"/admin/getCity/" + a,
+            url:"/admin/getSubCategory/" + a,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(data){
+                var b = data;
+                var option1 = document.createElement("option");
+                    option1.text = "Select the city";
+                    option1.value= "";
+                    select.add(option1);
+                if(b.length == 0){
+                    var option = document.createElement("option");
+                    option.text = "No City Present";
+                    option.value= "other";
+                    select.add(option);
+                } else {
+                    for(var i=0;i<b.length;i++){
+                        var option = document.createElement("option");
+                        option.text = b[i].name;
+                        option.value= b[i].name;
+                        select.add(option);
+                    }
+                }
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    };
+
 
     function getCities(i){
         var a = document.getElementById('state' + i).value;

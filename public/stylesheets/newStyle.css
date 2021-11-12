@@ -52,6 +52,104 @@ header .icons{
   padding-top: 10px
 }
 
+.top_header_epaper .logo .col-2 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 5px;
+}
+
+.top_header_epaper .logo .col-2 h1 {
+  font-size: 30px;
+  color: #B4B4B4;
+}
+
+.middle_section {
+  height: 100%;
+  background-color: #ececec;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px 10px;
+}
+
+#myTable {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#myTable .col-lg-3 {
+  padding: 5px;
+}
+
+#myTable .col-lg-3 .card {
+  padding: 10px;
+  border: 0;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.05);
+  border-radius: 7px;
+}
+
+#myTable .card a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+}
+
+#myTable .card .row {
+  margin: 0;
+  width: 100%;
+}
+
+#myTable .card .row .col-10 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#myTable .card .row .col-2 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#myTable h2 {
+  margin: 0;
+  text-align: center;
+  color: var(--primary-color);
+} 
+
+.top_header_epaper {
+  height: 6%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0px 10px 10px rgba(0,0,0,0.05);
+}
+
+.top_header_epaper .logo{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: white;
+}
+
+.top_header_epaper .logo .col-10 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.top_header_epaper .logo .col-10 img {
+  width: 150px;
+}
+
+
 .main-container {
   height: 100%;
   width: 100%;
@@ -187,6 +285,14 @@ header .icons{
   cursor: pointer;
 }
 
+.main-container .news-section .bottom-section .card .top-row .col-4 .card {
+  padding: 0 !important;
+}
+
+.main-container .news-section .bottom-section .card .top-row .col-4 .card a {
+  height: 100% !important;
+}
+
 .main-container .news-section .bottom-section .card .top-row .profile {
   padding: 0;
   display: flex;
@@ -247,6 +353,11 @@ header .icons{
   box-shadow: unset;
   overflow: hidden;
   margin-bottom: unset;
+  padding: 0px !important;
+}
+
+.main-container .news-section .bottom-section .card .top-row .image .card img {
+  height: 100% !important;
 }
 
 .main-container .news-section .bottom-section .card .top-row .title {

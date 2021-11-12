@@ -1,3 +1,7 @@
+var statename = document.getElementById('statename').value;
+var cityname = document.getElementById('cityname').value;
+var districtname = document.getElementById('districtname').value;
+
 function submitData() {
     var myForm = document.getElementById('addNews');
     var tagname = document.getElementById('main-tag').innerHTML;
@@ -12,6 +16,8 @@ function submitData() {
             form.append(`images${i}`, file);
         }
     }
+
+    // console.log(form);
     $.ajax({
         url : "/mobile/save-images",
         type: "POST",
@@ -26,6 +32,9 @@ function submitData() {
             form_final.append('desc', myForm.elements['desc'].value);
             form_final.append('tag', tagname);
             form_final.append('images', response);
+            form_final.append('state', statename);
+            form_final.append('city', cityname);
+            form_final.append('district', districtname);
             setTimeout(()=>{
                 $.ajax({
                     url : "/mobile/add-news",
@@ -36,7 +45,8 @@ function submitData() {
                     data : form_final,
                     success: function(data){
                         console.log(data);
-                        window.location.href = '/mobile/profile';
+                        // window.location.href = '/mobile/profile';
+                        location.reload();
                     },
                     error: function(err){
                         console.log(err.status);
@@ -54,7 +64,7 @@ function submitData() {
 }
 
 function openPopup(city,tagname){
-    $('#form').append('<form id="addNews" onsubmit="return submitData()" enctype="multipart/form-data"> <div class="form-group"> <input type="text" class="form-control" id="title" name="title" placeholder="यहां शीर्षक दर्ज करें" required> </div> <div class="form-group"> <textarea type="text" class="form-control" id="desc" name="desc" placeholder="यहां विवरण दर्ज करें" rows="20" required></textarea> </div> <div class="form-group"> <div class="row" style="margin: 0;width: 100%;padding: 0"> <div class="col-10" style="padding: 0"> <label for="">Add Images(Select Multiple Images)</label> </div> <div class="col-2" style="padding: 0;text-align: right"> <a onclick="addimage()" style="text-decoration: none;font-size: 1.5rem"><i class="fas fa-plus-circle"></i></a> </div> </div> <div class="row" id="imagegroup"> <div class="col-lg-2 col-md-3 col-sm-4 col-6" style="overflow: hidden;padding: 0;"> <div class="row" style="margin: 0;width: 100%;padding: 0"> <div class="col-8" style="padding: 0;display: flex;align-items: center;overflow: hidden;"> <div class="form-group" style="width: 100%;"> <input type="file" class="form-control-file news-images" name="images" id="img0" accept="image/*" onchange="showPreview(\'0\',this.files)"> <input type="hidden" name="image" id="image0" value=""> </div> </div> <div class="col-4" style="padding: 5px;display: flex;overflow: hidden;justify-content:flex-end"> <a id="forFirstImage" onclick="deleteimage(\'0\')" style="text-decoration: none;font-size: 1.5rem;color: #DC3545;display: none"><i class="fas fa-times-circle"></i></a> </div> <div class="col-12" style="padding: 5px 15px"> <img src="/images/no_image.jpeg" alt="" id="image-preview0" style="width: 100%"> </div> </div> </div> </div> </div> <div class="form-group"> <button class="btn btn-primary" type="submit">Submit For approval</button> </div> </form>');
+    $('#form').append('<form id="addNews" method="post" onsubmit="return submitData()" enctype="multipart/form-data"> <div class="form-group"> <input type="text" class="form-control" id="title" name="title" placeholder="यहां शीर्षक दर्ज करें" required> </div> <div class="form-group"> <textarea type="text" class="form-control" id="desc" name="desc" placeholder="यहां विवरण दर्ज करें" rows="20" required></textarea> </div> <div class="form-group"> <div class="row" style="margin: 0;width: 100%;padding: 0"> <div class="col-10" style="padding: 0"> <label for="">छवियां जोड़ें</label> </div> <div class="col-2" style="padding: 0;text-align: right"> <a onclick="addimage()" style="text-decoration: none;font-size: 1.5rem"><i class="fas fa-plus-circle"></i></a> </div> </div> <div class="row" id="imagegroup"> <div class="col-lg-2 col-md-3 col-sm-4 col-6" style="overflow: hidden;padding: 0;"> <div class="row" style="margin: 0;width: 100%;padding: 0"> <div class="col-8" style="padding: 0;display: flex;align-items: center;overflow: hidden;"> <div class="form-group" style="width: 100%;"> <input type="file" class="form-control-file news-images" name="images" id="img0" accept="image/*" onchange="showPreview(\'0\',this.files)"> <input type="hidden" name="image" id="image0" value=""> </div> </div> <div class="col-4" style="padding: 5px;display: flex;overflow: hidden;justify-content:flex-end"> <a id="forFirstImage" onclick="deleteimage(\'0\')" style="text-decoration: none;font-size: 1.5rem;color: #DC3545;display: none"><i class="fas fa-times-circle"></i></a> </div> <div class="col-12" style="padding: 5px 15px"> <img src="/images/no_image.jpeg" alt="" id="image-preview0" style="width: 100%"> </div> </div> </div> </div> </div> <div class="form-group"> <button class="btn btn-primary" type="submit">सबमिट करें</button> </div> </form>');
     document.getElementById('tagname').innerHTML = city + ' ' + '<span id="main-tag">' + tagname + '</span>';
     document.getElementById('addNewsPopup').style.transform = 'translateX(0%)';
 }

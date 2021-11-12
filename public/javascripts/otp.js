@@ -1,4 +1,7 @@
 var card_data = document.getElementById('card_data').value;
+var statename = document.getElementById('statename').value;
+var cityname = document.getElementById('cityname').value;
+var districtname = document.getElementById('districtname').value;
 
 var firebaseConfig = {
     apiKey: "AIzaSyCKzHbrwhVNcDZQ-fFeac9FraFB_o7MuOc",
@@ -60,6 +63,7 @@ function submitPhoneNumberAuth() {
 // Return a user object if the authentication was successful, and auth is complete
 function submitPhoneNumberAuthCode() {
     var code = document.getElementById("code").value;
+    document.getElementById('confirm-code').setAttribute('disabled','disabled');
     confirmationResult
         .confirm(code)
         .then(function(result) {
@@ -70,20 +74,24 @@ function submitPhoneNumberAuthCode() {
                 var userdata = {
                     phone:user.phoneNumber,
                     tokken:user.uid,
-                    full_name:full_name
+                    full_name:full_name,
+                    statename:statename,
+                    cityname:cityname,
+                    districtname:districtname
                 }
                 $.ajax({
-                    url:"/mobile/user-login/",
+                    url:`/mobile/user-login`,
                     dataType: "jsonp",
                     type:"POST",
                     data:userdata,
                     success: function(data){
                         console.log('success');
-                        if(card_data == 'false'){
-                            window.location.href = '/mobile/main';
-                        } else {
-                            window.location.href = '/mobile/expanded_main';
-                        }
+                        // location.reload();
+                        // if(card_data == 'false'){
+                            window.location.href = `/mobile/profile/loggedIn/${data.user_data.user_id}`;
+                        // } else {
+                        //     window.location.href = '/mobile/expanded_main';
+                        // }
                     },
                     error: function(err){
                         console.log(err.status);

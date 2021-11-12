@@ -384,3 +384,80 @@
             </select>
     </div>
 </div>
+
+
+<div class="inner-box" id="tab0">
+    <% if(cardStyle == 'plain'){ %>
+        <iframe src="/mobile/news" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+    <% } else if(cardStyle == 'expanded'){ %>
+        <iframe src="/mobile/news/expanded-card" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+    <% } %>
+</div>
+<div class="inner-box" id="tab1">
+    <% if(cardStyle == 'plain'){ %>
+        <iframe src="/mobile/news/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+    <% } else if(cardStyle == 'expanded'){ %>
+        <iframe src="/mobile/news/expanded-card/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+    <% } %>
+</div>
+<div class="inner-box" id="tab2">
+    <% if(cardStyle == 'plain'){ %>
+        <iframe src="/mobile/news/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+    <% } else if(cardStyle == 'expanded'){ %>
+        <iframe src="/mobile/news/expanded-card/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+    <% } %>  
+</div>
+<div class="inner-box" id="tab3">
+    <% if(cardStyle == 'plain'){ %>
+        <iframe src="/mobile/news/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+    <% } else if(cardStyle == 'expanded'){ %>
+        <iframe src="/mobile/news/expanded-card/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+    <% } %>  
+</div>
+<div class="inner-box" id="tab4">
+    <iframe src="/mobile/leftcities" frameborder="0" id="iframe4" name="news_iframe"></iframe>
+</div>
+
+<div class="carousel-inner">
+    <div class="carousel-item active" id="tab_0">
+        <div class="inner-carousel">
+          <% if(cardStyle == 'plain'){ %>
+              <iframe src="/mobile/news" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+          <% } else if(cardStyle == 'expanded'){ %>
+              <iframe src="/mobile/news/expanded-card" frameborder="0" id="iframe0" name="news_iframe"></iframe>
+          <% } %>
+        </div>
+    </div>
+    <div class="carousel-item" id="tab_1">
+      <div class="inner-carousel">
+          <% if(cardStyle == 'plain'){ %>
+              <iframe src="/mobile/news/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+          <% } else if(cardStyle == 'expanded'){ %>
+              <iframe src="/mobile/news/expanded-card/<%= user_filter[0].district[0] %>" frameborder="0" id="iframe1" name="news_iframe"></iframe>
+          <% } %>
+      </div>
+    </div>
+    <div class="carousel-item" id="tab_2">
+      <div class="inner-carousel">
+          <% if(cardStyle == 'plain'){ %>
+              <iframe src="/mobile/news/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+          <% } else if(cardStyle == 'expanded'){ %>
+              <iframe src="/mobile/news/expanded-card/city/<%= user_filter[0].city[0] %>" frameborder="0" id="iframe2" name="news_iframe"></iframe>
+          <% } %>
+      </div>
+    </div>
+    <div class="carousel-item" id="tab_3">
+      <div class="inner-carousel">
+          <% if(cardStyle == 'plain'){ %>
+              <iframe src="/mobile/news/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+          <% } else if(cardStyle == 'expanded'){ %>
+              <iframe src="/mobile/news/expanded-card/state/<%= user_filter[0].state[0] %>" frameborder="0" id="iframe3" name="news_iframe"></iframe>
+          <% } %>
+      </div>
+    </div>
+    <div class="carousel-item" id="tab_4">
+      <div class="inner-carousel">
+          <iframe src="/mobile/leftcities" frameborder="0" id="iframe4" name="news_iframe"></iframe>
+      </div>
+    </div>
+  </div>

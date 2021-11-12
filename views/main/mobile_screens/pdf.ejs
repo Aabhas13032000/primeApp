@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta property="og:title" content="<%=epaper_views[0].category%>" />
+    <meta property="og:description" content="<%=epaper_views[0].created_at%>">
+    <meta property="og:url" content="https://www.<%= website %>/" />
+    <%if(epaper_views[0].thumbnail != null){%>
+        <meta property="og:image" content="/thumbnail/<%=epaper_views[0].thumbnail%>">
+    <%} else {%>
+        <meta property="og:image" content="/images/extra.png">
+    <%}%>
+
+    <title><%=title%></title>
+    <link rel="icon" href="/images/logo/Mono.png" type="image/icon type">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"/>
+
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="/jquery/jquery.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <style>
+        body {
+            background-color: white;
+            /*height: 100%;*/
+        }
+
+        .slider {
+            width: 100%;
+            overflow: hidden;
+            /*height: 100vh;*/
+        }
+
+        .inner-slider {
+            width: 100%;
+            display: flex;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            scroll-snap-type: x proximity;
+            height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        .inner-slider::-webkit-scrollbar{
+            width: 0px;
+            height: 0px;
+            background-color: green;
+        }
+
+        .inner-slider::-webkit-scrollbar-thumb{
+            width: 0px;
+            height: 0px;
+            background-color: darkblue;
+        }
+
+        .inner-slider .each-item {
+            min-width: 100%;
+            scroll-snap-align: center;
+            /*border: 2px solid black;*/
+        }
+
+        .inner-slider .each-item img {
+            width: 100%;
+        }
+
+        #prev {
+            position: fixed;
+            z-index: 1;
+            background-color: #111224;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-block;
+            padding: 15px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        #next {
+            position: fixed;
+            z-index: 1;
+            background-color: #111224;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-block;
+            padding: 15px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        #page-number {
+            display: none;
+        }
+
+        #views {
+            position: fixed;
+            z-index: 1;
+            top: 58px;
+            left: 50%;
+            transform: translateX(-50%);
+            /*background-color: #111224;*/
+            /*padding: 15px 20px;*/
+            /*height: 40px;*/
+            /*width: 40px;*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+            padding: 5px 5px;
+        }
+
+        #views p {
+            margin: 0;
+            /*color: white;*/
+        }
+
+        @media screen and (max-width: 576px){
+            .inner-slider {
+                width: 100%;
+                display: flex;
+                overflow-y: hidden;
+                overflow-x: scroll;
+                height: 100%;
+            }
+
+            #prev {
+                position: fixed;
+                z-index: 1;
+                background-color: #111224;
+                left: 0;
+                /*top: 100%;*/
+                top: unset;
+                bottom: 10px;
+                transform: translateY(0%);
+                display: none;
+                padding: 15px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #next {
+                position: fixed;
+                z-index: 1;
+                background-color: #111224;
+                right: 0;
+                /*top: 100%;*/
+                top: unset;
+                bottom: 10px;
+                transform: translateY(0%);
+                display: none;
+                padding: 15px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #page-number {
+                position: fixed;
+                z-index: 1;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #111224;
+                /*padding: 15px 20px;*/
+                height: 40px;
+                width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+            }
+
+            #page-number-text {
+                margin: 0;
+                color: white;
+            }
+
+            #views {
+                position: fixed;
+                z-index: 1;
+                bottom: 10px;
+                top: unset;
+                left: 10px;
+                transform: translateX(0%);
+                /*transform: translateX(-50%);*/
+                /*background-color: #111224;*/
+                /*padding: 15px 20px;*/
+                /*height: 40px;*/
+                /*width: 40px;*/
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50px;
+                padding: 5px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- <header style="z-index: 6;overflow: unset">
+    <div class="row" style="margin: 0;padding: 10px 0px 0px 0px;width: 100%;">
+        <div class="col-1 col-lg-1" style="text-align: center">
+            <a href="#" onclick="window.location.href = '/news'" style="color:black;font-size: 20px"><i class="fas fa-home"></i></a>
+        </div>
+        <div class="col-9 col-lg-10">
+            <a href="/news"><img src="/images/logo/final.png" alt="" style="height: 23px"></a>
+        </div>
+        <div class="col-1 col-lg-1" style="text-align: right">
+            <p style="padding-top: 3px"><a href="#sharinglink" data-bs-toggle="modal" style="color: black;"><i class="fas fa-share-alt"></i></a></p>
+        </div>
+    </div>
+</header>
+<div class="modal fade" id="sharinglink" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Share The Epaper</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4" style="text-align: center">
+                        <a href="https://www.facebook.com/sharer.php?u=<%= website %>/pdf/<%= epaper[0].epaper_id %>" target="_blank" style="background-color: #3b5998;font-size: 24px;color: white;padding: 5px 14px;border-radius: 50%;text-decoration: none">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <a href="https://wa.me/?text=http://<%= website %>/pdf/<%= epaper[0].epaper_id %> न्यूज़ के लिए आज ही ऐप इंस्टॉल करें। https://play.google.com/store/apps/details?id=<%=appId%>    संपर्क करें 902-412-3007  Gmail:<%= website %>@gmail.com  वीडियो खबरों के लिए नीचे दिए लिंक को पर क्लिक करें और तुरंत सब्सक्राइब करें । https://www.youtube.com/channel/UCMSgxxG0wN5lSjHP1mXKjBA
+"  target="_blank" style="background-color: #25d366;font-size: 24px;color: white;padding: 5px 12px;border-radius: 50%;text-decoration: none"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <div class="col-4" style="text-align: center">
+                        <a href="https://twitter.com/share?url=http://<%= website %>/pdf/<%= epaper[0].epaper_id %>&text=न्यूज़ के लिए आज ही ऐप इंस्टॉल करें। https://play.google.com/store/apps/details?id=<%=appId%>" data-show-count="false" target="_blank" style="background-color: #00acee;text-decoration: none;font-size: 24px;color: white;border-radius: 50%;padding: 5px 10px"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<br>
+
+<div class="slider">
+    <div class="inner-slider" id="slider" onscroll="changeValue()">
+        <%for(var i=0;i<epaper.length;i++){%>
+            <%if(i==0){%>
+                <div class="each-item" id="width-of-card">
+                    <img src="/images/Epaper/<%=epaper[i].path%>" alt="First slide">
+                </div>
+            <%} else {%>
+                <div class="each-item">
+                    <img src="/images/Epaper/<%=epaper[i].path%>"  alt="Second slide">
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+</div>
+
+<div id="prev" onclick="goback()">
+    <span class="iconify" data-inline="false" data-icon="eva:arrow-ios-back-outline" style="font-size: 30px; color: white;"></span>
+</div>
+
+<div id="page-number">
+    <h5 id="page-number-text">1</h5>
+</div>
+
+<div id="views">
+    <p><b><%=epaper_views[0].views%> views</b></p>
+</div>
+
+<div id="next" onclick="gonext()">
+    <span class="iconify" data-inline="false" data-icon="eva:arrow-ios-forward-fill" style="font-size: 30px; color: white;"></span>
+</div>
+
+<div id="map"></div>
+
+
+<input type="hidden" id="epaper_id" value=<%= epaper[0].epaper_id %>>
+
+<!--Bootstrap js-->
+<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!---->
+
+<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+<script>
+
+    var epaper_id = document.getElementById('epaper_id').value;
+    function increaseViewCount() {
+        $.ajax({
+            url:"/mobile/increaseEpaperCount/" + epaper_id,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(news){
+                console.log('success');
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
+
+    window.onload = increaseViewCount();
+
+
+    $(document).ready(function (){
+        $("img").bind("error",function(){
+            // Replacing image source
+            $(this).attr("src","/images/<%= imageReplacer %>");
+        });
+    });
+    // var myCarousel = document.querySelector('#epaper-slider')
+    // var carousel = new bootstrap.Carousel(myCarousel, {
+    //     interval: 3600000,
+    //     wrap: false
+    // });
+
+    const width_of_card = document.getElementById('width-of-card').offsetWidth;
+    var max_length = $('.each-item').length;
+
+    function goback() {
+        const conent = document.querySelector('#slider');
+        conent.scrollLeft -= width_of_card;
+        if(parseInt(document.getElementById('page-number-text').innerHTML) != 1){
+            document.getElementById('page-number-text').innerHTML = parseInt(document.getElementById('page-number-text').innerHTML) - 1;
+        }
+    }
+
+    function changeValue(){
+        const conent = document.querySelector('#slider');
+        var number = conent.scrollLeft/width_of_card;
+        if(number === parseInt(number)){
+            document.getElementById('page-number-text').innerHTML = number+1;
+        }
+    }
+
+    function gonext() {
+        const conent = document.querySelector('#slider');
+        conent.scrollLeft += width_of_card;
+        if(parseInt(document.getElementById('page-number-text').innerHTML) != max_length){
+            document.getElementById('page-number-text').innerHTML = parseInt(document.getElementById('page-number-text').innerHTML) + 1;
+        }
+    }
+</script>
+
+</body>
+</html>

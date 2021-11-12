@@ -395,7 +395,7 @@ var role_id = req.user.role_id;
 var state = (req.body.c).split('_')[0];
 var city = req.body.sc;
 var district = req.body.district;
-var title = req.body.title;
+// var title = req.body.title;
 var status = 1;
 var short_description = req.body.sd;
 var description = req.body.ta;
@@ -430,7 +430,7 @@ if(url[0] == undefined || typeof url == "string"){
 
 if(image.length != 0 && image[0] != []){
     // console.log(images);
-    var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`title`,`short_description`,`status`,`is_approved`,`description`,`front_image_path`,`created_at`,'"+ tags +"') VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + title + "','" + short_description + "','" + status + "','" + approved + "','" + description + "','" + image[0] + "',CURRENT_TIMESTAMP,`tags`)";
+    var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`short_description`,`status`,`is_approved`,`description`,`front_image_path`,`created_at`,'"+ tags +"') VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + short_description + "','" + status + "','" + approved + "','" + description + "','" + image[0] + "',CURRENT_TIMESTAMP,`tags`)";
     // console.log(sql6);
     mysqlconnection.query(sql6,function(err,data){
         console.log(err);
@@ -453,7 +453,7 @@ if(image.length != 0 && image[0] != []){
         }
     });
 } else if(image[0] == []){
-    var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`title`,`short_description`,`status`,`is_approved`,`description`,`created_at`,`tags`) VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + title + "','" + short_description + "','" + status + "','" + approved + "','" + description + "',CURRENT_TIMESTAMP,'"+ tags +"')";
+    var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`short_description`,`status`,`is_approved`,`description`,`created_at`,`tags`) VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + short_description + "','" + status + "','" + approved + "','" + description + "',CURRENT_TIMESTAMP,'"+ tags +"')";
     mysqlconnection.query(sql6,function(err,data){
         // console.log(err);
         if(!err){
@@ -480,7 +480,7 @@ router.post('/add-news-notlogged', async function (req, res, next) {
         var district = req.body.district;
         // var state = req.body.state;
         // var city = req.body.city;
-        var title = req.body.title;
+        // var title = req.body.title;
         var status = req.body.status;
         var short_description = req.body.sd;
         var description = req.body.ta;
@@ -504,7 +504,7 @@ router.post('/add-news-notlogged', async function (req, res, next) {
             var approved = 1;
         }
         if(req.files == null){
-            var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`title`,`short_description`,`status`,`is_approved`,`description`,`created_at`,`tags`) VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + title + "','" + short_description + "','" + status + "','" + approved + "','" + description + "',CURRENT_TIMESTAMP,'"+ tags +"')";
+            var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`short_description`,`status`,`is_approved`,`description`,`created_at`,`tags`) VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + short_description + "','" + status + "','" + approved + "','" + description + "',CURRENT_TIMESTAMP,'"+ tags +"')";
             // console.log(sql6);
             mysqlconnection.query(sql6,function(err,data){
                 if(!err){
@@ -524,7 +524,7 @@ router.post('/add-news-notlogged', async function (req, res, next) {
             }else {
                 a = req.files.images;
             }
-            var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`title`,`short_description`,`status`,`is_approved`,`description`,`front_image_path`,`created_at`,`tags`) VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + title + "','" + short_description + "','" + status + "','" + approved + "','" + description + "','" + a[0].name + "',CURRENT_TIMESTAMP,'"+ tags +"')";
+            var sql6 = "INSERT INTO `news` (`user_id`,`state`,`city`,`district`,`short_description`,`status`,`is_approved`,`description`,`created_at`,`tags`) VALUES ('" + admin_id + "','" + state + "','" + city + "','" + district + "','" + short_description + "','" + status + "','" + approved + "','" + description + "',CURRENT_TIMESTAMP,'"+ tags +"')";
             mysqlconnection.query(sql6,function(err,data){
                 if(!err){
                     if(url[0] != ''){
@@ -540,6 +540,10 @@ router.post('/add-news-notlogged', async function (req, res, next) {
                         var new_name = new_date.getTime() + '_user_news.png';
                         a[i].name = new_name;
                         var imageFiles = typeof (a)[i].name !=="undefined" ? (a)[i].name : "" ;
+                        if(i==0){
+                            var sql9 = "UPDATE `news` SET `front_image_path` = '"+ (a)[i].name +"' WHERE `news_id` = '" + data.insertId + "'";
+                            mysqlconnection.query(sql9,function(err,img){});
+                        }
                         var path1 = 'public/images/image_files/'+ imageFiles;
                         Images.mv(path1, function(err){
                             if(err){
@@ -1633,7 +1637,7 @@ router.get('/ads', function(req, res, next) {
     if (req.user && res.statusCode == 200) {
         if(req.user.role_id == 1 || req.user.role_id == 2){
             var sql3 = "SELECT `ads`.*,`users`.`name` AS u_name FROM `ads` INNER JOIN `users` ON `users`.`user_id` = `ads`.`user_id` WHERE `ads`.`status` = 1 ORDER BY `order`";
-            var order = "SELECT `order` FROM `slider` ORDER BY `order` DESC LIMIT 1 OFFSET 0";
+            var order = "SELECT `order` FROM `ads` ORDER BY `order` DESC LIMIT 1 OFFSET 0";
             mysqlconnection.query(sql3,function(err,ads){
                 mysqlconnection.query(order,function(err,order){
                     if(!err){
@@ -1681,6 +1685,116 @@ router.get('/tags', function(req, res, next) {
     }
 });
 
+router.get('/pool', function(req, res, next) {
+    if (req.user && res.statusCode == 200) {
+        if(req.user.role_id == 1 || req.user.role_id == 2){
+            var sql3 = "SELECT * FROM `pool` WHERE `status` = 1";
+            var sql4 = "SELECT * FROM `tags` WHERE `status` = 1";
+            mysqlconnection.query(sql3,function(err,pools){
+                mysqlconnection.query(sql4,function(err,tags){
+                    if(!err){
+                        res.render('admin/screens/pool',{
+                            role_id:req.user.role_id,
+                            pools:pools,
+                            admin_id: req.user.user_id,
+                            tags:tags
+                        });
+                    }
+                });
+            });
+        } else if(req.user.role_id == 3 || req.user.role_id == 4) {
+            res.render('admin/screens/404');
+        }
+    } else {
+        res.render('admin/screens/login',{
+            message:'You are logged out, Please login again',
+            messageClass:'alert-danger'
+        });
+    }
+});
+
+router.post('/add-pool', function(req, res, next) {
+    if (req.user && res.statusCode == 200) {
+        if(req.user.role_id == 1 || req.user.role_id == 2){
+            var question = req.body.question;
+            var option1 = req.body.option1;
+            var option2 = req.body.option2;
+            var option3 = req.body.option3;
+            var option4 = req.body.option4;
+            var tags = req.body.tags;
+
+            
+            var sql = "INSERT INTO `pool` (`question`,`option1`,`option2`,`option3`,`option4`,`tags`) VALUES ('" + question + "','" + option1 + "','" + option2 + "','" + option3 + "','" + option4 + "','" + tags + "')";
+            mysqlconnection.query(sql,function(err,img){
+                console.log(err);
+                if(!err){
+                    res.redirect('/admin/pool');
+                }
+            });
+        } else if(req.user.role_id == 3 || req.user.role_id == 4) {
+            res.render('admin/screens/404');
+        }
+    } else {
+        res.render('admin/screens/login',{
+            message:'You are logged out, Please login again',
+            messageClass:'alert-danger'
+        });
+    }
+});
+
+router.post('/edit-pool/:pool_id', function(req, res, next) {
+    if (req.user && res.statusCode == 200) {
+        if(req.user.role_id == 1 || req.user.role_id == 2){
+            var question = req.body.question;
+            var option1 = req.body.option1;
+            var option2 = req.body.option2;
+            var option3 = req.body.option3;
+            var option4 = req.body.option4;
+            var tags = req.body.tags;
+
+            
+            var sql = "UPDATE `pool` SET `question` = '" + question + "',`option1` = '" + option1 + "',`option2`='" + option2 + "',`option3`='" + option3 + "',`option4`='" + option4 + "',`tags` = '"+ tags +"' WHERE `id` = '"+ req.params.pool_id +"'";
+            mysqlconnection.query(sql,function(err,img){
+                console.log(err);
+                if(!err){
+                    res.redirect('/admin/pool');
+                }
+            });
+        } else if(req.user.role_id == 3 || req.user.role_id == 4) {
+            res.render('admin/screens/404');
+        }
+    } else {
+        res.render('admin/screens/login',{
+            message:'You are logged out, Please login again',
+            messageClass:'alert-danger'
+        });
+    }
+});
+
+router.get('/delete-pool/:pool_id', function(req, res, next) {
+    if (req.user && res.statusCode == 200) {
+        if(req.user.role_id == 1 || req.user.role_id == 2){
+            
+            var sql = "UPDATE `pool` SET `status` = 0 WHERE `id` = '"+ req.params.pool_id +"'";
+            mysqlconnection.query(sql,function(err,img){
+                console.log(err);
+                if(!err){
+                    res.redirect('/admin/pool');
+                }
+            });
+        } else if(req.user.role_id == 3 || req.user.role_id == 4) {
+            res.render('admin/screens/404');
+        }
+    } else {
+        res.render('admin/screens/login',{
+            message:'You are logged out, Please login again',
+            messageClass:'alert-danger'
+        });
+    }
+});
+
+
+
 router.get('/slider', function(req, res, next) {
     if (req.user && res.statusCode == 200) {
         if(req.user.role_id == 1 || req.user.role_id == 2){
@@ -1719,6 +1833,7 @@ router.post('/add-ads-images', function(req, res, next) {
         if(req.user.role_id == 1 || req.user.role_id == 2){
             var admin_id = req.body.admin_id;
             var order = req.body.order;
+            var category = req.body.category;
             var a = [];
 
             if(req.files.images[0] == undefined){
@@ -1759,7 +1874,7 @@ router.post('/add-ads-images', function(req, res, next) {
                 } else {
                     var b = 0;
                 }
-                var sql = "INSERT INTO `ads` (`image_path`,`order`,`user_id`) VALUES ('" + imageFiles + "','" + b + "','" + admin_id + "')";
+                var sql = "INSERT INTO `ads` (`image_path`,`order`,`user_id`,`category`) VALUES ('" + imageFiles + "','" + b + "','" + admin_id + "','" + category + "')";
                 console.log(sql);
                 mysqlconnection.query(sql,function(err,img){
                 });
@@ -3070,6 +3185,15 @@ router.get('/changeSliderCategory/:category/:slider_id', function(req, res, next
     var category = req.params.category;
     var slider_id = req.params.slider_id;
     var sql = "UPDATE `slider` SET `category` = '"+category+"' WHERE slider_id = '" + slider_id + "'";
+    mysqlconnection.query(sql,function(err,data){
+        res.jsonp(data);
+    });
+});
+
+router.get('/changeAdsCategory/:category/:slider_id', function(req, res, next) {
+    var category = req.params.category;
+    var slider_id = req.params.slider_id;
+    var sql = "UPDATE `ads` SET `category` = '"+category+"' WHERE ads_id = '" + slider_id + "'";
     mysqlconnection.query(sql,function(err,data){
         res.jsonp(data);
     });
