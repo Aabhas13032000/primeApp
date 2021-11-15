@@ -11,7 +11,7 @@
         <%if(news[0].front_image_path.slice(0,5) == "https"){%>
         <meta property="og:image" content="<%= news[0].front_image_path%>">
         <%} else {%>
-        <meta property="og:image" content="/image_files/<%= news[0].front_image_path%>">
+        <meta property="og:image" content="/images/image_files/<%= news[0].front_image_path%>">
         <%}%>
     <%} else {%>
         <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
@@ -248,7 +248,12 @@
         <% } %> 
     </div>
 
-    <button onclick="sharing('<%= news[0].news_id %>','<%= news[0].short_description %>')">Share</button>
+    <!-- <button class="button" id="play" onclick="playSound()" type="button" value="Play"><span class="iconify" data-icon="clarity:play-solid"></span></button>
+
+    <button class="button" id="pause" onclick="pauseSound()"><span class="iconify" data-icon="akar-icons:pause"></span></button>
+    <button class="button" id="resume" onclick="resumeSound()"><span class="iconify" data-icon="clarity:play-solid"></span></button> -->
+
+    <!-- <div class="wv-button-placeholder"></div> -->
 
     <hr>
     <div class="post" id="bottom-section">
@@ -282,7 +287,6 @@
             <% } %>
         <%}%>
     </div>
-
 </div>
 
 <input type="hidden" id="news_id" value="<%= news[0].news_id %>">
@@ -315,60 +319,52 @@
         navigator.share(shareData);
 }
 
-    // var synth = window.speechSynthesis;
-    // var voices = synth.getVoices();
-
-// var inputForm = document.querySelector('form');
-// var inputTxt = document.querySelector('input');
-// var voiceSelect = document.querySelector('select');
-// var desc = document.getElementById('desc').innerHTML;
-
-// function play() {
-// var utterThis = new SpeechSynthesisUtterance();
-//   utterThis.lang = 'hi-IN';
-//   utterThis.text = desc;
-//   utterThis.volume = 1;
-//   utterThis.rate = 1;
-//   utterThis.pitch =3;
-
-//   window.speechSynthesis.speak(utterThis , (err) => {
-//       console.log(err);
-//   });
+// function pauseSound() {
+//     document.getElementById('play').style.display = "none";
+//     document.getElementById('pause').style.display = "none";
+//     document.getElementById('resume').style.display = "flex";
+//     responsiveVoice.pause();
 // }
 
-// function pause() {
-//     window.speechSynthesis.pause();
+// function resumeSound() {
+//     document.getElementById('play').style.display = "none";
+//     document.getElementById('pause').style.display = "flex";
+//     document.getElementById('resume').style.display = "none";
+//     responsiveVoice.resume();
+// }
+
+// function playSound() {
+//     document.getElementById('play').style.display = "none";
+//     document.getElementById('pause').style.display = "flex";
+//     document.getElementById('resume').style.display = "none";
+//     responsiveVoice.speak(document.getElementById('desc').textContent,'Hindi Female',{onstart: StartCallback, onend: EndCallback})
+// }
+
+// function StartCallback() {
+//     console.log('started');
+//     // console.log();
 // }
 
 
-// setTimeout(() => {
-//     console.log(window.speechSynthesis.getVoices());
-//     for(var i = 0; i < window.speechSynthesis.getVoices().length; i++) {
-//         var option = document.createElement('option');
-//         option.textContent = window.speechSynthesis.getVoices()[i].name + ' (' + window.speechSynthesis.getVoices()[i].lang + ')';
-//         option.value = i;
-//         voiceSelect.appendChild(option);
-//     }
-// }, 1000);
-
-// for(var i = 0; i < voices.length; i++) {
-//   var option = document.createElement('option');
-//   option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-//   option.value = i;
-//   voiceSelect.appendChild(option);
-// }
-
-// inputForm.onsubmit = function(event) {
-//   event.preventDefault();
-
-//   var utterThis = new SpeechSynthesisUtterance((desc.split('>')[1]).split('<')[0]);
-//   console.log(voices[55]);
-//   utterThis.voice = voices[55];
-//   console.log(utterThis);
-//   synth.speak(utterThis);
-//   inputTxt.blur();
+// function EndCallback() {
+//     console.log('ended');
+//     document.getElementById('play').style.display = "flex";
+//     document.getElementById('pause').style.display = "none";
+//     document.getElementById('resume').style.display = "none";
 // }
 </script>
 
+<!-- <script async src="https://widget.websitevoice.com/Qb_TyY6vv0EgeLlfi0Oldw"></script>
+<script>
+  window.wvData=window.wvData||{};function wvtag(a,b){wvData[a]=b;}
+  wvtag('id', 'Qb_TyY6vv0EgeLlfi0Oldw');
+  wvtag('language', 'hi-IN');
+  wvtag('widget-style', {
+    className: 'wv-circle-small',
+    backgroundColor: '#111224'
+  });
+</script> -->
+
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=eT1F1QaJ"></script>
 </body>
 </html>

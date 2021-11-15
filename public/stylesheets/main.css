@@ -311,6 +311,38 @@ iframe::-webkit-scrollbar {
     width: 150px;
 }
 
+/* play - pause button */
+
+.button {
+  position: absolute;
+  z-index: 999;
+  bottom: 25px;
+  right: 25px;
+  height: 55px;
+  width: 55px;
+  background-color: #ff6600;
+  color: white;
+  border-radius: 50%;
+  border: 0;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+}
+
+#play {
+  display: flex;
+}
+
+#pause {
+  display: none;
+}
+
+#resume {
+  display: none;
+}
+
 .the_news {
   height: 94%;
   background-color: #ececec;
