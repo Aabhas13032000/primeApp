@@ -155,11 +155,11 @@
                             <label for="" >State</label>
                             <%if(role_id == 3){%>
                                 <%if(categories.length != 0){%>
-                                <select class="form-control" name="c" id="c" required>
+                                <select class="form-control" name="c" id="c" required disabled>
                                     <option value="<%= categories[0].name + '_' + categories[0].id %>"><%= categories[0].name %></option>
                                 </select>
                                 <%} else {%>
-                                <select class="form-control" name="c" id="c" required>
+                                <select class="form-control" name="c" id="c" required disabled>
                                     <option value="राजस्थान_12">राजस्थान</option>
                                 </select>
                                 <%}%>
@@ -181,21 +181,21 @@
                             <%if(role_id == 3){%>
                                 <%if(subcategories.length != 0){%>
                                     <%if(subcategories[0].name.includes('(')){%>
-                                        <select class="form-control" name="sc" id="sc" required>
+                                        <select class="form-control" name="sc" id="sc" required disabled>
                                             <option value="<%= (subcategories[0].name.split('(')[1]).split(')')[0] %>"><%= (subcategories[0].name.split('(')[1]).split(')')[0] %></option>
                                         </select>
                                     <%} else {%>
-                                        <select class="form-control" name="sc" id="sc" required>
+                                        <select class="form-control" name="sc" id="sc" required disabled>
                                             <option value="<%= (subcategories[0].name) %>"><%= (subcategories[0].name) %></option>
                                         </select>
                                     <%}%>
                                 <%} else {%>
-                                    <select class="form-control" name="sc" id="sc" required>
+                                    <select class="form-control" name="sc" id="sc" required disabled>
                                         <option value="0">other</option>
                                     </select>
                                 <%}%>
                             <%} else {%>
-                                <select class="form-control" name="sc" id="sc" required>
+                                <select class="form-control" name="sc" id="sc" required disabled>
                                     <option value="">Select City</option>
                                 </select>
                             <%}%>
@@ -207,21 +207,21 @@
                             <%if(role_id == 3){%>
                                 <%if(subcategories.length != 0){%>
                                     <%if(subcategories[0].name.includes('(')){%>
-                                        <select class="form-control" name="district" id="district" required>
+                                        <select class="form-control" name="district" id="district" required disabled>
                                             <option value="<%= subcategories[0].name %>"><%= (subcategories[0].name.split('(')[0]) %></option>
                                         </select>
                                     <%} else {%>
-                                        <select class="form-control" name="district" id="district" required>
+                                        <select class="form-control" name="district" id="district" required disabled>
                                             <option value="<%= (subcategories[0].name + ' क्षेत्र') %>"><%= (subcategories[0].name + ' क्षेत्र') %></option>
                                         </select>
                                     <%}%>
                                 <%} else {%>
-                                    <select class="form-control" name="district" id="district" required>
+                                    <select class="form-control" name="district" id="district" required disabled>
                                         <option value="0">other</option>
                                     </select>
                                 <%}%>
                             <%} else {%>
-                                <select class="form-control" name="district" id="district" required>
+                                <select class="form-control" name="district" id="district" required disabled>
                                     <option value="">Select Tehsil</option>
                                 </select>
                             <%}%>
@@ -343,13 +343,13 @@
                     </div>
                 </div>
 
-                <%if (role_id == 1){%>
+                <!-- <%if (role_id == 1){%>
 
                 <div class="jumbotron text-center">
                     <a href="<%=url%>" class="btn btn-danger"><span class="fa fa-google-plus"></span> Login or Register with Google Account</a>
                 </div>
 
-                <%}%>
+                <%}%> -->
 
                 <br><br>
                 <div class="container" style="width: 50%;text-align: center">
@@ -422,6 +422,7 @@
     
     $('#c').change(function(){
         var a = this.value.split('_')[1];
+        var name = this.value.split('_')[0];
         var select = document.getElementById("sc");
         var length = select.options.length;
         for (var i = length-1; i >= 0; i--) {
@@ -432,6 +433,14 @@
         option.text = 'Select City';
         option.value= '';
         select.add(option);
+        if(name.length != 0){
+            var option2 = document.createElement("option");
+            option2.text = `संपूर्ण: ${name}`;
+            option2.value= name;
+            select.add(option2);
+        } else {
+            document.getElementById("sc").setAttribute('disabled',true);
+        }
         for(var i = 0;i<subcatlength;i++){
             var subcategoriesName = document.getElementById('subcategoriesName'+i).value;
             var subcategoriesCat = parseInt(document.getElementById('subcategoriesCat'+i).value);
@@ -450,12 +459,18 @@
             option.text = "No City present";
             option.value= '0';
             select.add(option);
+            document.getElementById("sc").setAttribute('disabled',true);
+        } else {
+            document.getElementById("sc").removeAttribute('disabled');
         }
     });
 
     $('#sc').change(function(){
         var a = this.value;
         var select = document.getElementById("district");
+        var select2 = document.getElementById('c').value;
+        console.log(select2);
+        console.log(a);
         var length = select.options.length;
         for (var i = length-1; i >= 0; i--) {
             select.options[i] = null;
@@ -466,11 +481,21 @@
         option.value= '';
         select.add(option);
         if(a != '0'){
-            var option2 = document.createElement("option");
-            option2.text = a + ' क्षेत्र';
-            option2.value= a + ' क्षेत्र';
-            select.add(option2);
-            b++;
+            if(a == select2.split('_')[0]){
+                var option2 = document.createElement("option");
+                option2.text = `संपूर्ण: ${a}`;
+                option2.value= a;
+                select.add(option2);
+                b++;
+            } else {
+                var option2 = document.createElement("option");
+                option2.text = a + ' क्षेत्र';
+                option2.value= a + ' क्षेत्र';
+                select.add(option2);
+                b++;
+            }
+        } else {
+            document.getElementById("sc").setAttribute('disabled',true);
         }
         for(var i = 0;i<subcatlength;i++){
             var subcategoriesName = document.getElementById('subcategoriesName'+i).value;
@@ -487,6 +512,9 @@
             option.text = "No District present";
             option.value= '0';
             select.add(option);
+            document.getElementById("sc").setAttribute('disabled',true);
+        } else {
+            document.getElementById("district").removeAttribute('disabled');
         }
     });
 </script>

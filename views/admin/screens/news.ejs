@@ -261,7 +261,15 @@
                             </td>
                         <%}%>
                         <td style="padding: 0">
-                            Not available
+                            <% if(news[i].is_approved ==0) { %>
+                                <p>Not available</p>
+                            <% } else { %>
+                                <div class="row" style="margin-top: 5px">
+                                    <div class="col-12" style="text-align: center">
+                                        <a href="#" onclick="sendNotification('<%=news[i].title%>','<%=news[i].short_description%>','<%= news[i].news_id %>')" style="background-color: #007BFF;color:white;text-decoration: none;padding: 4px 7px;border: 0" class="btn btn-primary">Send</a>
+                                    </div>
+                                </div>
+                            <% } %>
                         </td>
                         <td><%=news[i].f_name%></td>
                         <%}%>
@@ -275,6 +283,18 @@
 
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="sendingNotification" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 9999999999999999;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h3>Sending Notification Please Wait!!</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <input type="hidden" name="role_id" id="role_id" value=<%=role_id%>>
 <script>
@@ -416,18 +436,35 @@
             }
         }
     }
-    function sendNotification(title,description){
+    function sendNotification(title,description,news_id){
+        // var send_image;
+        // if(image.length !=0){
+        //     if(image.slice(0,5) == "https"){
+        //         send_image = image;
+        //     } else {
+        //         send_image = `https://popularapp.in/image_files/${news_id}/${image}`;
+        //     }
+        // } else {
+        //     send_image = 'https://popularapp.in/images/extra.png';
+        // }
+        $('#sendingNotification').modal('toggle');
         $.ajax({
-            url:"/admin/sendNotification/" + title + '/' + description,
+            url:"/admin/sendNotification",
             dataType: "jsonp",
-            type:"GET",
+            type:"POST",
+            data:{
+                title:title,
+                description:description,
+                // image:send_image
+            },
             success: function(data){
                 console.log('done');
-                if(data.message == 'error'){
-                    alert('Notification Not Sent, Something went wrong');
+                if(data.message == 'success'){
+                    alert('notification sent');
                 } else {
-                    alert('Notification Sent');
+                    alert('Some error occured');
                 }
+                $('#sendingNotification').modal('toggle');
             },
             error: function(err){
                 console.log(err.status);

@@ -110,7 +110,15 @@
                                 <h5><b><%= user[0].full_name %></b></h5>
                                 <h6><%= user[0].phone %></h6>
                                 <% if(user_face == 'self') { %> 
-                                    <a href="#">प्रोफाइल एडिट करें</a>
+                                    <% if(role_id == 3) { %>
+                                        <% if(user[0].is_approved == 0){ %>
+                                            <a style="cursor: pointer;color: #ff6600;">एडमिन की मंजूरी का इंतजार करें!</a>
+                                        <% } else { %>
+                                            <a href="/admin" style="cursor: pointer;color: #ff6600;">संवादाता लॉगिन करें!</a>
+                                        <% } %>   
+                                    <% } else { %> 
+                                        <a style="cursor: pointer;color: #ff6600;" onclick="makeReporter('<%= user_id %>',)">संवादाता रजिस्टर करें!</a>
+                                    <% } %>
                                 <% } else if(user_face == 'other') { %>
                                     <a href="#">फॉलो करें</a>
                                 <% } %>
@@ -264,6 +272,25 @@
     <script src="/javascripts/otp.js"></script>
 <% } %>
 <script src="/javascripts/news.js"></script>
+
+<script>
+    function makeReporter(user_id) {
+        $.ajax({
+            url:"/mobile/updateRole/" + user_id,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(news){
+                // console.log('success');
+                alert('Request submitted successfully');
+                location.reload();
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
+</script>
+
 <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
 </body>
 </html>

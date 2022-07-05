@@ -9,11 +9,18 @@ var gplay = require('google-play-scraper');
 // Middlewares
 const query_function = require('../main/controllers/middlewares');
 const pages = require('./controllers/pages');
-const { version } = require('os');
+// const { version } = require('os');
 
 //Functions
 const generateAuthToken = () => {
     return crypto.randomBytes(30).toString('hex');
+}
+
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256');
+    const hash = sha256.update(password).digest('base64');
+    return hash;
 }
 
 const authTokens = {};
@@ -127,13 +134,13 @@ router.get('/api/news/:user_logged_status/:offset',function(req,res){
 });
 
 // Apis of this route
-router.get('/api/news/:category_name/:user_logged_status/:offset',function(req,res){
+router.get('/api/news/:category_name/state/:statename/:user_logged_status/:offset',function(req,res){
     var logged_in = req.params.user_logged_status.split('_')[0];
     var user_id = req.params.user_logged_status.split('_')[1];
     if(logged_in == '1'){
-        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`district` = '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND (`news`.`district` = '"+ req.params.category_name +"' OR `news`.`district` = '"+ req.params.statename +"') ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
     } else {
-        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`district` = '"+ req.params.category_name +"'  ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND (`news`.`district` = '"+ req.params.category_name +"' OR `news`.`district` = '"+ req.params.statename +"') ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
     }
     mysqlconnection.query(news,function(err,news){
         if(!err){
@@ -142,13 +149,28 @@ router.get('/api/news/:category_name/:user_logged_status/:offset',function(req,r
     });
 });
 
-router.get('/api/news/city/:category_name/:user_logged_status/:offset',function(req,res){
+router.get('/api/news/city/:category_name/:statename/:user_logged_status/:offset',function(req,res){
     var logged_in = req.params.user_logged_status.split('_')[0];
     var user_id = req.params.user_logged_status.split('_')[1];
     if(logged_in == '1'){
-        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`city` = '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND (`news`.`city` = '"+ req.params.category_name +"' OR `news`.`city` = '"+ req.params.statename +"') ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
     } else {
-        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`city` = '"+ req.params.category_name +"'  ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND (`news`.`city` = '"+ req.params.category_name +"' OR `news`.`city` = '"+ req.params.statename +"')  ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
+    }
+    mysqlconnection.query(news,function(err,news){
+        if(!err){
+            res.json(news);
+        }
+    });
+});
+
+router.get('/api/news/category/:category_name/:user_logged_status/:offset',function(req,res){
+    var logged_in = req.params.user_logged_status.split('_')[0];
+    var user_id = req.params.user_logged_status.split('_')[1];
+    if(logged_in == '1'){
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`tags` = '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
+    } else {
+        var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`tags` = '"+ req.params.category_name +"'  ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
     }
     mysqlconnection.query(news,function(err,news){
         if(!err){
@@ -160,12 +182,14 @@ router.get('/api/news/city/:category_name/:user_logged_status/:offset',function(
 router.get('/api/news/state/:category_name/:user_logged_status/:offset',function(req,res){
     var logged_in = req.params.user_logged_status.split('_')[0];
     var user_id = req.params.user_logged_status.split('_')[1];
+    // console.log(req.params);
     if(logged_in == '1'){
         var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name,`user_profile`.`image` AS profile_image , (SELECT `like_id` FROM `likes` WHERE `news_id` = `news`.`news_id` AND `user_id` = '"+ user_id +"') AS news_like FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id` WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`state` = '"+ req.params.category_name +"' ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
     } else {
         var news = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name ,`user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` =`users`.`user_id`  WHERE `news`.`is_approved` = 1 AND `news`.`status` = 1 AND `news`.`state` = '"+ req.params.category_name +"'  ORDER BY `news`.`news_id` DESC LIMIT 5 OFFSET "+ req.params.offset +"";
     }
     mysqlconnection.query(news,function(err,news){
+        // console.log(news);
         if(!err){
             res.json(news);
         }
@@ -215,38 +239,41 @@ router.get('/each-news/:news_id',query_function.getImages,query_function.getVide
     }
     const news_id = req.params.news_id;
     const eachNews = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` = `news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`news_id` = '" + news_id + "'";
-    var slider = "SELECT * FROM `slider` WHERE `status` = 1 ORDER BY `order`";
+    var slider = "SELECT * FROM `slider` WHERE `status` = 1 AND `category` = 'inside' ORDER BY `order`";
     var final_slider = [];
     mysqlconnection.query(eachNews,function(err,news){
         mysqlconnection.query(slider,function(err,slider){
             if(!err){
                 var similiarNews = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` = `news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`news_id` <> '" + news_id + "' AND `news`.`city` = '"+ news[0].city +"' AND `news`.`is_approved` = 1 AND `news`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+                var pools = "SELECT * FROM `pool` WHERE `tags` = '"+ news[0].tags +"' ORDER BY RAND() LIMIT 1 OFFSET 0";
                 for(var i = 0;i<slider.length;i++){
                     if(slider[i].city.includes(news[0].city)) {
                         final_slider.push(slider[i]);
                     }
                 }
                 mysqlconnection.query(similiarNews,function(err,similiarNews){
-                    // console.log(err);
-                    res.render('main/mobile_screens/each-news',{
-                        news:news,
-                        images:req.images,
-                        videos:req.videos,
-                        news2: similiarNews,
-                        slider:final_slider,
-                        logged_in:logged_in,
-                        user_id:user_id,
-                        full_name:full_name,
-                        title:common.title,
-                        imageReplacer:common.imageReplacer,
-                        website:common.website,
-                        appId:common.appId,
-                        class1:common.class1,
-                        class2:common.class2,
-                        favicon:common.favicon,
-                        role_id:role_id
+                    mysqlconnection.query(pools,function(err,pools){
+                        res.render('main/mobile_screens/each-news',{
+                            news:news,
+                            images:req.images,
+                            videos:req.videos,
+                            news2: similiarNews,
+                            slider:final_slider,
+                            logged_in:logged_in,
+                            user_id:user_id,
+                            full_name:full_name,
+                            title:common.title,
+                            imageReplacer:common.imageReplacer,
+                            website:common.website,
+                            appId:common.appId,
+                            class1:common.class1,
+                            class2:common.class2,
+                            favicon:common.favicon,
+                            role_id:role_id,
+                            pools:pools
+                        });
                     });
-                    
+                    // console.log(err);                    
                 });
             }
         });
@@ -276,38 +303,41 @@ router.get('/user-each-news/:news_id',query_function.getImages,query_function.ge
     }
     const news_id = req.params.news_id;
     const eachNews = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` = `news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`news_id` = '" + news_id + "'";
-    var slider = "SELECT * FROM `slider` WHERE `status` = 1 ORDER BY `order`";
+    var slider = "SELECT * FROM `slider` WHERE `status` = 1 AND `category` = 'inside' ORDER BY `order`";
     var final_slider = [];
     mysqlconnection.query(eachNews,function(err,news){
         mysqlconnection.query(slider,function(err,slider){
             if(!err){
                 var similiarNews = "SELECT `news`.*, `users`.`nickname` AS u_name, `users`.`full_name` AS f_name, `user_profile`.`image` AS profile_image FROM `news` INNER JOIN `users` ON `users`.`user_id` = `news`.`user_id` INNER JOIN `user_profile` ON `user_profile`.`user_id` = `users`.`user_id` WHERE `news`.`news_id` <> '" + news_id + "' AND `news`.`city` = '"+ news[0].city +"' AND `news`.`is_approved` = 1 AND `news`.`status` = 1 ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0";
+                var pools = "SELECT * FROM `pool` WHERE `tags` = '"+ news[0].tags +"' ORDER BY RAND() LIMIT 1 OFFSET 0";
                 for(var i = 0;i<slider.length;i++){
                     if(slider[i].city.includes(news[0].city)) {
                         final_slider.push(slider[i]);
                     }
                 }
                 mysqlconnection.query(similiarNews,function(err,similiarNews){
-                    console.log(err);
-                    res.render('main/mobile_screens/each-news',{
-                        news:news,
-                        images:req.images,
-                        videos:req.videos,
-                        news2: similiarNews,
-                        slider:final_slider,
-                        logged_in:logged_in,
-                        user_id:user_id,
-                        full_name:full_name,
-                        title:common.title,
-                        imageReplacer:common.imageReplacer,
-                        website:common.website,
-                        appId:common.appId,
-                        class1:common.class1,
-                        class2:common.class2,
-                        favicon:common.favicon,
-                        role_id:role_id
+                    mysqlconnection.query(pools,function(err,pools){
+                        console.log(err);
+                        res.render('main/mobile_screens/each-news',{
+                            news:news,
+                            images:req.images,
+                            videos:req.videos,
+                            news2: similiarNews,
+                            slider:final_slider,
+                            logged_in:logged_in,
+                            user_id:user_id,
+                            full_name:full_name,
+                            title:common.title,
+                            imageReplacer:common.imageReplacer,
+                            website:common.website,
+                            appId:common.appId,
+                            class1:common.class1,
+                            class2:common.class2,
+                            favicon:common.favicon,
+                            role_id:role_id,
+                            pools:pools
+                        });
                     });
-                    
                 });
             }
         });
@@ -317,7 +347,7 @@ router.get('/user-each-news/:news_id',query_function.getImages,query_function.ge
 
 // Slider Images
 router.get('/getSliderImages/:cityname',function(req,res){
-    var slider = "SELECT * FROM `slider` WHERE `status` = 1 ORDER BY `order`";
+    var slider = "SELECT * FROM `slider` WHERE `status` = 1 AND `category` = 'main' ORDER BY `order`";
     var final_slider = [];
     var cityname = req.params.cityname;
     mysqlconnection.query(slider,function(err,slider){
@@ -371,7 +401,6 @@ router.get('/getImpNews',function(req,res){
         res.json({string:str});
     });
 });
-
 
 //anya seher
 
@@ -953,6 +982,32 @@ router.get('/increaseEpaperCount/:news_id', function(req, res, next) {
     });
 });
 
+router.get('/updateRole/:user_id', function(req, res, next) {
+    var user_id = req.params.user_id;
+    var password = getHashedPassword('12345678');
+    var sql = "UPDATE `users` SET `role_id` = 3 , `is_approved` = 0 , `password` = '"+ password +"' WHERE `user_id` = '"+user_id+"'";
+    mysqlconnection.query(sql,function(err,news){
+        res.jsonp({message : 'success'});
+    });
+});
+
+router.get('/updateUser/:state/:city/:district/:user_id', function(req, res, next) {
+    var user_id = req.params.user_id;
+    var sql = "UPDATE `users` SET `state` = '"+ req.params.state +"' , `city` = '"+ req.params.city +"' , `district` = '"+ req.params.district +"' WHERE `user_id` = '"+user_id+"'";
+    mysqlconnection.query(sql,function(err,news){
+        res.jsonp({message : 'success'});
+    });
+});
+
+router.get('/increaseoptionCount/:option/:pool_id', function(req, res, next) {
+    var option = req.params.option;
+    var pool_id = req.params.pool_id;
+    var sql = "UPDATE `pool` SET `"+ option +"` = `"+ option +"` + 1 WHERE `id` = '"+pool_id+"'";
+    mysqlconnection.query(sql,function(err,news){
+        res.jsonp(news);
+    });
+});
+
 router.get('/getVideos/:offset', function(req, res, next) {
     var o = req.params.offset;
     if(req.user){
@@ -971,50 +1026,7 @@ router.get('/getVideos/:offset', function(req, res, next) {
 router.get('/profile', function(req, res, next) {
     // var sql8 = "SELECT * FROM `logo` WHERE `website` = '"+ common.logo_path +"'";
     if(req.user){
-        var logged_in = 1;
-        var role_id = req.user.role_id;
-        var sql2 = "SELECT * FROM `users` WHERE `user_id` = '"+req.user.user_id+"'";
-        var sql3 = "SELECT * FROM `user_profile` WHERE `user_id` = '"+req.user.user_id+"'";
-        var posts = "SELECT `news`.*,`users`.`nickname` AS u_name, `users`.`full_name` AS f_name FROM `news` INNER JOIN `users` ON `users`.`user_id` =`news`.`user_id` WHERE `news`.`status` = 1 AND `news`.`user_id` = '"+ req.user.user_id +"' ORDER BY `news`.`news_id` DESC LIMIT 10 OFFSET 0";
-        var total_posts = "SELECT COUNT(*) AS total FROM `news` WHERE `user_id` = '"+ req.user.user_id +"' AND `status` = 1 ";
-        var total_followers = "SELECT COUNT(*) AS count FROM `follow` WHERE `user_id` = '"+req.user.user_id+"'";
-        var total_following = "SELECT COUNT(*) AS count FROM `follow` WHERE `follower_id` = '"+req.user.user_id+"'";
-        mysqlconnection.query(total_followers,function(err,total_followers){
-            mysqlconnection.query(total_following,function(err,total_following){
-                mysqlconnection.query(sql2,function(err,users){
-                    mysqlconnection.query(sql3,function(err,user_profile){
-                        mysqlconnection.query(posts,function(err,posts){
-                            mysqlconnection.query(total_posts,function(err,total_posts){
-                                res.render('main/mobile_screens/profile',{
-                                    // logo:logo,
-                                    logged_in:logged_in,
-                                    user:users,
-                                    user_profile:user_profile,
-                                    news2:posts,
-                                    title:common.title,
-                                    imageReplacer:common.imageReplacer,
-                                    website:common.website,
-                                    appId:common.appId,
-                                    class1:common.class1,
-                                    class2:common.class2,
-                                    favicon:common.favicon,
-                                    user_face:'self',
-                                    total_posts:total_posts,
-                                    card:req.card[0].expanded_card,
-                                    user_id: req.user.user_id,
-                                    role_id:role_id,
-                                    total_followers:total_followers[0].count,
-                                    total_following:total_following[0].count,
-                                    statename:req.query.statename,
-                                    cityname:req.query.cityname,
-                                    districtname:req.query.districtname,
-                                });
-                            });   
-                        });
-                    }); 
-                });
-            });
-        });
+        res.redirect(`/mobile/profile/loggedIn/${req.user.user_id}`);
     } else {
         var logged_in = 0;
         var role_id = undefined;
@@ -1197,8 +1209,8 @@ router.get('/profile/loggedIn/:user_id', function(req, res, next) {
                                     user_face:'self',
                                     total_posts:total_posts,
                                     card:req.card[0].expanded_card,
-                                    user_id: req.user.user_id,
-                                    role_id:role_id,
+                                    user_id: req.params.user_id,
+                                    role_id:users[0].role_id,
                                     total_followers:total_followers[0].count,
                                     total_following:total_following[0].count,
                                     statename:users[0].state,
@@ -1314,6 +1326,7 @@ router.get('/user-profile/:user_id', function(req, res, next) {
     }
 });
 
+
 router.post('/user-login', function(req, res, next) {
     var state = req.body.statename;
     var city = req.body.cityname;
@@ -1323,10 +1336,10 @@ router.post('/user-login', function(req, res, next) {
     var full_name = req.body.full_name;
     var is_approved = 1;
     var user_data;
-    var sql = "SELECT * FROM `users` WHERE phone = '" + phone + "' AND status = 1 AND role_id = 4 AND password = '" + tokken + "'";
+    var sql = "SELECT * FROM `users` WHERE phone = '" + phone + "' AND status = 1 AND password = '" + tokken + "'";
     mysqlconnection.query(sql,function(err,data){
         if(data.length != 0){
-            var sql7 = "UPDATE `users` SET `name` = '" + full_name + "',`full_name` = '" + full_name + "',`city` = '"+city+"',`state` = '"+state+"',`district` = '"+ districtname +"' WHERE phone = '" + phone + "' AND status = 1 AND role_id = 4 AND password = '" + tokken + "'";
+            var sql7 = "UPDATE `users` SET `name` = '" + phone.split('+91')[1] + "',`full_name` = '" + full_name + "',`city` = '"+city+"',`state` = '"+state+"',`district` = '"+ districtname +"' WHERE phone = '" + phone + "' AND status = 1 AND password = '" + tokken + "'";
             mysqlconnection.query(sql7,function(err,users1){
                 // console.log(users1);
             });
@@ -1352,7 +1365,7 @@ router.post('/user-login', function(req, res, next) {
             res.cookie('User Cookie', user_data,{maxAge:  365*24*60*60*1000});
             res.jsonp({message:'success',user_data:user_data});
         }else {
-            var sql6 = "INSERT INTO `users` (`name`,`full_name`,`password`,`is_approved`,`phone`,`role_id`,`city`,`state`,`district`) VALUES ('" + full_name + "','" + full_name + "','" + tokken + "','" + is_approved + "','" + phone + "',4,'"+city+"','"+state+"','"+ districtname +"')";
+            var sql6 = "INSERT INTO `users` (`name`,`full_name`,`password`,`is_approved`,`phone`,`role_id`,`city`,`state`,`district`) VALUES ('" + phone.split('+91')[1] + "','" + full_name + "','" + tokken + "','" + is_approved + "','" + phone + "',4,'"+city+"','"+state+"','"+ districtname +"')";
             mysqlconnection.query(sql6,function(err,users){
                 if(!err){
                     user_data = {

@@ -2,32 +2,21 @@ var express = require('express');
 var router = express.Router();
 const crypto = require('crypto');
 var fs = require('fs-extra');
-// const sharp = require("sharp");
-// var FCM = require('fcm-node');
-var serverKey = 'AAAA7fEY5N8:APA91bHB2AArd2yR_HHXYtOE4CLBoOecHP9hpWY3IW6Po4hYRvTQhcdeMsrJ9WaneR44tIdp5rQusuUqo700jb0ohqdU9HtEWzQORaycYiJrEEcXClHe6NtBUBenFibG-uwMcEt_8b9G'; //put your server key here
-// var fcm = new FCM(serverKey);
-var fcm = require('fcm-notification');
-// var FCM = new fcm({
-//         "type": "service_account",
-//         "project_id": "popularapp-9d854",
-//         "private_key_id": "d2032b1c5c3815d2ed998422bc8fba1fa4422c5b",
-//         "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCgdXlGhs/NksRW\nGx0lmsBSsKN4qYb3OrSwgwh6BHgMua+OSNDxCVKOcDYkIu2stU7zFHI0aeOtemhb\nZkcQlrYh6hNmr0eadvtdngeLxPOqW2Y5JOcdTKOXG3BRKMFg2FRswyIRJdL84J49\nN8jvdbKfrgKU9WKhPYlcy3Me0zl7J268MV3x+rYL9kf+RqNDcHkuqW8hVABiJnUl\nf5WUz8TBEx9Z10dK9JcWZQqDZZWc2yFsRmdhQ04Vqi0d6ra6qsaKVUn5lovFBz5C\nLNKTU2QyH1H1kq6yAAFN58LDolOwVJfc10NlA+MUzknXCvZOAsyivLO2GTkclk4w\n9SWcmtUrAgMBAAECggEARCzFY07CGeEC5GbOwnx2vGtqeUjmHELoJJr3zgf6DcYT\nLgwIInFIj1Zj2oSwoRHDwonsYBKhdsKsdjEFfqnaJpyys41DigCFmmgbYqpCsR32\nV88zFwLJ+tjgpsr/JqujazaZUdnVRDYXZYE/MWa7hxbC6BE+X62qoC+c8Prj0Evr\nd99w8f59l/8mIoE6YLH8x0/EP8kmvGXo20dtH3KIiJVMFsxZvB2dWY7j8smMFP1c\n/SoQntr17npqVrPsfFqQMlatruI+R/T2TOw41vUGnP6wjl/iT8AK0Z52M6S/8ihY\n6RcKLF2wbmcLQo13ZGLZ+XbdZV/fSd1ktIbJExtw2QKBgQDQiVWcOguC6wVwlHo7\n8HsR1ae6YhSfkuJT7cl0fUsp6hPx+CSnHXbltCJ3Q+Wq7jW7+ipLRG65/6EoBL6i\nrB5HMdCfokQp9eouNBJ/XlCehDMDTN1rd+IkVQoBPoQ1o/6yUoxBt3WytUOiTwtU\nPyZDvCJduGZM3G7vjxXdoyMbjwKBgQDE+tUhM2cGkj83i9ujhCkDWDFOXpu+NDLJ\numg+zExBqydBfyaGwwri4aMkRfL6TCY6fzOCiCAUWm79T2T+wJqPDw1W6W34k1Vh\nms7ymPUT03oNK9ywNDOqX3KRUPGMwpuvj0bGZvCCQH1tfqtfcQVaCY8aOGFSfM7R\nxDJ4SePOpQKBgC/XQd+sZVWsizvvpDc6DVHjHS6iL68IKIoupCfoUqUUAW1iiy4X\nkV5TPBD2b6sOKR+t3aQU1/4tyg//PqjdKbkVkZH9zPt/YjElWxUDUyV6mKVqLeXo\nw+Wn6LquV/BiZh0M2QZ+iy7rbM/AqI20SxgBAjVUB4wcigrFXbPSKEy7AoGAMdhn\nZmdjgr4vURcLFW20EyyWDYbTUmZTE8kf6AQ6p8Nvw5sxXJiugIsohV1OBxiN8++M\nUVOxCnV38JHOtMh4VAszDPM06NofmPtbsvgRzFqPYBXhWpVbHZnZm/wno777NonD\nFyGlatB27OZI53XqLMaOd8wclIsQqvRC8T2BcCECgYEAvVcBBQELCzaA5ci3Fapx\nIpve9931Yv/nMpmkLuVWH2MrSdSgY9r5a0sDS9zBdJRpFITPK04UKcNoDfxOYGMH\nIJ60xTxeHbnH3PMDNoAEMqrUsnpKJQhQJ3ljda1JxWHfaQWKh+tMPRIkaAztr/OA\nHXvnj7PzN9p5m+Gw89WDIgw=\n-----END PRIVATE KEY-----\n",
-//         "client_email": "firebase-adminsdk-rtprb@popularapp-9d854.iam.gserviceaccount.com",
-//         "client_id": "104894272053779695784",
-//         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-//         "token_uri": "https://oauth2.googleapis.com/token",
-//         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-//         "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rtprb%40popularapp-9d854.iam.gserviceaccount.com"
-//     }
-// );
 
-const TOKEN_PATH = '../../credentials/token.json';
+var admin = require("firebase-admin");
 
+var serviceAccount = require("../../credentials/serviceAccount.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const notification_options = {
+    priority: "high",
+    timeToLive: 60 * 60 * 24
+};
 const OAuth2Data = require("../../credentials/credentials.json");
 const { google } = require("googleapis");
-// const imagemin = require("imagemin");
-// const imageminMozjpeg = require("imagemin-mozjpeg");
-
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
 const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
@@ -44,17 +33,6 @@ var authed = false;
 const SCOPES =
     "https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts.readonly";
 
-
-
-// var session=require('express-session');
-//
-//
-// router.use(session({
-//   secret:"Key",
-//   res
-//   ave:true,
-//   saveUninitialized:true,
-//   cookie:{maxAge:10000}}));
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
     const hash = sha256.update(password).digest('base64');
@@ -1896,8 +1874,8 @@ router.post('/add-slider-images', function(req, res, next) {
         if(req.user.role_id == 1 || req.user.role_id == 2){
             var admin_id = req.body.admin_id;
             var order = req.body.order;
-            // var category = req.body.category;
-            var category = 'main';
+            var category = req.body.category;
+            // var category = 'main';
             var state = req.body.state;
             var city = req.body.city;
 
@@ -2068,12 +2046,64 @@ router.post('/add-Tag', function(req, res, next) {
     }
 });
 
+
+router.post('/edit-tags/:tag_id/:image', function(req, res, next) {
+    console.log(req.files);
+    if (req.user && res.statusCode == 200) {
+        if(req.user.role_id == 1 || req.user.role_id == 2){
+            var name = req.body.tagname;
+            if(req.files != null){
+                var p = 'public/images/tag/' + req.params.image;
+
+                fs.unlink(p, function (err) {
+                    if (err) throw err;
+                });
+
+                var new_name = new Date().getTime() + '_tagname.png';
+
+                req.files.images.name = new_name;
+                var Images = req.files.images;
+                var imageFiles = typeof req.files.images.name !=="undefined" ? req.files.images.name : "" ;
+                var path1 = 'public/images/tag/' + imageFiles;
+                Images.mv(path1, function(err){
+                    if(err){
+                        return console.log(err);
+                    }
+                });
+                var sql = "UPDATE `tags` SET `image` = '"+ imageFiles +"', `name` = '"+ name +"' WHERE `id` = '"+ req.params.tag_id +"'";
+                mysqlconnection.query(sql,function(err,img){
+                    console.log(err);
+                    if(!err){
+                        res.redirect('/admin/tags');
+                    }
+                });
+            } else {
+                var sql = "UPDATE `tags` SET `name` = '"+ name +"' WHERE `id` = '"+ req.params.tag_id +"'";
+                mysqlconnection.query(sql,function(err,img){
+                    console.log(err);
+                    if(!err){
+                        res.redirect('/admin/tags');
+                    }
+                });
+            }
+        } else if(req.user.role_id == 3 || req.user.role_id == 4) {
+            res.render('admin/screens/404');
+        }
+    } else {
+        res.render('admin/screens/login',{
+            message:'You are logged out, Please login again',
+            messageClass:'alert-danger'
+        });
+    }
+});
+
+
 router.post('/edit-slider/:slider_id', function(req, res, next) {
     if (req.user && res.statusCode == 200) {
         if(req.user.role_id == 1 || req.user.role_id == 2){
             var slider_id = req.params.slider_id;
-            // var category = req.body.category;
-            var category = 'main';
+            var category = req.body.category;
+            // var category = 'main';
             var city = req.body.city;
             var state = req.body.state;
 
@@ -3267,6 +3297,7 @@ router.get('/searchTagname/:name', function(req, res, next) {
     var name = req.params.name;
     var sql = "SELECT * FROM `tags` WHERE name = '" + name + "' AND `status` = 1";
     mysqlconnection.query(sql,function(err,data){
+        console.log(data);
         res.jsonp(data);
     });
 });
@@ -3287,46 +3318,74 @@ router.get('/searchdCategory/:name', function(req, res, next) {
     });
 });
 
-router.get('/sendNotification/:title/:description', function(req, res, next) {
-    console.log('hello');
-    var title = req.params.title;
-    var description = req.params.description;
+router.post('/sendNotification', function(req, res, next) {
+    // console.log('hello');
+    var title = req.body.title;
+    var description = req.body.description;
+    // var image = req.body.image;
     var sql = "SELECT * FROM `fcm_token`";
     var registration_ids = [];
     mysqlconnection.query(sql,function(err,data){
         if(data.length !=0) {
-            for (var i = 0; i < data.length; i++) {
-                registration_ids.push(data[i].token);
+            console.log(Math.ceil(data.length/500));
+            if(Math.ceil(data.length/500) > 1){
+                // for(var i=0;i<Math.ceil(data.length/500);i++){
+                //     for(var j=(i*500);j<((i+1)*500);j++){
+
+                //     }
+                // }
+            } else {
+                for (var i = 0; i < data.length; i++) {
+                    registration_ids.push(data[i].token);
+                }
+                var message = {
+                    tokens: registration_ids,
+                    notification: {
+                        title: title,
+                        body: description,
+                        // image: image
+                    },
+                    options: notification_options
+                };
+    
+                admin.messaging().sendMulticast(message).then((response) => {
+                    console.log( response.successCount +' successfull');
+                    console.log( response.failureCount +' not successfull');
+                    res.jsonp({message:'success'});
+                }).catch((err) => {
+                    console.log(err);
+                    res.jsonp({message:'failed'});
+                })
             }
+
+            // fcm.send(message, function(err, response){
+            //     if (err) {
+            //         console.log("Something has gone wrong!")
+            //     } else {
+            //         console.log("Successfully sent with response: ", response)
+            //     }
+            // });
+
             // var message = {
-            //     registration_ids: registration_ids,
-            //     notification: {
-            //         title: title,
-            //         body: description
-            //     },
+            //     notification:{
+            //         title : title,
+            //         body : description
+            //     }
             // };
 
-            var message = {
-                notification:{
-                    title : title,
-                    body : description
-                }
-            };
+            // FCM.sendToMultipleToken(message, registration_ids, function(err, response) {
+            //     if(err){
+            //         console.log('err--', err);
+            //         res.jsonp({message: 'error'});
+            //     }else {
+            //         console.log('response-----', response);
+            //         res.jsonp({message: 'success'});
+            //     }
 
-            FCM.sendToMultipleToken(message, registration_ids, function(err, response) {
-                if(err){
-                    console.log('err--', err);
-                    res.jsonp({message: 'error'});
-                }else {
-                    console.log('response-----', response);
-                    res.jsonp({message: 'success'});
-                }
-
-            })
+            // })
         }
     });
 });
-
 router.post('/api/fcm-token', function(req, res, next) {
     var token=req.body.token;
     // console.log(token);

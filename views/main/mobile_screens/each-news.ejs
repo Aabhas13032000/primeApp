@@ -4,17 +4,28 @@
     <!-- Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1">
-    <meta property="og:title" content="<%= news[0].title%>" />
-    <meta name="og:description" content="<%= news[0].short_description%>">
-    <meta property="og:url" content="https://www.<%= website %>/each-news/<%= news[0].news_id%>" />
+    <meta property="og:title" content="<%= news[0].short_description%>" />
+    <meta property="article:title" content="<%= news[0].short_description%>" />
+    <meta name="twitter:title" content="<%= news[0].short_description%>" />
+    <meta name="description" content="<%= news[0].district%>(<%= news[0].city%>)">
+    <meta itemprop="description" content="<%= news[0].district%>(<%= news[0].city%>)">
+    <meta name="twitter:description" content="<%= news[0].district%>(<%= news[0].city%>)">
+    <meta name="og:description" content="<%= news[0].district%>(<%= news[0].city%>)">
+    <meta property="og:url" content="https://primeapp.co.in/mobile/each-news/<%= news[0].news_id%>" />
     <%if(news[0].front_image_path != null){%>
         <%if(news[0].front_image_path.slice(0,5) == "https"){%>
         <meta property="og:image" content="<%= news[0].front_image_path%>">
+        <meta property="twitter:image" content="<%= news[0].front_image_path%>">
+        <meta itemprop="image" content="<%= news[0].front_image_path%>">
         <%} else {%>
-        <meta property="og:image" content="/images/image_files/<%= news[0].front_image_path%>">
+        <meta property="og:image" content="https://primeapp.co.in/images/image_files/<%= news[0].front_image_path%>">
+        <meta property="twitter:image" content="https://primeapp.co.in/images/image_files/<%= news[0].front_image_path%>">
+        <meta itemprop="image" content="https://primeapp.co.in/images/image_files/<%= news[0].front_image_path%>">
         <%}%>
     <%} else {%>
-        <meta property="og:image" content="/images/logo/<%= imageReplacer %>">
+        <meta property="og:image" content="https://primeapp.co.in/images/logo/Mono.png">
+        <meta property="twitter:image" content="https://primeapp.co.in/images/logo/Mono.png">
+        <meta itemprop="image" content="https://primeapp.co.in/images/logo/Mono.png">
     <%}%>
 
     <title><%=title%></title>
@@ -253,7 +264,46 @@
     <button class="button" id="pause" onclick="pauseSound()"><span class="iconify" data-icon="akar-icons:pause"></span></button>
     <button class="button" id="resume" onclick="resumeSound()"><span class="iconify" data-icon="clarity:play-solid"></span></button> -->
 
-    <!-- <div class="wv-button-placeholder"></div> -->
+    <% if(pools.length !=0) { %> 
+        <% var total = parseInt(pools[0].option1_count) + parseInt(pools[0].option2_count) + parseInt(pools[0].option3_count) + parseInt(pools[0].option4_count); %> 
+    <hr>
+    <div class="poolsection">
+        <h5 style="text-align: center;margin: 10px auto;">युज़र पोल</h5>
+        <div class="card">
+            <div class="question">
+                <p><%= pools[0].question %></p>
+            </div>
+            <div class="options" onclick="incrementpool('option1_count','<%= pools[0].id %>')">
+                <div class="option-value">
+                    <p><%= pools[0].option1 %></p>
+                    <p id="question1_percentage" style="font-size: 12px;"><%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option1_count)/total) * 100) ) %>%</p>
+                </div>
+                <div class="question-percentage" id="question1" style="width: <%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option1_count)/total) * 100) ) %>%;"></div>
+            </div>
+            <div class="options" onclick="incrementpool('option2_count','<%= pools[0].id %>')">
+                <div class="option-value">
+                    <p><%= pools[0].option2 %></p>
+                    <p id="question2_percentage" style="font-size: 12px;"><%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option2_count)/total) * 100) ) %>%</p>
+                </div>
+                <div class="question-percentage" id="question2" style="width: <%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option2_count)/total) * 100) ) %>%;"></div>
+            </div>
+            <div class="options" onclick="incrementpool('option3_count','<%= pools[0].id %>')">
+                <div class="option-value">
+                    <p><%= pools[0].option3 %></p>
+                    <p id="question3_percentage" style="font-size: 12px;"><%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option3_count)/total) * 100) ) %>%</p>
+                </div>
+                <div class="question-percentage" id="question3" style="width: <%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option3_count)/total) * 100) ) %>%;"></div>
+            </div>
+            <div class="options" onclick="incrementpool('option4_count','<%= pools[0].id %>')">
+                <div class="option-value">
+                    <p><%= pools[0].option4 %></p>
+                    <p id="question4_percentage" style="font-size: 12px;"><%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option4_count)/total) * 100) ) %>%</p>
+                </div>
+                <div class="question-percentage" id="question4" style="width: <%= (total == 0 ? '0' : parseInt((parseInt(pools[0].option4_count)/total) * 100) ) %>%;"></div>
+            </div>
+        </div>
+    </div>
+    <% } %> 
 
     <hr>
     <div class="post" id="bottom-section">
@@ -310,13 +360,20 @@
 
 <script>
 
-    function sharing(news_id,title) {
-        const shareData = {
-            title: title,
-            text: 'न्यूज़ के लिए आज ही ऐप इंस्टॉल करें।\nhttps://play.google.com/store/apps/details?id=com.technotwist.primeapp.prime_app\n\nसंपर्क करें 70149-41008\nGmail: primeapp.co.in@gmail.com',
-            url: 'https://primeapp.co.in/mobile/each-news/'+ news_id +''
-        }
-        navigator.share(shareData);
+function incrementpool(option,pool_id) {
+    // console.log(option);
+        $.ajax({
+            url:"/mobile/increaseoptionCount/" + option + '/' + pool_id,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(news){
+                // console.log('success');
+                alert('Pool submitted successfully');
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
 }
 
 // function pauseSound() {
@@ -353,17 +410,6 @@
 //     document.getElementById('resume').style.display = "none";
 // }
 </script>
-
-<!-- <script async src="https://widget.websitevoice.com/Qb_TyY6vv0EgeLlfi0Oldw"></script>
-<script>
-  window.wvData=window.wvData||{};function wvtag(a,b){wvData[a]=b;}
-  wvtag('id', 'Qb_TyY6vv0EgeLlfi0Oldw');
-  wvtag('language', 'hi-IN');
-  wvtag('widget-style', {
-    className: 'wv-circle-small',
-    backgroundColor: '#111224'
-  });
-</script> -->
 
 <script src="https://code.responsivevoice.org/responsivevoice.js?key=eT1F1QaJ"></script>
 </body>

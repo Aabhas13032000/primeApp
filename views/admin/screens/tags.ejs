@@ -170,6 +170,7 @@
                             <th>Name</th>
                             <th style="width:50%">Image</th>
                             <th>Option</th>
+                            <th>Edit</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -199,6 +200,46 @@
                                         <td>Not allowed to delete</td>
                                     <%}%>
                                     <%}%>
+                                    <td>
+                                        <a href="#edit-slider<%=i%>" style="color: #007BFF;text-decoration: none;padding: 4px 7px;border-radius: 50%" data-toggle="modal"><i class="fas fa-edit"></i></a>
+                                    </td>
+                                    <div class="modal fade" id="edit-slider<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 99999999999;">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit tags</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                    <div class="modal-body">
+                                                        <form action="/admin/edit-tags/<%= tags[i].id%>/<%= tags[i].image %>" method="post" enctype="multipart/form-data">
+                                                            <div class="form-group">
+                                                                <label for="">Tag Name</label>
+                                                                <input type="text" class="form-control" id="tagname<%=i%>" name="tagname" onkeyup="checkEditTagname('<%=i%>')" placeholder="Enter Tag Name" value="<%= tags[i].name %>" required>
+                                                                <small id="checkTagname<%=i%>" class="form-text" style="text-align: center;"></small>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-md-12">
+                                                                    <h6>Present Image</h6>
+                                                                    <img src="/images/tag/<%= tags[i].image %>" alt="" width="50%">
+                                                                </div>
+                                                                <div class="col-lg-6 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="">Select New Image</label>
+                                                                        <input type="file" class="form-control-file" name="images" id="img<%=i%>" accept="image/x-png,image/gif,image/jpeg" onchange="showPreview('image-preview<%=i%>',this.files)">
+                                                                    </div>
+                                                                    <div style="width: 100px;height: 100px;">
+                                                                        <img src="/images/no_image.jpeg" alt="" id="image-preview<%=i%>" style="width: 100%">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button type="submit" id="verifyTag<%=i%>" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                             <% } %>
                         </tbody>
@@ -241,6 +282,28 @@
                 } else {
                     document.getElementById('checkTagname').innerHTML = "";
                     $('#verifyTag').removeAttr("disabled");
+                }
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
+    function checkEditTagname(i){
+        var c = document.getElementById('tagname' + i).value;
+        console.log(c);
+        $.ajax({
+            url:"/admin/searchTagname/" + c,
+            dataType: "jsonp",
+            type:"GET",
+            success: function(data){
+                if(data[0] != undefined){
+                    document.getElementById('checkTagname' + i).innerHTML = " Tag name already exists";
+                    document.getElementById('checkTagname' + i).style.color = "rgb(255, 31, 31)";
+                    $('#verifyTag' + i).attr("disabled","disabled");
+                } else {
+                    document.getElementById('checkTagname' + i).innerHTML = "";
+                    $('#verifyTag' + i).removeAttr("disabled");
                 }
             },
             error: function(err){

@@ -188,6 +188,7 @@
                             <th>Pdf</th>
                             <th>Category</th>
                             <th>Date & Time</th>
+                            <th>Notification</th>
                             <th>Option</th>
                         </tr>
                         </thead>
@@ -200,6 +201,13 @@
                                 </td>
                                 <td><%= epaper[i].category%></td>
                                 <td><%= epaper[i].created_at %></td>
+                                <td style="padding: 0">
+                                    <div class="row" style="margin-top: 5px">
+                                        <div class="col-12" style="text-align: center">
+                                            <a href="#" onclick="sendNotification('ई-पेपर पढ़ने के लिए क्लिक करें','<%= epaper[i].created_at %>','<%= epaper[i].thumbnail %>','<%= epaper[i].category %>')" style="background-color: #007BFF;color:white;text-decoration: none;padding: 4px 7px;border: 0" class="btn btn-primary">Send</a>
+                                        </div>
+                                    </div>
+                                </td>
                                 <%if(role_id == 1){%>
                                     <td>
                                         <div class="row">
@@ -230,6 +238,19 @@
         </div>
         </div>
         </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="sendingNotification" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 9999999999999999;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h3>Sending Notification Please Wait!!</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <br>
 <script>
     $('a.confirm').on('click', function(){
@@ -254,6 +275,34 @@
             document.getElementById('thumbnail').value = "";
         }
     });
+    function sendNotification(title,description,image,category){
+        var send_image = `https://popularapp.in/thumbnail/${image}`;
+        $('#sendingNotification').modal('toggle');
+        $.ajax({
+            url:"/admin/sendNotification",
+            dataType: "jsonp",
+            type:"POST",
+            data:{
+                title:title,
+                description:`${description.slice(0,15)}, ${category}`,
+                // image:send_image
+            },
+            success: function(data){
+                console.log('done');
+                if(data.message == 'success'){
+                    alert('notification sent');
+                $('#sendingNotification').modal('toggle');
+                } else {
+                    alert('Some error occured');
+                $('#sendingNotification').modal('toggle');
+                }
+                $('#sendingNotification').modal('toggle');
+            },
+            error: function(err){
+                console.log(err.status);
+            }
+        });
+    }
 </script>
 
 <%- include('../navigation/footer') %>

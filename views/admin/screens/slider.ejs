@@ -174,6 +174,12 @@
                                 <option value="">Select City</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <select class="form-control" name="category">
+                                <option value="main">Main news</option>
+                               <option value="inside">Inside news</option>
+                            </select>
+                        </div>
                         <% if(order.length != 0){ %>
                             <input type="hidden" name="order" value=<%= order[0].order %>>
                         <% } else { %>
@@ -210,7 +216,7 @@
                                         <td>
                                             <a href="#edit-slider<%=i%>" style="color: #007BFF;text-decoration: none;padding: 4px 7px;border-radius: 50%" data-toggle="modal"><i class="fas fa-edit"></i></a>
                                         </td>
-                                        <div class="modal fade" id="edit-slider<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="edit-slider<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 99999999999;">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -221,13 +227,13 @@
                                                     </div>
                                                         <div class="modal-body">
                                                             <form action="/admin/edit-slider/<%= slider[i].slider_id%>" method="post">
-        <!--                                                        <div class="form-group">-->
-        <!--                                                            <select class="form-control" name="category" id="category<%=i%>" onchange="changeCategory(<%=i%>)">-->
-        <!--                                                                <option><%=slider[i].category%></option>-->
-        <!--                                                                <option value="main">Main news</option>-->
-        <!--                                                                <option value="inside">Inside news</option>-->
-        <!--                                                            </select>-->
-        <!--                                                        </div>-->
+                                                               <div class="form-group">
+                                                                   <select class="form-control" name="category" id="category<%=i%>">
+                                                                       <option><%=slider[i].category%></option>
+                                                                       <option value="main">Main news</option>
+                                                                       <option value="inside">Inside news</option>
+                                                                    </select>
+                                                                </div>
                                                                 <div class="form-group">
                                                                     <select class="form-control" name="state" id="state<%=i%>" onchange="getCities('<%=i%>')" required>
                                                                         <option value="">Select New State</option>
@@ -270,7 +276,7 @@
                                         <td>
                                             <a href="#edit-slider<%=i%>" style="color: #007BFF;text-decoration: none;padding: 4px 7px;border-radius: 50%" data-toggle="modal"><i class="fas fa-edit"></i></a>
                                         </td>
-                                        <div class="modal fade" id="edit-slider<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="edit-slider<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 99999999999;">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -281,13 +287,13 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form action="/admin/edit-slider/<%= slider[i].slider_id%>" method="post">
-        <!--                                                    <div class="form-group">-->
-        <!--                                                        <select class="form-control" name="category" id="category<%=i%>" onchange="changeCategory(<%=i%>)">-->
-        <!--                                                            <option><%=slider[i].category%></option>-->
-        <!--                                                            <option value="main">Main news</option>-->
-        <!--                                                            <option value="inside">Inside news</option>-->
-        <!--                                                        </select>-->
-        <!--                                                    </div>-->
+                                                           <div class="form-group">
+                                                               <select class="form-control" name="category" id="category<%=i%>">
+                                                                   <option><%=slider[i].category%></option>
+                                                                   <option value="main">Main news</option>
+                                                                   <option value="inside">Inside news</option>
+                                                               </select>
+                                                           </div>
                                                             <div class="form-group">
                                                                 <select class="form-control" name="state" id="state<%=i%>" onchange="getCities('<%=i%>')" required>
                                                                     <option value="">Select New State</option>
@@ -413,22 +419,22 @@
             return false;
         }
     });
-    function changeCategory(i){
-        var a = document.getElementById('category'+i).value;
-        var slider_id = document.getElementById('slider_id'+i).value;
-        $.ajax({
-            url:"/admin/changeSliderCategory/" + a + '/' + slider_id,
-            dataType: "jsonp",
-            type:"GET",
-            success: function(data){
-                console.log('success');
-                location.reload();
-            },
-            error: function(err){
-                console.log(err.status);
-            }
-        });
-    };
+    // function changeCategory(i){
+    //     var a = document.getElementById('category'+i).value;
+    //     var slider_id = document.getElementById('slider_id'+i).value;
+    //     $.ajax({
+    //         url:"/admin/changeSliderCategory/" + a + '/' + slider_id,
+    //         dataType: "jsonp",
+    //         type:"GET",
+    //         success: function(data){
+    //             console.log('success');
+    //             location.reload();
+    //         },
+    //         error: function(err){
+    //             console.log(err.status);
+    //         }
+    //     });
+    // };
     $('#state').change(function(){
         var a = document.getElementById('state').value;
         var select = document.getElementById("city");

@@ -17,7 +17,8 @@ const app = express();
 var https = require('https');
 var http = require('http');
 // var hostname = '192.168.29.248';
-var hostname = '192.168.1.16';
+// var hostname = '192.168.1.16';
+var hostname = '172.20.10.3';
 
 // const httpsLocalhost = require("https-localhost")();
 // const app = ...
@@ -27,7 +28,7 @@ var hostname = '192.168.1.16';
 
 // console.log(server.address());
 
-http.createServer(app).listen(process.env.PORT);
+http.createServer(app).listen(process.env.PORT,hostname);
 // https.createServer(certs, app).listen(4433,hostname);
 
 // view engine setup
